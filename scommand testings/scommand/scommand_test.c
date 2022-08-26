@@ -31,16 +31,17 @@ int main(void){
     // free(representation);
     // representation = NULL;
 
-    printf("%s\n",scommand_front(test));
-    scommand_pop_front(test);
-    printf("%s\n",scommand_front(test));
-    scommand_pop_front(test);
-    printf("%u\n",scommand_length(test));
-    printf("%u\n",(unsigned int)scommand_is_empty(test));
-    printf("%s\n",scommand_get_redir_in(test));
-    printf("%s\n",scommand_get_redir_out(test));
+    // printf("%s\n",scommand_front(test));
+    // scommand_pop_front(test);
+    // printf("%s\n",scommand_front(test));
+    // scommand_pop_front(test);
+    // printf("%u\n",scommand_length(test));
+    // printf("%u\n",(unsigned int)scommand_is_empty(test));
+    // printf("%s\n",scommand_get_redir_in(test));
+    // printf("%s\n",scommand_get_redir_out(test));
 
     test = scommand_destroy(test);
     printf("%u\n",test == NULL);
+    printf("%u\n",a == NULL);
     return 0;
 }

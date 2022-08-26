@@ -36,8 +36,14 @@ scommand scommand_destroy(scommand self){
     assert(self != NULL);
 
     g_queue_free_full(self->sc_arguments,free);
-    free(self->sc_file_input);
-    free(self->sc_file_output);
+    if(self->sc_file_input != NULL){
+        free(self->sc_file_input);
+        self->sc_file_input = NULL;
+    }
+    if(self->sc_file_output != NULL){
+        free(self->sc_file_output);
+        self->sc_file_output = NULL;
+    }
     free(self);
     self = NULL;
 
