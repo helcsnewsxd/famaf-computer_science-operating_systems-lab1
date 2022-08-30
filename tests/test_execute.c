@@ -37,9 +37,9 @@ START_TEST (test_null)
     /* Ejecuta un comando nulo (pipeline vacío) */
     execute_pipeline (test_pipe);
     /* Esto no debería haber tratado de crear ni destruir procesos */
-    fail_unless (mock_counter_fork==0, NULL);
-    fail_unless (mock_counter_execvp==0, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_fork==0, NULL);
+    ck_assert_msg (mock_counter_execvp==0, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
 }
 END_TEST
 
@@ -56,8 +56,8 @@ START_TEST (test_builtin_exit)
         execute_pipeline (test_pipe);
     );
     /* Esto no debería haber tratado de crear ni ejecutar procesos */
-    fail_unless (mock_counter_fork==0, NULL);
-    fail_unless (mock_counter_execvp==0, NULL);
+    ck_assert_msg (mock_counter_fork==0, NULL);
+    ck_assert_msg (mock_counter_execvp==0, NULL);
     /* Acá hay dos opciones: el contador de exit es 0, ó es 1. Esto depende
      * de como se implemente el exit. Se puede llamar a exit() de prepo desde
      * el módulo de ejecución, en cuyo caso el contador es 1. Pero también
@@ -65,7 +65,7 @@ START_TEST (test_builtin_exit)
      * corte; esto permite un cleanup más ordenado, porque el módulo de más
      * arriba puede liberar memoria, cerrar recursos, etc.
      */
-    fail_unless (mock_counter_exit<=1, NULL);
+    ck_assert_msg (mock_counter_exit<=1, NULL);
 }
 END_TEST
 
@@ -82,12 +82,12 @@ START_TEST (test_builtin_chdir)
 
     execute_pipeline (test_pipe);
     /* Esto no debería haber tratado de crear ni destruir procesos */
-    fail_unless (mock_counter_fork==0, NULL);
-    fail_unless (mock_counter_execvp==0, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_fork==0, NULL);
+    ck_assert_msg (mock_counter_execvp==0, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
     /* Hizo 1 cambio de directorio */
-    fail_unless (mock_counter_chdir==1, NULL);
-    fail_unless (strcmp (mock_chdir_last, test_path)==0, NULL);
+    ck_assert_msg (mock_counter_chdir==1, NULL);
+    ck_assert_msg (strcmp (mock_chdir_last, test_path)==0, NULL);
 }
 END_TEST
 
@@ -108,23 +108,23 @@ START_TEST (test_external_1_simple_parent)
     execute_pipeline (test_pipe);
 
     /* Esto no fabrica pipes, ni redirecciona, ni manipula archivos*/
-    fail_unless (mock_counter_pipe==0, NULL);
-    fail_unless (mock_counter_open==0, NULL);
-    fail_unless (mock_counter_close==0, NULL);
-    fail_unless (mock_counter_dup==0, NULL);
-    fail_unless (mock_counter_dup2==0, NULL);
+    ck_assert_msg (mock_counter_pipe==0, NULL);
+    ck_assert_msg (mock_counter_open==0, NULL);
+    ck_assert_msg (mock_counter_close==0, NULL);
+    ck_assert_msg (mock_counter_dup==0, NULL);
+    ck_assert_msg (mock_counter_dup2==0, NULL);
     /* Estamos mirando al padre. debería haber hecho un fork */
-    fail_unless (mock_counter_fork==1, NULL);
+    ck_assert_msg (mock_counter_fork==1, NULL);
     /* Y después un wait, o un waitpid. Pero no ambos */
-    fail_unless (mock_counter_wait+mock_counter_waitpid == 1, NULL);
+    ck_assert_msg (mock_counter_wait+mock_counter_waitpid == 1, NULL);
     /* Además, el wait espero algo que realmente terminó, que resulta ser
      * el mismo proceso que lanzamos:
      */
-    fail_unless (mock_finished_processes_count == 1, NULL);
-    fail_unless (mock_finished_processes[0] == pids[0], NULL);
+    ck_assert_msg (mock_finished_processes_count == 1, NULL);
+    ck_assert_msg (mock_finished_processes[0] == pids[0], NULL);
     /* Estamos mirando al padre. No ejecuta nada ni sale */
-    fail_unless (mock_counter_execvp==0, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_execvp==0, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
 }
 END_TEST
 
@@ -145,23 +145,23 @@ START_TEST (test_external_1_simple_child)
     );
 
     /* Esto no fabrica pipes, ni redirecciona, ni manipula archivos*/
-    fail_unless (mock_counter_pipe==0, NULL);
-    fail_unless (mock_counter_open==0, NULL);
-    fail_unless (mock_counter_close==0, NULL);
-    fail_unless (mock_counter_dup==0, NULL);
-    fail_unless (mock_counter_dup2==0, NULL);
+    ck_assert_msg (mock_counter_pipe==0, NULL);
+    ck_assert_msg (mock_counter_open==0, NULL);
+    ck_assert_msg (mock_counter_close==0, NULL);
+    ck_assert_msg (mock_counter_dup==0, NULL);
+    ck_assert_msg (mock_counter_dup2==0, NULL);
     /* Estamos mirando al hijo. debería haber pasado por un fork */
-    fail_unless (mock_counter_fork==1, NULL);
+    ck_assert_msg (mock_counter_fork==1, NULL);
     /* No esperó, por ser el hijo */
-    fail_unless (mock_counter_wait==0, NULL);
-    fail_unless (mock_counter_waitpid==0, NULL);
+    ck_assert_msg (mock_counter_wait==0, NULL);
+    ck_assert_msg (mock_counter_waitpid==0, NULL);
     /* En vez, hizo un exec */
-    fail_unless (mock_counter_execvp==1, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_execvp==1, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
     /* Hizo el exec con los argumentos correctos */
-    fail_unless (strcmp (mock_execvp_last_file,"command")==0, NULL);
-    fail_unless (mock_execvp_last_argv[0]!=NULL && strcmp (mock_execvp_last_argv[0],"command")==0, NULL);
-    fail_unless (mock_execvp_last_argv[1]==NULL, NULL);
+    ck_assert_msg (strcmp (mock_execvp_last_file,"command")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[0]!=NULL && strcmp (mock_execvp_last_argv[0],"command")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[1]==NULL, NULL);
 }
 END_TEST
 
@@ -181,18 +181,18 @@ START_TEST (test_external_1_simple_background)
     execute_pipeline (test_pipe);
 
     /* Esto no fabrica pipes, ni redirecciona, ni manipula archivos*/
-    fail_unless (mock_counter_pipe==0, NULL);
-    fail_unless (mock_counter_open==0, NULL);
-    fail_unless (mock_counter_close==0, NULL);
-    fail_unless (mock_counter_dup==0, NULL);
-    fail_unless (mock_counter_dup2==0, NULL);
+    ck_assert_msg (mock_counter_pipe==0, NULL);
+    ck_assert_msg (mock_counter_open==0, NULL);
+    ck_assert_msg (mock_counter_close==0, NULL);
+    ck_assert_msg (mock_counter_dup==0, NULL);
+    ck_assert_msg (mock_counter_dup2==0, NULL);
     /* Estamos mirando al padre. debería haber hecho un fork */
-    fail_unless (mock_counter_fork==1, NULL);
+    ck_assert_msg (mock_counter_fork==1, NULL);
     /* Background. no hizo wait */
-    fail_unless (mock_counter_wait+mock_counter_waitpid == 0, NULL);
+    ck_assert_msg (mock_counter_wait+mock_counter_waitpid == 0, NULL);
     /* Estamos mirando al padre. No ejecuta nada ni sale */
-    fail_unless (mock_counter_execvp==0, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_execvp==0, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
 }
 END_TEST
 
@@ -216,17 +216,17 @@ START_TEST (test_external_arguments)
     );
 
     /* Estamos mirando al hijo. debería haber pasado por un fork */
-    fail_unless (mock_counter_fork==1, NULL);
+    ck_assert_msg (mock_counter_fork==1, NULL);
     /* Hizo un exec */
-    fail_unless (mock_counter_execvp==1, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_execvp==1, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
 
     /* Hizo el exec con los argumentos correctos */
-    fail_unless (strcmp (mock_execvp_last_file,"command")==0, NULL);
-    fail_unless (mock_execvp_last_argv[0]!=NULL && strcmp (mock_execvp_last_argv[0],"command")==0, NULL);
-    fail_unless (mock_execvp_last_argv[1]!=NULL && strcmp (mock_execvp_last_argv[1],"arg1")==0, NULL);
-    fail_unless (mock_execvp_last_argv[2]!=NULL && strcmp (mock_execvp_last_argv[2],"-arg2")==0, NULL);
-    fail_unless (mock_execvp_last_argv[3]==NULL, NULL);
+    ck_assert_msg (strcmp (mock_execvp_last_file,"command")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[0]!=NULL && strcmp (mock_execvp_last_argv[0],"command")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[1]!=NULL && strcmp (mock_execvp_last_argv[1],"arg1")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[2]!=NULL && strcmp (mock_execvp_last_argv[2],"-arg2")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[3]==NULL, NULL);
 }
 END_TEST
 
@@ -265,32 +265,32 @@ START_TEST (test_pipe2_parent)
     );
 
     /* Creo un pipe para los dos hijos */
-    fail_unless (mock_counter_pipe==1, NULL);
-    fail_unless (mock_counter_open==0, NULL);
+    ck_assert_msg (mock_counter_pipe==1, NULL);
+    ck_assert_msg (mock_counter_open==0, NULL);
     /* Solo están conectados stdin/stdout/stderr */
-    fail_unless (mock_check_fd (0, KIND_DEV, "ttyin"), NULL);
-    fail_unless (mock_check_fd (1, KIND_DEV, "ttyout"), NULL);
-    fail_unless (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (0, KIND_DEV, "ttyin"), NULL);
+    ck_assert_msg (mock_check_fd (1, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
     /* Las dos puntas del pipe están cerradas: */
-    fail_unless (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
-    fail_unless (mock_check_fd (4, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (4, KIND_CLOSED, NULL), NULL);
     /* No hace falta hacer dup en el padre */
-    fail_unless (mock_counter_dup+mock_counter_dup2 == 0, NULL);
+    ck_assert_msg (mock_counter_dup+mock_counter_dup2 == 0, NULL);
     /* Estamos mirando al padre. Debería haber hecho 2 forks */
-    fail_unless (mock_counter_fork==2, NULL);
+    ck_assert_msg (mock_counter_fork==2, NULL);
     /* No hizo exec, exit */
-    fail_unless (mock_counter_execvp==0, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_execvp==0, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
     /* Y después un wait, o un waitpid a ambos hijos.
      * Esto se puede ver en un sleep 1 | sleep 10 contra un sleep 10 | sleep 1
      */
-    fail_unless (mock_counter_wait+mock_counter_waitpid == 2, NULL);
+    ck_assert_msg (mock_counter_wait+mock_counter_waitpid == 2, NULL);
     /* Además, el wait espero algo que realmente terminó, que resulta ser
      * el mismo proceso que lanzamos:
      */
-    fail_unless (mock_finished_processes_count == 2, NULL);
-    fail_unless (mock_finished_processes[0] == pids[0], NULL);
-    fail_unless (mock_finished_processes[1] == pids[1], NULL);
+    ck_assert_msg (mock_finished_processes_count == 2, NULL);
+    ck_assert_msg (mock_finished_processes[0] == pids[0], NULL);
+    ck_assert_msg (mock_finished_processes[1] == pids[1], NULL);
 
 }
 END_TEST
@@ -313,35 +313,35 @@ START_TEST (test_pipe2_child1) {
     );
 
     /* El padre creo un pipe para los dos hijos _antes_ de forkear */
-    fail_unless (mock_counter_pipe==1, NULL);
-    fail_unless (mock_counter_open==0, NULL);
+    ck_assert_msg (mock_counter_pipe==1, NULL);
+    ck_assert_msg (mock_counter_open==0, NULL);
     /* Solo están conectados stdin/stderr */
-    fail_unless (mock_check_fd (0, KIND_DEV, "ttyin"), NULL);
-    fail_unless (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (0, KIND_DEV, "ttyin"), NULL);
+    ck_assert_msg (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
     /* Y stdout a la punta correcta del pipe: */
-    fail_unless (mock_check_fd (1, KIND_PIPE, "0"), NULL);
-    fail_unless (mock_check_writable (1, true), NULL);
+    ck_assert_msg (mock_check_fd (1, KIND_PIPE, "0"), NULL);
+    ck_assert_msg (mock_check_writable (1, true), NULL);
     /* Las puntas originales del pipe están cerradas: */
-    fail_unless (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
-    fail_unless (mock_check_fd (4, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (4, KIND_CLOSED, NULL), NULL);
     /* Para poner en stdout tiene que haber hecho un dup */
-    fail_unless (mock_counter_dup+mock_counter_dup2 == 1, NULL);
+    ck_assert_msg (mock_counter_dup+mock_counter_dup2 == 1, NULL);
 
     /* Estamos mirando al hijo. Debería haber pasado por 1 fork */
-    fail_unless (mock_counter_fork==1, NULL);
+    ck_assert_msg (mock_counter_fork==1, NULL);
     /* No hizo wait/waitpid */
-    fail_unless (mock_counter_wait+mock_counter_waitpid == 0, NULL);
+    ck_assert_msg (mock_counter_wait+mock_counter_waitpid == 0, NULL);
 
     /* Hizo un exec */
-    fail_unless (mock_counter_execvp==1, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_execvp==1, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
 
     /* Hizo el exec con los argumentos correctos */
-    fail_unless (strcmp (mock_execvp_last_file,"command")==0, NULL);
-    fail_unless (mock_execvp_last_argv[0]!=NULL && strcmp (mock_execvp_last_argv[0],"command")==0, NULL);
-    fail_unless (mock_execvp_last_argv[1]!=NULL && strcmp (mock_execvp_last_argv[1],"arg1")==0, NULL);
-    fail_unless (mock_execvp_last_argv[2]!=NULL && strcmp (mock_execvp_last_argv[2],"-arg2")==0, NULL);
-    fail_unless (mock_execvp_last_argv[3]==NULL, NULL);
+    ck_assert_msg (strcmp (mock_execvp_last_file,"command")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[0]!=NULL && strcmp (mock_execvp_last_argv[0],"command")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[1]!=NULL && strcmp (mock_execvp_last_argv[1],"arg1")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[2]!=NULL && strcmp (mock_execvp_last_argv[2],"-arg2")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[3]==NULL, NULL);
 
 }
 END_TEST
@@ -364,34 +364,34 @@ START_TEST (test_pipe2_child2) {
     );
 
     /* El padre creo un pipe para los dos hijos _antes_ de forkear */
-    fail_unless (mock_counter_pipe==1, NULL);
-    fail_unless (mock_counter_open==0, NULL);
+    ck_assert_msg (mock_counter_pipe==1, NULL);
+    ck_assert_msg (mock_counter_open==0, NULL);
     /* Solo están conectados stdout/stderr */
-    fail_unless (mock_check_fd (1, KIND_DEV, "ttyout"), NULL);
-    fail_unless (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (1, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
     /* Y stdin a la punta correcta del pipe: */
-    fail_unless (mock_check_fd (0, KIND_PIPE, "0"), NULL);
-    fail_unless (mock_check_readable (0, true), NULL);
+    ck_assert_msg (mock_check_fd (0, KIND_PIPE, "0"), NULL);
+    ck_assert_msg (mock_check_readable (0, true), NULL);
     /* Las puntas originales del pipe están cerradas: */
-    fail_unless (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
-    fail_unless (mock_check_fd (4, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (4, KIND_CLOSED, NULL), NULL);
     /* Para poner en stdin tiene que haber hecho un dup */
-    fail_unless (mock_counter_dup+mock_counter_dup2 == 1, NULL);
+    ck_assert_msg (mock_counter_dup+mock_counter_dup2 == 1, NULL);
 
     /* Estamos mirando al hijo. Debería haber pasado por 2 fork */
-    fail_unless (mock_counter_fork==2, NULL);
+    ck_assert_msg (mock_counter_fork==2, NULL);
     /* No hizo wait/waitpid */
-    fail_unless (mock_counter_wait+mock_counter_waitpid == 0, NULL);
+    ck_assert_msg (mock_counter_wait+mock_counter_waitpid == 0, NULL);
 
     /* Hizo un exec */
-    fail_unless (mock_counter_execvp==1, NULL);
-    fail_unless (mock_counter_exit==0, NULL);
+    ck_assert_msg (mock_counter_execvp==1, NULL);
+    ck_assert_msg (mock_counter_exit==0, NULL);
 
     /* Hizo el exec con los argumentos correctos */
-    fail_unless (strcmp (mock_execvp_last_file,"command2")==0, NULL);
-    fail_unless (mock_execvp_last_argv[0]!=NULL && strcmp (mock_execvp_last_argv[0],"command2")==0, NULL);
-    fail_unless (mock_execvp_last_argv[1]!=NULL && strcmp (mock_execvp_last_argv[1],"arg3")==0, NULL);
-    fail_unless (mock_execvp_last_argv[2]==NULL, NULL);
+    ck_assert_msg (strcmp (mock_execvp_last_file,"command2")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[0]!=NULL && strcmp (mock_execvp_last_argv[0],"command2")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[1]!=NULL && strcmp (mock_execvp_last_argv[1],"arg3")==0, NULL);
+    ck_assert_msg (mock_execvp_last_argv[2]==NULL, NULL);
 
 }
 END_TEST
@@ -415,16 +415,16 @@ START_TEST (test_redir_inout_parent)
     execute_pipeline (test_pipe);
 
     /* Chequeamos que no haya operado archivos desde el padre */
-    fail_unless (mock_counter_pipe==0, NULL);
-    fail_unless (mock_counter_open==0, NULL);
-    fail_unless (mock_counter_close==0, NULL);
-    fail_unless (mock_counter_dup+mock_counter_dup2==0, NULL);
+    ck_assert_msg (mock_counter_pipe==0, NULL);
+    ck_assert_msg (mock_counter_open==0, NULL);
+    ck_assert_msg (mock_counter_close==0, NULL);
+    ck_assert_msg (mock_counter_dup+mock_counter_dup2==0, NULL);
     /* Solo están conectados stdin/stdout/stderr en el padre */
-    fail_unless (mock_check_fd (0, KIND_DEV, "ttyin"), NULL);
-    fail_unless (mock_check_fd (1, KIND_DEV, "ttyout"), NULL);
-    fail_unless (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (0, KIND_DEV, "ttyin"), NULL);
+    ck_assert_msg (mock_check_fd (1, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
     /* El archivo redirigido esta cerrado */
-    fail_unless (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
 }
 END_TEST
 
@@ -448,19 +448,19 @@ START_TEST (test_redir_out_child)
     );
 
     /* Chequeamos que haya hecho una apertura de archivo y un dup */
-    fail_unless (mock_counter_pipe==0, NULL);
-    fail_unless (mock_counter_open==1, NULL);
-    fail_unless (mock_counter_dup+mock_counter_dup2==1, NULL);
+    ck_assert_msg (mock_counter_pipe==0, NULL);
+    ck_assert_msg (mock_counter_open==1, NULL);
+    ck_assert_msg (mock_counter_dup+mock_counter_dup2==1, NULL);
     /* Solo están conectados stdin/stderr en el padre */
-    fail_unless (mock_check_fd (0, KIND_DEV, "ttyin"), NULL);
-    fail_unless (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (0, KIND_DEV, "ttyin"), NULL);
+    ck_assert_msg (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
     /* stdout va al archivo */
-    fail_unless (mock_check_fd (1, KIND_OPEN, "output.txt"), NULL);
+    ck_assert_msg (mock_check_fd (1, KIND_OPEN, "output.txt"), NULL);
     /* Los permisos estan bien, y no están de más */
-    fail_unless (mock_check_writable (1, true), NULL);
-    fail_unless (mock_check_readable (1, false), NULL);
+    ck_assert_msg (mock_check_writable (1, true), NULL);
+    ck_assert_msg (mock_check_readable (1, false), NULL);
     /* El archivo original se cerró luego del dup */
-    fail_unless (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
 }
 END_TEST
 
@@ -484,19 +484,19 @@ START_TEST (test_redir_in_child)
     );
 
     /* Chequeamos que haya hecho una apertura de archivo y un dup */
-    fail_unless (mock_counter_pipe==0, NULL);
-    fail_unless (mock_counter_open==1, NULL);
-    fail_unless (mock_counter_dup+mock_counter_dup2==1, NULL);
+    ck_assert_msg (mock_counter_pipe==0, NULL);
+    ck_assert_msg (mock_counter_open==1, NULL);
+    ck_assert_msg (mock_counter_dup+mock_counter_dup2==1, NULL);
     /* Solo están conectados stdout/stderr en el padre */
-    fail_unless (mock_check_fd (1, KIND_DEV, "ttyout"), NULL);
-    fail_unless (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (1, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
     /* stdin viene del archivo */
-    fail_unless (mock_check_fd (0, KIND_OPEN, "input.txt"), NULL);
+    ck_assert_msg (mock_check_fd (0, KIND_OPEN, "input.txt"), NULL);
     /* Los permisos estan bien, y no están de más */
-    fail_unless (mock_check_readable (0, true), NULL);
-    fail_unless (mock_check_writable (0, false), NULL);
+    ck_assert_msg (mock_check_readable (0, true), NULL);
+    ck_assert_msg (mock_check_writable (0, false), NULL);
     /* El archivo original se cerró luego del dup */
-    fail_unless (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
 }
 END_TEST
 
@@ -521,24 +521,24 @@ START_TEST (test_redir_inout_child)
     );
 
     /* Chequeamos que haya hecho 2 aperturas de archivo y 2 dups */
-    fail_unless (mock_counter_pipe==0, NULL);
-    fail_unless (mock_counter_open==2, NULL);
-    fail_unless (mock_counter_dup+mock_counter_dup2==2, NULL);
+    ck_assert_msg (mock_counter_pipe==0, NULL);
+    ck_assert_msg (mock_counter_open==2, NULL);
+    ck_assert_msg (mock_counter_dup+mock_counter_dup2==2, NULL);
     /* Solo está conectado stderr en el padre */
-    fail_unless (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
+    ck_assert_msg (mock_check_fd (2, KIND_DEV, "ttyout"), NULL);
     /* stdin viene del archivo */
-    fail_unless (mock_check_fd (0, KIND_OPEN, "input.txt"), NULL);
+    ck_assert_msg (mock_check_fd (0, KIND_OPEN, "input.txt"), NULL);
     /* Los permisos estan bien, y no están de más */
-    fail_unless (mock_check_readable (0, true), NULL);
-    fail_unless (mock_check_writable (0, false), NULL);
+    ck_assert_msg (mock_check_readable (0, true), NULL);
+    ck_assert_msg (mock_check_writable (0, false), NULL);
     /* stdout va al archivo */
-    fail_unless (mock_check_fd (1, KIND_OPEN, "output.txt"), NULL);
+    ck_assert_msg (mock_check_fd (1, KIND_OPEN, "output.txt"), NULL);
     /* Los permisos estan bien, y no están de más */
-    fail_unless (mock_check_writable (1, true), NULL);
-    fail_unless (mock_check_readable (1, false), NULL);
+    ck_assert_msg (mock_check_writable (1, true), NULL);
+    ck_assert_msg (mock_check_readable (1, false), NULL);
     /* El archivo original se cerró luego del dup */
-    fail_unless (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
-    fail_unless (mock_check_fd (4, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (3, KIND_CLOSED, NULL), NULL);
+    ck_assert_msg (mock_check_fd (4, KIND_CLOSED, NULL), NULL);
 }
 END_TEST
 

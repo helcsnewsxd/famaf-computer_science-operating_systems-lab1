@@ -121,16 +121,16 @@ START_TEST (test_adding_emptying)
 {
     unsigned int i = 0;
 
-    fail_unless (pipeline_is_empty (pipe), NULL);
+    ck_assert_msg (pipeline_is_empty (pipe), NULL);
     for (i=0; i<MAX_LENGTH; i++) {
         pipeline_push_back (pipe, scommand_new ());
-        fail_unless (!pipeline_is_empty (pipe), NULL);
+        ck_assert_msg (!pipeline_is_empty (pipe), NULL);
     }
     for (i=0; i<MAX_LENGTH; i++) {
-        fail_unless (!pipeline_is_empty (pipe), NULL);
+        ck_assert_msg (!pipeline_is_empty (pipe), NULL);
         pipeline_pop_front (pipe);
     }
-    fail_unless (pipeline_is_empty (pipe), NULL);
+    ck_assert_msg (pipeline_is_empty (pipe), NULL);
 }
 END_TEST
 
@@ -140,14 +140,14 @@ START_TEST (test_adding_emptying_length)
     unsigned int i = 0;
 
     for (i=0; i<MAX_LENGTH; i++) {
-        fail_unless (i == pipeline_length (pipe), NULL);
+        ck_assert_msg (i == pipeline_length (pipe), NULL);
         pipeline_push_back (pipe, scommand_new ());
     }
     for (i=MAX_LENGTH; i>0; i--) {
-        fail_unless (i == pipeline_length (pipe), NULL);
+        ck_assert_msg (i == pipeline_length (pipe), NULL);
         pipeline_pop_front (pipe);
     }
-    fail_unless (0 == pipeline_length (pipe), NULL);
+    ck_assert_msg (0 == pipeline_length (pipe), NULL);
 }
 END_TEST
 
@@ -166,7 +166,7 @@ START_TEST (test_fifo)
         pipeline_push_back (pipe, scmds[i]);
     }
     for (i=0; i<MAX_LENGTH; i++) {
-        fail_unless (pipeline_front (pipe) == scmds[i], NULL);
+        ck_assert_msg (pipeline_front (pipe) == scmds[i], NULL);
         pipeline_pop_front (pipe);
     }
 }
@@ -179,7 +179,7 @@ START_TEST (test_front_idempotent)
     scommand scmd = scommand_new ();
     pipeline_push_back (pipe, scmd);
     for (i=0; i<MAX_LENGTH; i++) {
-        fail_unless (pipeline_front (pipe) == scmd, NULL);
+        ck_assert_msg (pipeline_front (pipe) == scmd, NULL);
     }
 }
 END_TEST
@@ -189,7 +189,7 @@ START_TEST (test_front_is_back)
 {
     scommand scmd = scommand_new ();
     pipeline_push_back (pipe, scmd);
-    fail_unless (pipeline_front (pipe)==scmd, NULL);
+    ck_assert_msg (pipeline_front (pipe)==scmd, NULL);
 }
 END_TEST
 
@@ -200,16 +200,16 @@ START_TEST (test_front_is_not_back)
     scommand scmd1 = scommand_new ();
     pipeline_push_back (pipe, scmd0);
     pipeline_push_back (pipe, scmd1);
-    fail_unless (pipeline_front (pipe) != scmd1, NULL);
+    ck_assert_msg (pipeline_front (pipe) != scmd1, NULL);
 }
 END_TEST
 
 START_TEST (test_wait)
 {
     pipeline_set_wait (pipe, true);
-    fail_unless (pipeline_get_wait (pipe), NULL);
+    ck_assert_msg (pipeline_get_wait (pipe), NULL);
     pipeline_set_wait (pipe, false);
-    fail_unless (!pipeline_get_wait (pipe), NULL);
+    ck_assert_msg (!pipeline_get_wait (pipe), NULL);
 }
 END_TEST
 
@@ -218,7 +218,7 @@ START_TEST (test_to_string_empty)
 {
     char *str = NULL;
     str = pipeline_to_string (pipe);
-    fail_unless (strlen (str) == 0, NULL);
+    ck_assert_msg (strlen (str) == 0, NULL);
     free (str); str = NULL;
 }
 END_TEST
@@ -244,8 +244,8 @@ START_TEST (test_to_string)
         n += (str[i] == '|');
         i++;
     }
-    fail_unless (n==MAX_LENGTH-1, NULL);
-    fail_unless (n < 2 || strchr(strrchr(str, '|'), '&') != NULL, NULL);
+    ck_assert_msg (n==MAX_LENGTH-1, NULL);
+    ck_assert_msg (n < 2 || strchr(strrchr(str, '|'), '&') != NULL, NULL);
     
     free (str);
 }

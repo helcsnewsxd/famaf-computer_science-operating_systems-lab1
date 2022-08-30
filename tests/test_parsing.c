@@ -51,10 +51,10 @@ static void check_argument (scommand cmd, const char *first) {
     assert (cmd != NULL);
     assert (first != NULL);
     /* Comprueba que el primer elemento en `cmd' sea `first', y lo saca */
-    fail_unless (! scommand_is_empty (cmd), NULL);
+    ck_assert_msg (! scommand_is_empty (cmd), NULL);
     
     arg = scommand_front (cmd);
-    fail_unless (strcmp (arg, first) == 0, NULL);
+    ck_assert_msg (strcmp (arg, first) == 0, NULL);
     scommand_pop_front(cmd);
 }
 
@@ -94,11 +94,11 @@ START_TEST (test_consumes_until_newline)
     output = parse_pipeline(parser);
 
     /* Consumió hasta el \n equivocado? */
-    fail_if (parser_at_eof(parser), NULL);
+    ck_assert_msg (!parser_at_eof(parser), NULL);
     arg_kind_t type=ARG_NORMAL;
     after = parser_next_argument(parser, &type);
     /* Debería leer 8 veces "-", o sea que fue el primer \n: */
-    fail_unless (strlen(after) == 8, NULL);
+    ck_assert_msg (strlen(after) == 8, NULL);
     free(after);
 }
 END_TEST
@@ -108,8 +108,8 @@ START_TEST (test_consumes_until_eof)
     init_parser("ls");
     output = parse_pipeline(parser);
 
-    fail_unless (parser_at_eof(parser), NULL); /* No consumió todo! debería */
-    fail_unless (feof (input), NULL);
+    ck_assert_msg (parser_at_eof(parser), NULL); /* No consumió todo! debería */
+    ck_assert_msg (feof (input), NULL);
 }
 END_TEST
 
@@ -123,16 +123,16 @@ START_TEST (test_empty)
 
     init_parser("\n");
     output = parse_pipeline(parser);
-    fail_unless (output==NULL, NULL);
+    ck_assert_msg (output==NULL, NULL);
 
     /* Esto debería generar un pipeline de un elemento, con un comando
      * vacío adentro FIXME: Me parece que no es cierto
      */
-    //fail_unless (pipeline_length (output) == 1, NULL);
+    //ck_assert_msg (pipeline_length (output) == 1, NULL);
     //s = pipeline_front (output);
-    //fail_unless (scommand_length (s) == 0, NULL);
+    //ck_assert_msg (scommand_length (s) == 0, NULL);
     /* Y no es en background */
-    //fail_unless (pipeline_get_wait (output), NULL);
+    //ck_assert_msg (pipeline_get_wait (output), NULL);
     /*
      * Según como hagan el parser, una alternativa es hacer que esto genere un
      * pipeline de 0 elementos. Si lo prefieren lo pueden cambiar, pero tienen
@@ -150,15 +150,15 @@ START_TEST (test_command)
     /* Esto debería generar un pipeline de un elemento, con un comando
      * de un elemento adentro
      */
-    fail_unless (pipeline_length(output) == 1, NULL);
+    ck_assert_msg (pipeline_length(output) == 1, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 1, NULL);
+    ck_assert_msg (scommand_length (s) == 1, NULL);
     check_argument (s, "comando");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     /* Y no es en background */
-    fail_unless (pipeline_get_wait (output), NULL);
+    ck_assert_msg (pipeline_get_wait (output), NULL);
 }
 END_TEST
 
@@ -171,17 +171,17 @@ START_TEST (test_command_with_args)
     /* Esto debería generar un pipeline de un elemento, con un comando
      * de 3 elementos adentro
      */
-    fail_unless (pipeline_length (output) == 1, NULL);
+    ck_assert_msg (pipeline_length (output) == 1, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 3, NULL);
+    ck_assert_msg (scommand_length (s) == 3, NULL);
     check_argument(s, "comando");
     check_argument(s, "arg1");
     check_argument(s, "arg2");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in(s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out(s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in(s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out(s) == NULL, NULL);
     /* Y no es en background */
-    fail_unless (pipeline_get_wait(output), NULL);
+    ck_assert_msg (pipeline_get_wait(output), NULL);
 }
 END_TEST
 
@@ -192,16 +192,16 @@ START_TEST (test_command_background)
     init_parser("comando arg1 &\n");
     output = parse_pipeline(parser);
     /* Esto debería generar un pipeline con el flag de no esperar */
-    fail_unless (pipeline_length (output) == 1, NULL);
+    ck_assert_msg (pipeline_length (output) == 1, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 2, NULL);
+    ck_assert_msg (scommand_length (s) == 2, NULL);
     check_argument (s, "comando");
     check_argument (s, "arg1");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     /* Y no es en background */
-    fail_unless (! pipeline_get_wait (output), NULL);
+    ck_assert_msg (! pipeline_get_wait (output), NULL);
 }
 END_TEST
 
@@ -214,16 +214,16 @@ START_TEST (test_command_redir_in)
     /* Esto debería generar un pipeline de un elemento, con un comando
      * redirigido adentro
      */
-    fail_unless (pipeline_length (output) == 1, NULL);
+    ck_assert_msg (pipeline_length (output) == 1, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 2, NULL);
+    ck_assert_msg (scommand_length (s) == 2, NULL);
     check_argument (s, "comando");
     check_argument (s, "arg1");
     /* con redirección */
-    fail_unless (strcmp (scommand_get_redir_in (s), "entrada") == 0, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_in (s), "entrada") == 0, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     /* Y no es en background */
-    fail_unless (pipeline_get_wait (output), NULL);
+    ck_assert_msg (pipeline_get_wait (output), NULL);
 }
 END_TEST
 
@@ -236,17 +236,17 @@ START_TEST (test_command_redir_out)
     /* Esto debería generar un pipeline de un elemento, con un comando
      * redirigido adentro
      */
-    fail_unless (pipeline_length (output) == 1, NULL);
+    ck_assert_msg (pipeline_length (output) == 1, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 2, NULL);
+    ck_assert_msg (scommand_length (s) == 2, NULL);
     check_argument (s, "comando");
     check_argument (s, "arg1");
     /* con redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s)!=NULL, NULL);
-    fail_unless (strcmp (scommand_get_redir_out (s), "salida") == 0, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s)!=NULL, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_out (s), "salida") == 0, NULL);
     /* Y no es en background */
-    fail_unless (pipeline_get_wait (output), NULL);
+    ck_assert_msg (pipeline_get_wait (output), NULL);
 }
 END_TEST
 
@@ -259,18 +259,18 @@ START_TEST (test_command_redir_both)
     /* Esto debería generar un pipeline de un elemento, con un comando
      * redirigido adentro
      */
-    fail_unless (pipeline_length (output) == 1, NULL);
+    ck_assert_msg (pipeline_length (output) == 1, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 2, NULL);
+    ck_assert_msg (scommand_length (s) == 2, NULL);
     check_argument (s, "comando");
     check_argument (s, "arg1");
     /* con redirección */
-    fail_unless (scommand_get_redir_in(s)!=NULL, NULL);
-    fail_unless (strcmp (scommand_get_redir_in (s), "entrada") == 0, NULL);
-    fail_unless (scommand_get_redir_out(s)!=NULL, NULL);
-    fail_unless (strcmp (scommand_get_redir_out (s), "salida") == 0, NULL);
+    ck_assert_msg (scommand_get_redir_in(s)!=NULL, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_in (s), "entrada") == 0, NULL);
+    ck_assert_msg (scommand_get_redir_out(s)!=NULL, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_out (s), "salida") == 0, NULL);
     /* Y no es en background */
-    fail_unless (pipeline_get_wait (output), NULL);
+    ck_assert_msg (pipeline_get_wait (output), NULL);
 }
 END_TEST
 
@@ -283,22 +283,22 @@ START_TEST (test_pipe_simple)
     /* Esto debería generar un pipeline de 2 elementos, cada uno con un comando
      * simple adentro
      */
-    fail_unless (pipeline_length (output) == 2, NULL);
+    ck_assert_msg (pipeline_length (output) == 2, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 1, NULL);
+    ck_assert_msg (scommand_length (s) == 1, NULL);
     check_argument (s, "comando");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     pipeline_pop_front (output);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 1, NULL);
+    ck_assert_msg (scommand_length (s) == 1, NULL);
     check_argument (s, "filtro");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     /* Y no es en background */
-    fail_unless (pipeline_get_wait (output), NULL);
+    ck_assert_msg (pipeline_get_wait (output), NULL);
 }
 END_TEST
 
@@ -311,24 +311,24 @@ START_TEST (test_pipe_with_args)
     /* Esto debería generar un pipeline de 2 elementos, cada uno con un comando
      * y argumento adentro
      */
-    fail_unless (pipeline_length (output) == 2, NULL);
+    ck_assert_msg (pipeline_length (output) == 2, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 2, NULL);
+    ck_assert_msg (scommand_length (s) == 2, NULL);
     check_argument (s, "comando");
     check_argument (s, "arg1");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     pipeline_pop_front (output);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 2, NULL);
+    ck_assert_msg (scommand_length (s) == 2, NULL);
     check_argument (s, "filtro");
     check_argument (s, "arg2");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     /* Y no es en background */
-    fail_unless (pipeline_get_wait (output), NULL);
+    ck_assert_msg (pipeline_get_wait (output), NULL);
 }
 END_TEST
 
@@ -341,24 +341,24 @@ START_TEST (test_pipe_background)
     /* Esto debería generar un pipeline de 2 elementos, cada uno con un comando
      * y argumento adentro
      */
-    fail_unless (pipeline_length (output) == 2, NULL);
+    ck_assert_msg (pipeline_length (output) == 2, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 2, NULL);
+    ck_assert_msg (scommand_length (s) == 2, NULL);
     check_argument (s, "comando");
     check_argument (s, "arg1");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     pipeline_pop_front (output);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 2, NULL);
+    ck_assert_msg (scommand_length (s) == 2, NULL);
     check_argument (s, "filtro");
     check_argument (s, "arg2");
     /* Sin redirección */
-    fail_unless (scommand_get_redir_in (s) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (s) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (s) == NULL, NULL);
     /* Y no es en background */
-    fail_unless (! pipeline_get_wait (output), NULL);
+    ck_assert_msg (! pipeline_get_wait (output), NULL);
 }
 END_TEST
 
@@ -371,9 +371,9 @@ START_TEST (test_non_alphabetic_args)
      */
     init_parser("comando --size=11 /etc/passwd\n");
     output = parse_pipeline(parser);
-    fail_unless (pipeline_length (output) == 1, NULL);
+    ck_assert_msg (pipeline_length (output) == 1, NULL);
     s = pipeline_front (output);
-    fail_unless (scommand_length (s) == 3, NULL);
+    ck_assert_msg (scommand_length (s) == 3, NULL);
     check_argument (s, "comando");
     check_argument (s, "--size=11");
     check_argument (s, "/etc/passwd");
@@ -390,10 +390,10 @@ START_TEST (test_many_args)
 
     init_parser("comando" ARGLIST_100 ARGLIST_100 "\n");
     output = parse_pipeline(parser);
-    fail_unless (pipeline_length (output) == 1, NULL);
+    ck_assert_msg (pipeline_length (output) == 1, NULL);
     s = pipeline_front (output);
     /* 1 comando + 200 argumentos = 201 elementos */
-    fail_unless (scommand_length (s) == 201, NULL);
+    ck_assert_msg (scommand_length (s) == 201, NULL);
     check_argument (s, "comando");
     /* Supongamos que los argumentos están bien, basado en tests anteriores. */
 }
