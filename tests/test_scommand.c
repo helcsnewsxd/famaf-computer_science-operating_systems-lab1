@@ -122,8 +122,8 @@ START_TEST (test_new_is_empty)
 {
     scmd = scommand_new ();
     /* Un comando recién creado debe ser vacío */
-    fail_unless (scommand_is_empty (scmd), NULL);
-    fail_unless (scommand_length (scmd) == 0, NULL);
+    ck_assert_msg (scommand_is_empty (scmd), NULL);
+    ck_assert_msg (scommand_length (scmd) == 0, NULL);
     scommand_destroy (scmd); scmd = NULL;
 }
 END_TEST
@@ -146,14 +146,14 @@ START_TEST (test_adding_emptying)
 {
     unsigned int i = 0;
     for (i=0; i<MAX_LENGTH; i++) {
-        fail_unless ((i==0) == scommand_is_empty (scmd), NULL);
+        ck_assert_msg ((i==0) == scommand_is_empty (scmd), NULL);
         scommand_push_back (scmd, strdup ("123"));
     }
     for (i=0; i<MAX_LENGTH; i++) {
-        fail_unless (!scommand_is_empty(scmd), NULL);
+        ck_assert_msg (!scommand_is_empty(scmd), NULL);
         scommand_pop_front (scmd);
     }
-    fail_unless (scommand_is_empty (scmd), NULL);
+    ck_assert_msg (scommand_is_empty (scmd), NULL);
 }
 END_TEST
 
@@ -162,14 +162,14 @@ START_TEST (test_adding_emptying_length)
 {
     unsigned int i = 0;
     for (i=0; i<MAX_LENGTH; i++) {
-        fail_unless (i == scommand_length (scmd), NULL);
+        ck_assert_msg (i == scommand_length (scmd), NULL);
         scommand_push_back (scmd, strdup ("123"));
     }
     for (i=MAX_LENGTH; i>0; i--) {
-        fail_unless (i == scommand_length (scmd), NULL);
+        ck_assert_msg (i == scommand_length (scmd), NULL);
         scommand_pop_front (scmd);
     }
-    fail_unless (0 == scommand_length (scmd), NULL);
+    ck_assert_msg (0 == scommand_length (scmd), NULL);
 }
 END_TEST
 
@@ -204,7 +204,7 @@ START_TEST (test_fifo)
     }
     for (i=0; i<MAX_LENGTH; i++) {
         /* mismo string */
-        fail_unless (strcmp (scommand_front (scmd),strings[i]) == 0, NULL);
+        ck_assert_msg (strcmp (scommand_front (scmd),strings[i]) == 0, NULL);
         free(strings[i]);
         scommand_pop_front (scmd);
     }
@@ -218,7 +218,7 @@ START_TEST (test_front_idempotent)
     unsigned int i = 0;
     scommand_push_back (scmd, strdup ("123"));
     for (i=0; i<MAX_LENGTH; i++) {
-        fail_unless (strcmp (scommand_front (scmd), "123") == 0, NULL);
+        ck_assert_msg (strcmp (scommand_front (scmd), "123") == 0, NULL);
     }
 }
 END_TEST
@@ -227,7 +227,7 @@ END_TEST
 START_TEST (test_front_is_back)
 {
     scommand_push_back (scmd, strdup ("123"));
-    fail_unless (strcmp (scommand_front (scmd), "123") == 0, NULL);
+    ck_assert_msg (strcmp (scommand_front (scmd), "123") == 0, NULL);
 }
 END_TEST
 
@@ -236,7 +236,7 @@ START_TEST (test_front_is_not_back)
 {
     scommand_push_back(scmd, strdup ("123"));
     scommand_push_back(scmd, strdup ("456"));
-    fail_unless (strcmp (scommand_front (scmd), "456") != 0, NULL);
+    ck_assert_msg (strcmp (scommand_front (scmd), "456") != 0, NULL);
 }
 END_TEST
 
@@ -246,11 +246,11 @@ START_TEST (test_redir)
     scommand_set_redir_in (scmd, strdup ("123"));
     scommand_set_redir_out (scmd, strdup ("456"));
     /* Los redirectores tienen que ser distintos */
-    fail_unless (strcmp (scommand_get_redir_in (scmd),
+    ck_assert_msg (strcmp (scommand_get_redir_in (scmd),
                          scommand_get_redir_out (scmd)) != 0, NULL);
     /* ahora si ambos idem */
     scommand_set_redir_out (scmd, strdup ("123"));
-    fail_unless (strcmp (scommand_get_redir_in (scmd), scommand_get_redir_out (scmd)) == 0, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_in (scmd), scommand_get_redir_out (scmd)) == 0, NULL);
 }
 END_TEST
 
@@ -263,23 +263,23 @@ START_TEST (test_independent_redirs)
 
     /* Primero: sólo entrada */
     scommand_set_redir_in (scmd, strdup ("123"));
-    fail_unless (strcmp (scommand_get_redir_in (scmd), "123") == 0, NULL);
-    fail_unless (scommand_get_redir_out (scmd) == NULL, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_in (scmd), "123") == 0, NULL);
+    ck_assert_msg (scommand_get_redir_out (scmd) == NULL, NULL);
 
     /* Segundo: Volvemos ambos a NULL */
     scommand_set_redir_in (scmd, NULL);
-    fail_unless (scommand_get_redir_in (scmd) == NULL, NULL);
-    fail_unless (scommand_get_redir_out (scmd) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_in (scmd) == NULL, NULL);
+    ck_assert_msg (scommand_get_redir_out (scmd) == NULL, NULL);
 
     /* Tercero: sólo salida */
     scommand_set_redir_out (scmd, strdup ("456"));
-    fail_unless (scommand_get_redir_in (scmd) == NULL, NULL);
-    fail_unless (strcmp (scommand_get_redir_out (scmd), "456") == 0, NULL);
+    ck_assert_msg (scommand_get_redir_in (scmd) == NULL, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_out (scmd), "456") == 0, NULL);
 
     /* Cuarto: ambos */
     scommand_set_redir_in (scmd, strdup ("123"));
-    fail_unless (strcmp (scommand_get_redir_in (scmd), "123") == 0, NULL);
-    fail_unless (strcmp (scommand_get_redir_out (scmd), "456") == 0, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_in (scmd), "123") == 0, NULL);
+    ck_assert_msg (strcmp (scommand_get_redir_out (scmd), "456") == 0, NULL);
 }
 END_TEST
 
@@ -289,7 +289,7 @@ START_TEST (test_to_string_empty)
 {
     char *str = NULL;
     str = scommand_to_string (scmd);
-    fail_unless (strlen (str) == 0, NULL);
+    ck_assert_msg (strlen (str) == 0, NULL);
     free (str);
 }
 END_TEST
@@ -316,17 +316,17 @@ START_TEST (test_to_string)
     str = scommand_to_string(scmd);
     last_ocurr = str;
     for (i=0; i < MAX_LENGTH - 2; i++) {
-            fail_unless(strstr(str, strings[i])>=last_ocurr, NULL);
+            ck_assert_msg(strstr(str, strings[i])>=last_ocurr, NULL);
             last_ocurr = strstr(str, strings[i]);
     }
     // Redir in
-    fail_unless (strstr(str, strings[MAX_LENGTH - 2]) != NULL, NULL);
-    fail_unless (strchr(str, '<') != NULL, NULL);
-    fail_unless (strstr(str,strings[MAX_LENGTH - 2]) > strchr(str, '<'), NULL);
+    ck_assert_msg (strstr(str, strings[MAX_LENGTH - 2]) != NULL, NULL);
+    ck_assert_msg (strchr(str, '<') != NULL, NULL);
+    ck_assert_msg (strstr(str,strings[MAX_LENGTH - 2]) > strchr(str, '<'), NULL);
     // Redir out
-    fail_unless (strstr(str, strings[MAX_LENGTH - 1]) != NULL, NULL);
-    fail_unless (strchr(str, '>') != NULL, NULL);
-    fail_unless (strstr(str, strings[MAX_LENGTH - 1]) > strchr(str, '>'), NULL);
+    ck_assert_msg (strstr(str, strings[MAX_LENGTH - 1]) != NULL, NULL);
+    ck_assert_msg (strchr(str, '>') != NULL, NULL);
+    ck_assert_msg (strstr(str, strings[MAX_LENGTH - 1]) > strchr(str, '>'), NULL);
     free (str);
     free(strings);
 }
