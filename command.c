@@ -265,6 +265,7 @@ char *pipeline_to_string(const pipeline self) {
                              // command string and the following command string
             strmerge(result, " | ");
         }
-        assert(pipeline_is_empty(self) || pipeline_get_wait(self) || strlen(result) > 0);
-        return result;
     }
+    assert(pipeline_is_empty(self) || pipeline_get_wait(self) || strlen(result) > 0);
+    return result;
+}
