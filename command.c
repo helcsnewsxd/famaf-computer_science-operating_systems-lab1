@@ -189,7 +189,7 @@ char* scommand_to_string(const scommand self)
 }
 
 struct pipeline_s {
-  GQueue∗ commands;
+  GQueue* commands;
   bool should_wait;
 } pipeline_s;
 
@@ -208,7 +208,7 @@ pipeline pipeline_new(void)
 pipeline pipeline_destroy(pipeline self)
 {
   assert(self != NULL);
-  g_queue_free_full(self->commands, scommand_destroy); // free queue using second arg to destroy each element
+  g_queue_free_full(self->commands, free); // free queue using second arg to destroy each element
   self->commands = NULL;
   free(self);
   self = NULL;
@@ -271,9 +271,9 @@ char* pipeline_to_string(const pipeline self)
   char* result;
   result = "";
   for (unsigned int i = 0u; i < pipeline_length(self); ++i) {
-    strcat(result, g_queue_peek_nth(self->commands, i));
+    strmerge(result, g_queue_peek_nth(self->commands, i));
     if (i < pipeline_length(self) - 1) {
-      strcat(result, " | ");
+      strmerge(result, " | ");
     }
   }
   assert(pipeline_is_empty(self) || pipeline_get_wait(self) || strlen(result) > 0);
