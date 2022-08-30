@@ -188,7 +188,7 @@ struct pipeline_s {
 pipeline pipeline_new(void) {
     pipeline self;
     self = malloc(sizeof(pipeline_s));
-    self->commands = NULL;
+    self->commands = g_queue_new();
     self->should_wait = true;
 
     // Didn't put predicate members inside variables to prevent useless computation when
