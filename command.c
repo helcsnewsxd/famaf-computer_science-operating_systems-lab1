@@ -131,20 +131,17 @@ char *scommand_to_string(const scommand self) {
 
     // sc_shell_representation is the output of scommand_to_string.
     // Not NULL since we can't concatenate a string with NULL.
-    char *sc_shell_representation = " ";
+    char *sc_shell_representation = malloc(sizeof(char));
+    *sc_shell_representation = '\0';
 
     unsigned int sc_args_length = g_queue_get_length(self->sc_arguments);
     if (sc_args_length != 0) {
-        sc_shell_representation = g_queue_peek_head(self->sc_arguments);
-
         // auxiliar_to_remove is used for the deletion of allocated memory blocks in previous
         // strmerge calls.
-        for (unsigned int i = 1; i < sc_args_length; i++) {
+        for (unsigned int i = 0; i < sc_args_length; i++) {
             char *auxiliar_to_remove = sc_shell_representation;
             sc_shell_representation = strmerge(sc_shell_representation, " ");
-            if (i != 1) {
-                free(auxiliar_to_remove);
-            }
+            free(auxiliar_to_remove);
 
             auxiliar_to_remove = sc_shell_representation;
             sc_shell_representation =
@@ -180,10 +177,15 @@ char *scommand_to_string(const scommand self) {
     return sc_shell_representation;
 }
 
+// ------------------------- PIPELINE TAD -------------------------
+
+// ----------- STRUCTURE --------------
 struct pipeline_s {
     GQueue *commands;
     bool should_wait;
 } pipeline_s;
+
+// ----------- FUNCTIONS --------------
 
 pipeline pipeline_new(void) {
     pipeline self;
@@ -197,13 +199,12 @@ pipeline pipeline_new(void) {
     return self;
 }
 
-void scommand_destroy_aux(void* self) {
-    scommand_destroy(self);
-}
+static void scommand_destroy_aux(void *self) { scommand_destroy(self); }
 
 pipeline pipeline_destroy(pipeline self) {
     assert(self != NULL);
-    g_queue_free_full(self->commands, scommand_destroy_aux); // free queue using second arg to destroy each element
+    g_queue_free_full(self->commands,
+                      scommand_destroy_aux); // free queue using second arg to destroy each element
     self->commands = NULL;
     free(self);
     self = NULL;
@@ -219,9 +220,10 @@ void pipeline_push_back(pipeline self, scommand sc) {
 
 void pipeline_pop_front(pipeline self) {
     assert(self != NULL && !pipeline_is_empty(self));
-    scommand pipeline_head = g_queue_peek_head(self->commands); 
-    pipeline_head  = scommand_destroy(pipeline_head); // Free the memory of the first element of the queue.
-    g_queue_pop_head(self->commands); // Remove first element from Queue
+    scommand pipeline_head = g_queue_peek_head(self->commands);
+    pipeline_head =
+        scommand_destroy(pipeline_head); // Free the memory of the first element of the queue.
+    g_queue_pop_head(self->commands);    // Remove first element from Queue
 }
 
 void pipeline_set_wait(pipeline self, const bool w) {
@@ -255,31 +257,34 @@ bool pipeline_get_wait(const pipeline self) {
     return self->should_wait;
 }
 
+// ----------- FUNCTION TO DEBUG --------------
+
 char *pipeline_to_string(const pipeline self) {
     assert(self != NULL);
-    char *result, *auxiliar_to_remove;
+    char *result, *auxiliar_to_remove, *auxiliar_to_remove_scommand;
     unsigned int length_of_pipeline;
     bool is_last_elem = false;
     result = strdup("");
     length_of_pipeline = pipeline_length(self);
     for (unsigned int i = 0u; i < length_of_pipeline; ++i) { //
         auxiliar_to_remove = result;
-        result = strmerge(result, scommand_to_string(g_queue_peek_nth(
-                                      self->commands,
-                                      i))); // g_queue_peek_nth returns the n'th element of queue.
+        auxiliar_to_remove_scommand = scommand_to_string(g_queue_peek_nth(
+            self->commands, i)); // g_queue_peek_nth returns the n'th element of queue.
+        result = strmerge(result, auxiliar_to_remove_scommand);
         free(auxiliar_to_remove);
+        free(auxiliar_to_remove_scommand);
         is_last_elem = i == length_of_pipeline - 1;
         if (!is_last_elem) { // Check if it is not the last element to add " | " between the this
                              // command string and the following command string
             auxiliar_to_remove = result;
             result = strmerge(result, " | ");
-            free(auxiliar_to_remove);            
-            if (!pipeline_get_wait(self)) { // Check if pipeline shouldn't wait and add '&' in that case
-                auxiliar_to_remove = result;                
-                result = strmerge(result, " &");
-                free(auxiliar_to_remove);  
-            }
+            free(auxiliar_to_remove);
         }
+    }
+    if (!pipeline_get_wait(self)) { // Check if pipeline shouldn't wait and add '&' in that case
+        auxiliar_to_remove = result;
+        result = strmerge(result, " &");
+        free(auxiliar_to_remove);
     }
 
     assert(pipeline_is_empty(self) || pipeline_get_wait(self) || strlen(result) > 0);
