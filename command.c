@@ -197,9 +197,13 @@ pipeline pipeline_new(void) {
     return self;
 }
 
+void scommand_destroy_aux(void* self) {
+    scommand_destroy(self);
+}
+
 pipeline pipeline_destroy(pipeline self) {
     assert(self != NULL);
-    g_queue_free_full(self->commands, free); // free queue using second arg to destroy each element
+    g_queue_free_full(self->commands, scommand_destroy_aux); // free queue using second arg to destroy each element
     self->commands = NULL;
     free(self);
     self = NULL;
@@ -215,6 +219,8 @@ void pipeline_push_back(pipeline self, scommand sc) {
 
 void pipeline_pop_front(pipeline self) {
     assert(self != NULL && !pipeline_is_empty(self));
+    scommand pipeline_head = g_queue_peek_head(self->commands); 
+    pipeline_head  = scommand_destroy(pipeline_head); // Free the memory of the first element of the queue.
     g_queue_pop_head(self->commands); // Remove first element from Queue
 }
 
@@ -251,21 +257,27 @@ bool pipeline_get_wait(const pipeline self) {
 
 char *pipeline_to_string(const pipeline self) {
     assert(self != NULL);
-    char *result;
+    char *result, *auxiliar_to_remove;
     unsigned int length_of_pipeline;
     bool is_last_elem = false;
-    result = "";
+    result = strdup("");
     length_of_pipeline = pipeline_length(self);
     for (unsigned int i = 0u; i < length_of_pipeline; ++i) { //
+        auxiliar_to_remove = result;
         result = strmerge(result, scommand_to_string(g_queue_peek_nth(
                                       self->commands,
                                       i))); // g_queue_peek_nth returns the n'th element of queue.
+        free(auxiliar_to_remove);
         is_last_elem = i == length_of_pipeline - 1;
         if (!is_last_elem) { // Check if it is not the last element to add " | " between the this
                              // command string and the following command string
+            auxiliar_to_remove = result;
             result = strmerge(result, " | ");
-            if (!pipeline_get_wait(self)) {
+            free(auxiliar_to_remove);            
+            if (!pipeline_get_wait(self)) { // Check if pipeline shouldn't wait and add '&' in that case
+                auxiliar_to_remove = result;                
                 result = strmerge(result, " &");
+                free(auxiliar_to_remove);  
             }
         }
     }
