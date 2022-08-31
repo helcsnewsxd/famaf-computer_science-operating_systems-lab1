@@ -187,7 +187,7 @@ struct pipeline_s {
 
 pipeline pipeline_new(void) {
     pipeline self;
-    self = malloc(sizeof(pipeline_s));
+    self = malloc(sizeof(struct pipeline_s));
     self->commands = g_queue_new();
     self->should_wait = true;
 
@@ -196,6 +196,7 @@ pipeline pipeline_new(void) {
     assert(self != NULL && pipeline_is_empty(self) && pipeline_get_wait(self));
     return self;
 }
+
 
 pipeline pipeline_destroy(pipeline self) {
     assert(self != NULL);
@@ -257,15 +258,19 @@ char *pipeline_to_string(const pipeline self) {
     result = "";
     length_of_pipeline = pipeline_length(self);
     for (unsigned int i = 0u; i < length_of_pipeline; ++i) { //
-        strmerge(result,
-                 g_queue_peek_nth(self->commands,
-                                  i)); // g_queue_peek_nth returns the n'th element of queue.
-        is_last_elem = i < length_of_pipeline - 1;
+        result = strmerge(result,
+                 scommand_to_string(g_queue_peek_nth(self->commands,
+                                  i))); // g_queue_peek_nth returns the n'th element of queue.
+        is_last_elem = i == length_of_pipeline - 1;
         if (!is_last_elem) { // Check if it is not the last element to add " | " between the this
                              // command string and the following command string
-            strmerge(result, " | ");
+            result = strmerge(result, " | ");
+            if (!pipeline_get_wait(self)) {
+                result = strmerge(result, " &");
+            }
         }
     }
+
     assert(pipeline_is_empty(self) || pipeline_get_wait(self) || strlen(result) > 0);
     return result;
 }
