@@ -131,7 +131,7 @@ char *scommand_to_string(const scommand self) {
 
     // sc_shell_representation is the output of scommand_to_string.
     // Not NULL since we can't concatenate a string with NULL.
-    char *sc_shell_representation = "";
+    char *sc_shell_representation = " ";
 
     unsigned int sc_args_length = g_queue_get_length(self->sc_arguments);
     if (sc_args_length != 0) {
@@ -197,7 +197,6 @@ pipeline pipeline_new(void) {
     return self;
 }
 
-
 pipeline pipeline_destroy(pipeline self) {
     assert(self != NULL);
     g_queue_free_full(self->commands, free); // free queue using second arg to destroy each element
@@ -258,9 +257,9 @@ char *pipeline_to_string(const pipeline self) {
     result = "";
     length_of_pipeline = pipeline_length(self);
     for (unsigned int i = 0u; i < length_of_pipeline; ++i) { //
-        result = strmerge(result,
-                 scommand_to_string(g_queue_peek_nth(self->commands,
-                                  i))); // g_queue_peek_nth returns the n'th element of queue.
+        result = strmerge(result, scommand_to_string(g_queue_peek_nth(
+                                      self->commands,
+                                      i))); // g_queue_peek_nth returns the n'th element of queue.
         is_last_elem = i == length_of_pipeline - 1;
         if (!is_last_elem) { // Check if it is not the last element to add " | " between the this
                              // command string and the following command string
