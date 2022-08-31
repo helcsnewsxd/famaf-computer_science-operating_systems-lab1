@@ -27,7 +27,7 @@ runner: run_tests.o test_scommand.o test_pipeline.o test_execute.o test_parsing.
 runner-command: run_command.o test_scommand.o test_pipeline.o $(COMMON_OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-runner-parsing: run_parser.o test_parsing.o $(COMMON_OBJECTS) $(PARSER_OBJECTS)
+runner-parsing: run_parsing.o test_parsing.o $(COMMON_OBJECTS) $(PARSER_OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 leaktest: leaktest.o test_scommand.o test_pipeline.o $(COMMON_OBJECTS) $(PARSER_OBJECTS)
