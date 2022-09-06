@@ -1,6 +1,8 @@
 #include <stdlib.h>    /* calloc()...                        */
 #include <string.h>    /* strlen(), strncat, strcopy()...    */
 #include <assert.h>    /* assert()...                        */
+#include <stdbool.h>
+#include <ctype.h>
 #include "strextra.h"  /* Interfaz                           */
 
 char * strmerge(char *s1, char *s2) {
@@ -13,4 +15,15 @@ char * strmerge(char *s1, char *s2) {
     merge = strncat(merge, s2, len_s2);
     assert(merge != NULL && strlen(merge) == strlen(s1) + strlen(s2));
     return merge;
+}
+
+bool string_has_a_not_space(char * s){
+    assert(s != NULL);
+
+    // Checks if the string have a space
+    char * s_iterator = s;
+    while(*s_iterator != '\0' && isspace(*s_iterator)){
+        s_iterator++;
+    }
+    return *s_iterator != '\0';
 }
