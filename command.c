@@ -76,12 +76,22 @@ void scommand_pop_front(scommand self) {
 void scommand_set_redir_in(scommand self, char *filename) {
     assert(self != NULL);
 
+    // If there is another old argument
+    if(self->sc_file_input != NULL){
+        free(self->sc_file_input);
+    }
+
     // Set input dir.
     self->sc_file_input = filename;
 }
 
 void scommand_set_redir_out(scommand self, char *filename) {
     assert(self != NULL);
+
+    // If there is another old argument
+    if(self->sc_file_output != NULL){
+        free(self->sc_file_output);
+    }
 
     // Set output dir.
     self->sc_file_output = filename;
