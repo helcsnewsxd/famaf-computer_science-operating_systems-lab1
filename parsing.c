@@ -70,9 +70,7 @@ pipeline parse_pipeline(Parser p) {
         // Erase the rest of the parser
         bool there_are_other_symbols = false;
         parser_garbage(p,&there_are_other_symbols);
-        // Check if we've an error of command syntax
-        char * forgotten_symbols = parser_last_garbage(p);
-        error = (forgotten_symbols != NULL && there_are_other_symbols);
+        error = there_are_other_symbols;
     }else{
         // Erase the rest of the parser
         bool there_are_other_symbols = false;
