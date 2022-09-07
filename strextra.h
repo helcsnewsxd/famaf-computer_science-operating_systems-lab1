@@ -19,16 +19,6 @@ char * strmerge(char *s1, char *s2);
  *
  */
 
-bool string_has_a_not_space(char * s);
-/*
- * Chequea que haya algún carácter que no sea espacio.
- *
- * USAGE:
- *
- * error = string_has_a_not_space(forgotten_symbols);
- * 
- * REQUIRES:
- *      s != NULL
- */
+
 
 #endif
