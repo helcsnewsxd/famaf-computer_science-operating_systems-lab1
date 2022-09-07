@@ -3,8 +3,9 @@
 #include <assert.h>
 #include <glib.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
 
 bool test_internal(char *cmd) {
     scommand test = scommand_new();
@@ -41,6 +42,29 @@ bool test_alone_when_not_alone(char *cmd) {
     return result;
 }
 
+void test_help(void){
+    const char* trash="asjafsjfasjafskasfjkas&4";
+    scommand help_cmd = scommand_new ();
+    scommand_push_back (help_cmd, strdup ("help"));
+    scommand_push_back (help_cmd, strdup (trash));
+    builtin_run(help_cmd);
+    scommand_destroy(help_cmd);
+}
+
+void test_cd(void){
+    const char* test_path="../../";
+    scommand cd_cmd = scommand_new ();
+    scommand_push_back (cd_cmd, strdup ("cd"));
+    scommand_push_back (cd_cmd, strdup (test_path));
+    char * direccion = NULL;
+    builtin_run(cd_cmd);
+    direccion = getcwd(NULL,0);
+    printf("%s\n", direccion);
+    free(direccion);
+    scommand_destroy(cd_cmd);
+}
+
+
 int main(void) {
     // Test internal
     assert(test_internal(strdup("cd")) == true);
@@ -59,5 +83,9 @@ int main(void) {
     assert(test_alone_when_not_alone(strdup("help")) == false);
     assert(test_alone_when_not_alone(strdup("exit")) == false);
     assert(test_alone_when_not_alone(strdup("NoSoyUnComandoInterno")) == false);
+
+    test_help();
+    test_cd();
+
     return 0;
 }
