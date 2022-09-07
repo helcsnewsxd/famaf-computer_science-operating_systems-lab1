@@ -5,7 +5,6 @@
 #include "parsing.h"
 #include "parser.h"
 #include "command.h"
-#include "strextra.h"
 
 static scommand parse_scommand(Parser p) {
     scommand new_scmd = scommand_new();
@@ -73,7 +72,7 @@ pipeline parse_pipeline(Parser p) {
         parser_garbage(p,&there_are_other_symbols);
         // Check if we've an error of command syntax
         char * forgotten_symbols = parser_last_garbage(p);
-        error = (forgotten_symbols != NULL && string_has_a_not_space(forgotten_symbols));
+        error = (forgotten_symbols != NULL && there_are_other_symbols);
     }else{
         // Erase the rest of the parser
         bool there_are_other_symbols = false;
