@@ -9,10 +9,10 @@ En particular, la implementación del parsing se dividió en identificar los arg
 En ambas implementaciones utilizamos ciclos de tal forma que se recorra los inputs dados por la terminal y hacer los push respectivos a cada tipo abstracto, detectando además argumentos inválidos o fin de archivos.
 
 ### Funciones implementadas
-1. **parse_scommand**: Esta función recibe un puntero a un string con los argumentos obtenidos por terminal y sintetiza la información en el string. Esto lo hace usando condicionales y el ennumerado *arg_kind_t*. En el condicional se identifica si se trata de un argumento o un archivo de redirección de entrada/salida.
+1. **parse_scommand**: Esta función recibe una variable de tipo Parser con los argumentos obtenidos por terminal y sintetiza la información en el TAD scommand. Esto lo hace usando condicionales y el enumerado *arg_kind_t*. En el condicional se identifica si se trata de un argumento o un archivo de redirección de entrada/salida.
 
 ```c
-if(arg_type == ARG_NORMAL){
+        if(arg_type == ARG_NORMAL){
             scommand_push_back(new_scmd,arg_cmd);
         }else if(arg_type == ARG_INPUT){
             scommand_set_redir_in(new_scmd,arg_cmd);
@@ -21,7 +21,7 @@ if(arg_type == ARG_NORMAL){
         }
 ```
 
-Si por alguna razón el comando ingresado por terminal no es válido, y por ende, no es pusheado en *new_scmd*, se elimina la memoria asignada a *new_scmd* para liberar ese espacio que no está en uso.
+Si por alguna razón el comando ingresado por terminal no es válido, y por ende, no es considerado en *new_scmd*, se elimina la memoria asignada a *new_scmd* para liberar ese espacio que no está en uso y se retorna NULL.
 
 2. **parse_pipeline**: Implementamos esta función con un ciclo, a medida que fuimos identificando la presencia de pipes, pusheamos los comandos respectivos dentro del pipeline. En cada push, se volvía a chequear si el char siguiente era un pipe o no, este resultado lo ibamos guardando en la variable *another_pipe* que, en el caso de que fuera false, terminaba el ciclo ya que no había más pipes que leer. 
 También jugó un rol muy importante la variable *error* ya que es la que nos indica si el comando seguido de los pipes es o no un comando válido.
