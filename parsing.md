@@ -44,11 +44,11 @@ También jugó un rol muy importante la variable *error* ya que es la que nos in
     }
 ```
 Luego de haber leído todos los pipes del parser, usamos un condicional para analizar el resultado de la variable *error*:  
-1. En el caso de no haber encontrado errores, lo que hicimos fue chequear si en lo que restaba del parser no había backgrounds o basura. Para esto, chequeamos que el carácter siguiente fuera o no un background, para así guardar éste resultado en la respectiva pipeline. Luego, nos fijamos si al final del parser había basura. Para ello, usamos las funciones auxiliares *parser_garbage* y *parser_last_garbage* para borrar y obtener los caracteres basura restantes. Se guardó en *forgotten_symbols* dicha cadena de caracteres basura y se verificó si esta cadena estaba conformada efectivamente por símbolos o si era null, además, se verificó que se tratase del final del archivo usando el booleano *there_are_other_symbols* resultante de *parser_garbage*.
+1. En el caso de no haber encontrado errores, lo que hicimos fue chequear si en lo que restaba del parser no había backgrounds o basura. Para esto, chequeamos que el carácter siguiente fuera o no un background, para así guardar éste resultado en la respectiva pipeline. Luego, nos fijamos si al final del parser había basura. Para ello, usamos la funcion auxiliar *parser_garbage* para borrar los caracteres basura restantes. Se actualizó la variable *error* con el valor del booleano *there_are_other_symbols* resultante de *parser_garbage*. Si error es true, entonces se encontraron símbolos basura; si error es false, entonces se llegó al eof y no hay símbolos basura.
 2. En el caso de que haya habido errores, lo que se hizo fue eliminar el resto del parser para liberar su respectiva memoria.
 
 ```c
-    if(!error){
+        if(!error){
         // Is there a background?
         bool there_is_background = false;
         parser_op_background(p,&there_is_background);
@@ -57,16 +57,14 @@ Luego de haber leído todos los pipes del parser, usamos un condicional para ana
         // Erase the rest of the parser
         bool there_are_other_symbols = false;
         parser_garbage(p,&there_are_other_symbols);
-        // Check if we've an error of command syntax
-        char * forgotten_symbols = parser_last_garbage(p);
-        error = (forgotten_symbols != NULL && there_are_other_symbols);
+        error = there_are_other_symbols;
     }else{
         // Erase the rest of the parser
         bool there_are_other_symbols = false;
         parser_garbage(p,&there_are_other_symbols);
     }
 ```
-Finalmente, el último condicional es el que chequea definitivamente si hubo un error en todo el proceso, en el caso de que lo haya habido, se destruye el pipeline ya que se trata de un input inválido. Caso contrario, se devuelve la variable result con el pipeline completo.
+Finalmente, el último condicional es el que chequea definitivamente si hubo un error en todo el proceso. En el caso de que haya habido un error, se destruye el pipeline ya que se trata de un input inválido. Caso contrario, se devuelve la variable result con el pipeline completo.
 
 ```c
 if(error){
