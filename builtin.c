@@ -3,14 +3,15 @@
 #include <stdio.h>
 #include <string.h>
 
+static bool are_str_equal(char *s1, char *s2) { return strcmp(s1, s2) == 0; }
+
 bool builtin_is_internal(scommand cmd) {
     assert(cmd != NULL);
     char *command = scommand_front(cmd);
-    bool result = false;
 
-    bool is_cd = strcmp("cd", command);
-    bool is_help = strcmp("help", command);
-    bool is_exit = strcmp("exit", command);
+    bool is_cd = are_str_equal("cd", command);
+    bool is_help = are_str_equal("help", command);
+    bool is_exit = are_str_equal("exit", command);
     return is_cd || is_help || is_exit;
 }
 
