@@ -18,7 +18,33 @@ bool are_str_equal(char *s1, char *s2){
 // FUNCTIONS TO RUN COMMANDS
 
 void cd_run(scommand cmd){
-    // MAKE THIS
+    assert(are_str_equal(scommand_front(cmd),"cd"));  
+    char * input_path = NULL;
+    int cmd_length = scommand_length(cmd);
+
+    if(cmd_length>2){ 
+        printf("mybash: cd: demasiados argumentos\n"); // The cd command only has 1 or 2 args
+    
+    } else {
+
+        scommand_pop_front(cmd); // Remove the "cmd" part of the cmd
+        input_path = scommand_front(cmd); // Access to the first arg of the cmd
+        int ret_chdir = 0;
+        if(cmd_length == 1){
+            input_path = getenv("HOME");
+        } else {
+            if(input_path[0] == '~'){
+                ret_chdir = chdir(getenv("HOME"));
+                memmove(input_path, input_path+1, strlen(input_path));
+            }
+            if(ret_chdir == 0){
+                ret_chdir = chdir(input_path);
+            }
+        }
+        if(ret_chdir != 0){ // if chdir has a error
+            perror("mybash: cd: "); // Print the error message of chdir
+        }
+    }
 }
 
 void help_run(scommand cmd){
