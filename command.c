@@ -271,18 +271,18 @@ bool pipeline_get_wait(const pipeline self) {
 
 char *pipeline_to_string(const pipeline self) {
     assert(self != NULL);
-    char *result, *auxiliar_to_remove, *auxiliar_to_remove_scommand;
+    char *result, *auxiliar_to_remove, *auxiliar_to_add;
     unsigned int length_of_pipeline;
     bool is_last_elem = false;
     result = strdup("");
     length_of_pipeline = pipeline_length(self);
     for (unsigned int i = 0u; i < length_of_pipeline; ++i) { //
         auxiliar_to_remove = result;
-        auxiliar_to_remove_scommand = scommand_to_string(g_queue_peek_nth(
+        auxiliar_to_add = scommand_to_string(g_queue_peek_nth(
             self->commands, i)); // g_queue_peek_nth returns the n'th element of queue.
-        result = strmerge(result, auxiliar_to_remove_scommand);
+        result = strmerge(result, auxiliar_to_add);
         free(auxiliar_to_remove);
-        free(auxiliar_to_remove_scommand);
+        free(auxiliar_to_add);
         is_last_elem = i == length_of_pipeline - 1;
         if (!is_last_elem) { // Check if it is not the last element to add " | " between the this
                              // command string and the following command string
