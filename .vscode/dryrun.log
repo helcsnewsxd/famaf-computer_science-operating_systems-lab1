@@ -1,0 +1,12 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/jasson/so22lab1g12'
+gcc `pkg-config --cflags glib-2.0` -MM builtin.c command.c mybash.c parsing.c strextra.c > .depend
+ 
+gcc -std=gnu11 -Wall -Wextra -Wbad-function-cast -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wno-unused-parameter -Werror -Werror=vla -g -pedantic `pkg-config --cflags glib-2.0`  -c -o builtin.o builtin.c
+gcc -std=gnu11 -Wall -Wextra -Wbad-function-cast -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wno-unused-parameter -Werror -Werror=vla -g -pedantic `pkg-config --cflags glib-2.0`  -c -o command.o command.c
+gcc -std=gnu11 -Wall -Wextra -Wbad-function-cast -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wno-unused-parameter -Werror -Werror=vla -g -pedantic `pkg-config --cflags glib-2.0`  -c -o mybash.o mybash.c
+gcc -std=gnu11 -Wall -Wextra -Wbad-function-cast -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wno-unused-parameter -Werror -Werror=vla -g -pedantic `pkg-config --cflags glib-2.0`  -c -o parsing.o parsing.c
+gcc -std=gnu11 -Wall -Wextra -Wbad-function-cast -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wno-unused-parameter -Werror -Werror=vla -g -pedantic `pkg-config --cflags glib-2.0`  -c -o strextra.o strextra.c
+gcc -std=gnu11 -Wall -Wextra -Wbad-function-cast -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wno-unused-parameter -Werror -Werror=vla -g -pedantic -o mybash builtin.o command.o mybash.o parsing.o strextra.o objects-x86_64/parser.o objects-x86_64/lexer.o `pkg-config --libs glib-2.0`
+make: Leaving directory '/home/jasson/so22lab1g12'
+ 

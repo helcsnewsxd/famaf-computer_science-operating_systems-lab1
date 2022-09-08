@@ -1,15 +1,11 @@
-#include "builtin.h"
 #include "internal_commands.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-// INITIALIZATION OF THE ARRAY
-
-internal_cmd_list = {{"cd",cd_run},{"help",help_run},{"exit",exit}};
-count_internal_cmd = 3;
+ 
+struct cmd_type internal_cmd_list[count_internal_cmd] = {{"cd",cd_run},{"help",help_run},{"exit",exit_run}};
 
 bool are_str_equal(char *s1, char *s2){
     return strcmp(s1, s2) == 0;

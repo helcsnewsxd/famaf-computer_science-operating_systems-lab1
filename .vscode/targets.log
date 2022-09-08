@@ -1,0 +1,1105 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.3
+# Built for x86_64-unknown-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Thu Sep  8 16:10:38 2022
+
+# Variables
+
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+GNOME_SHELL_SESSION_MODE = zorin
+# environment
+PULSE_SERVER = unix:/run/flatpak/pulse/native
+# environment
+GJS_DEBUG_OUTPUT = stderr
+# environment
+SBX_CHROME_API_RQ = 1
+# environment
+VSCODE_CWD = /home/jasson
+# environment
+WINDOWPATH = 2
+# default
+MAKE_COMMAND := make
+# environment
+QT_ACCESSIBILITY = 1
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/jasson/so22lab1g12
+# environment
+ZYPAK_ZYGOTE_STRATEGY_SPAWN = 1
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+GI_TYPELIB_PATH = /app/lib/girepository-1.0
+# environment
+XDG_DATA_DIRS = /app/share:/usr/share:/usr/share/runtime/share:/run/host/user-share:/run/host/share
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# automatic
+%F = $(notdir $%)
+# environment
+VSCODE_CODE_CACHE_PATH = /home/jasson/.var/app/com.visualstudio.code/config/Code/CachedData/da76f93349a72022ca4670c1b84860304616aaa2
+# environment
+LANG = C
+# environment
+XAUTHORITY = /run/flatpak/Xauthority
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/include /usr/include
+# environment
+ALSA_CONFIG_DIR = /usr/share/alsa
+# makefile
+MAKEFLAGS = pqrR
+# environment
+ZYPAK_SPAWN_LATEST_ON_REEXEC = 0
+# makefile
+CURDIR := /home/jasson/so22lab1g12
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+ZYPAK_LIB = /app/bin/../lib
+# environment
+MFLAGS = -pqrR
+# environment
+SSH_AUTH_SOCK = /run/flatpak/ssh-auth
+# default
+.SHELLFLAGS := -c
+# environment
+XDG_CONFIG_DIRS = /app/etc/xdg:/etc/xdg
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+ALSA_CONFIG_PATH = /usr/share/alsa/alsa-flatpak.conf
+# environment
+XDG_SESSION_DESKTOP = zorin
+# makefile (from '.depend', line 1)
+MAKEFILE_LIST := Makefile .depend
+# environment
+FLATPAK_SANDBOX_DIR = /home/jasson/.var/app/com.visualstudio.code/sandbox
+# automatic
+@F = $(notdir $@)
+# environment
+VSCODE_PID = 23
+# environment
+XDG_SESSION_TYPE = x11
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+AT_SPI_BUS_ADDRESS = unix:path=/run/flatpak/at-spi-bus
+# environment
+XDG_DATA_HOME = /home/jasson/.var/app/com.visualstudio.code/data
+# environment
+SANDBOX_LD_PRELOAD = /app/bin/../lib/libzypak-preload-host.so:/app/bin/../lib/libzypak-preload-host-spawn-strategy.so
+# environment
+SESSION_MANAGER = local/NET-JASSON:@/tmp/.ICE-unix/1525,unix/NET-JASSON:/tmp/.ICE-unix/1525
+# automatic
+*F = $(notdir $*)
+# environment
+QT_QPA_PLATFORMTHEME = gtk3
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/flatpak/bus
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+VSCODE_NLS_CONFIG = {"locale":"es-419","availableLanguages":{},"_languagePackSupport":true}
+# environment
+__EGL_EXTERNAL_PLATFORM_CONFIG_DIRS = /etc/egl/egl_external_platform.d:/usr/lib/x86_64-linux-gnu/GL/egl/egl_external_platform.d:/usr/share/egl/egl_external_platform.d
+# default
+MAKE_HOST := x86_64-unknown-linux-gnu
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
+# makefile
+SHELL = /bin/sh
+# default
+MAKECMDGOALS := all
+# environment
+XMODIFIERS = @im=ibus
+# environment
+LD_LIBRARY_PATH = /app/lib
+# environment
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# environment
+SANDBOX_LD_LIBRARY_PATH = /app/lib
+# environment
+SHLVL = 0
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = /app/bin:/app/bin:/app/bin:/usr/bin:/home/jasson/.var/app/com.visualstudio.code/data/node_modules/bin
+# default
+MAKEFILES := 
+# environment
+LANGUAGE = es_AR:es
+# automatic
+^F = $(notdir $^)
+# environment
+DBUS_SYSTEM_BUS_ADDRESS = unix:path=/run/dbus/system_bus_socket
+# environment
+XDG_CONFIG_HOME = /home/jasson/.var/app/com.visualstudio.code/config
+# environment
+INVOCATION_ID = 81195dafb0c44dc68396024ce6113159
+# makefile (from 'Makefile', line 15)
+ARCHDIR = objects-$(shell uname -m)
+# environment
+USERNAME = jasson
+# automatic
+?F = $(notdir $?)
+# environment
+XDG_CURRENT_DESKTOP = zorin:GNOME
+# automatic
++F = $(notdir $+)
+# environment
+DESKTOP_SESSION = zorin
+# environment
+GST_PLUGIN_SYSTEM_PATH = /app/lib/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = zorin:GNOME
+# makefile (from 'Makefile', line 11)
+OBJECTS = $(SOURCES:.c=.o)
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = jasson
+# environment
+container = flatpak
+# makefile (from 'Makefile', line 3)
+CPPFLAGS = `pkg-config --cflags glib-2.0`
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /var/lib/flatpak/exports/share/applications/com.visualstudio.code.desktop
+# makefile
+.DEFAULT_GOAL := all
+# environment
+NPM_CONFIG_GLOBALCONFIG = /app/etc/npmrc
+# environment
+GTK_MODULES = gail:atk-bridge
+# environment
+USER = jasson
+# environment
+DISPLAY = :99.0
+# default
+MAKE_VERSION := 4.3
+# 'override' directive
+.SHELLSTATUS := 0
+# makefile (from 'Makefile', line 5)
+LDFLAGS = `pkg-config --libs glib-2.0`
+# environment
+MANAGERPID = 1290
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4491
+# environment
+QT_STYLE_OVERRIDE = adwaita
+# environment
+SSH_AGENT_PID = 1482
+# environment
+_ = /usr/bin/make
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# makefile (from 'Makefile', line 4)
+CFLAGS = -std=gnu11 -Wall -Wextra -Wbad-function-cast -Wstrict-prototypes -Wmissing-declarations -Wmissing-prototypes -Wno-unused-parameter -Werror -Werror=vla -g -pedantic
+# makefile (from 'Makefile', line 12)
+PRECOMPILED = parser.o lexer.o
+# environment
+GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
+# environment
+PULSE_CLIENTCONFIG = /run/flatpak/pulse/config
+# environment
+JOURNAL_STREAM = 8:43570
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /home/jasson
+# environment
+QT_IM_MODULE = ibus
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-59e525e1-1.70.0-main.sock
+# environment
+IM_CONFIG_PHASE = 1
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# makefile (from 'Makefile', line 1)
+TARGET = mybash
+# environment
+XDG_CACHE_HOME = /home/jasson/.var/app/com.visualstudio.code/cache
+# environment
+VSCODE_CLI = 1
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
+# makefile (from 'Makefile', line 2)
+CC = gcc
+# environment
+FLATPAK_ID = com.visualstudio.code
+# makefile (from 'Makefile', line 10)
+SOURCES = $(shell echo *.c)
+# environment
+XDG_MENU_PREFIX = gnome-
+# environment
+ZYPAK_BIN = /app/bin
+# environment
+GDMSESSION = zorin
+# variable set hash-table stats:
+# Load=128/1024=12%, Rehash=0, Collisions=13/203=6%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# objects-x86_64 (device 2050, inode 5510543): 3 files, no impossibilities so far.
+# . (device 2050, inode 2098822): 22 files, no impossibilities.
+
+# 25 files, no impossibilities in 2 directories.
+ 
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+/usr/include/glib-2.0/glib/gbacktrace.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:10.101055558
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gatomic.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:32.191706051
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gvariant.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:45.494768387
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/deprecated/gmain.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:24.876034807
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gstringchunk.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:43.434757052
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gbookmarkfile.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:04.757425867
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gsequence.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:50.710257001
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:19.488406565
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gpoll.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:52.682121535
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gversionmacros.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:59.105818373
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/deprecated/gcache.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:27.659842889
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gthreadpool.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:44.806816619
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gtrashstack.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:27.77183517
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gspawn.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:48.186579876
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gslist.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:07.077265015
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gmarkup.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:57.069960011
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/ggettext.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:54.870113223
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+builtin.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gthread.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:51.582197097
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gpattern.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:28.499785003
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+strextra.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gqueue.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:47.078506566
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gtypes.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:43.190773827
+#  File has been updated.
+#  Successfully updated.
+
+mybash.o: mybash.c command.h execute.h parser.h parsing.h builtin.h
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Successfully updated.
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 25):
+	rm -f $(TARGET) $(OBJECTS) .depend *~
+	make -C tests clean
+
+memtest: builtin.o command.o mybash.o parsing.o strextra.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 38):
+	make -C tests memtest
+
+# Not a target:
+/usr/include/glib-2.0/glib/gstrvbuilder.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:59.425658425
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gshell.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:09.481098486
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/deprecated/gthread.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:08.997132
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/guri.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:34.143396288
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gbytes.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:00.285736348
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+parsing.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gdataset.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:38.791239497
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gdir.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:41.355059017
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/grand.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:49.262356487
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gmappedfile.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:45.138639907
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+command.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gtree.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:34.399378666
+ 
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/giochannel.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:15.044713559
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/goption.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:46.982513164
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gstring.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:46.294560449
+#  File has been updated.
+#  Successfully updated.
+
+strextra.o: strextra.c strextra.h
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gslice.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:48.37841723
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/glist.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:45.458617911
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gmessages.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:59.577785559
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+execute.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+all: mybash
+#  Phony target (prerequisite of .PHONY).
+#  Command line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+
+# Not a target:
+/usr/include/glib-2.0/glib/gstrfuncs.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:33.159464032
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gquark.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:58.309735044
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gregex.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:25.619983508
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+mybash.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gcharset.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:49.174510777
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/grefstring.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:55.058100122
+#  File has been updated.
+#  Successfully updated.
+
+test-parsing: command.o parsing.o objects-x86_64/parser.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 35):
+	make -C tests test-parsing
+
+# Not a target:
+/usr/include/glib-2.0/glib/gnode.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:28.559780868
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gdate.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:35.0515035
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gfileutils.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:13.540817545
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gkeyfile.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:29.295730157
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gtimer.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:49.166363083
+#  File has been updated.
+#  Successfully updated.
+
+.depend: builtin.c command.c mybash.c parsing.c strextra.c
+#  Implicit rule search has not been done.
+#  Last modified 2022-09-08 16:10:37.294332497
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 41):
+	$(CC) $(CPPFLAGS) -MM $^ > $@
+
+# Not a target:
+parser.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gconvert.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:43.346763102
+#  File has been updated.
+#  Successfully updated.
+
+mybash: builtin.o command.o mybash.o parsing.o strextra.o objects-x86_64/parser.o objects-x86_64/lexer.o
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := mybash
+# automatic
+# * := 
+# automatic
+# < := builtin.o
+# automatic
+# + := builtin.o command.o mybash.o parsing.o strextra.o objects-x86_64/parser.o objects-x86_64/lexer.o
+# automatic
+# % := 
+# automatic
+# ^ := builtin.o command.o mybash.o parsing.o strextra.o objects-x86_64/parser.o objects-x86_64/lexer.o
+# automatic
+# ? := builtin.o command.o mybash.o parsing.o strextra.o objects-x86_64/parser.o objects-x86_64/lexer.o
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=2/16=12%
+#  recipe to execute (from 'Makefile', line 22):
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+# Not a target:
+/usr/include/glib-2.0/glib/galloca.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:47.910599186
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/grefcount.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:12.816867617
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gerror.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:10.901000182
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gmem.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:25.787971925
+#  File has been updated.
+#  Successfully updated.
+
+test: builtin.o command.o mybash.o parsing.o strextra.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 29):
+	make -C tests test
+
+# Not a target:
+/usr/include/glib-2.0/glib/gscanner.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:34:00.285599386
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gbase64.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:48.694544344
+#  File has been updated.
+#  Successfully updated.
+
+command.o: command.c /usr/include/glib-2.0/glib.h /usr/include/glib-2.0/glib/galloca.h /usr/include/glib-2.0/glib/gtypes.h /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h /usr/include/glib-2.0/glib/gmacros.h /usr/include/glib-2.0/glib/gversionmacros.h /usr/include/glib-2.0/glib/garray.h /usr/include/glib-2.0/glib/gasyncqueue.h /usr/include/glib-2.0/glib/gthread.h /usr/include/glib-2.0/glib/gatomic.h /usr/include/glib-2.0/glib/gerror.h /usr/include/glib-2.0/glib/gquark.h /usr/include/glib-2.0/glib/gutils.h /usr/include/glib-2.0/glib/gbacktrace.h /usr/include/glib-2.0/glib/gbase64.h /usr/include/glib-2.0/glib/gbitlock.h /usr/include/glib-2.0/glib/gbookmarkfile.h /usr/include/glib-2.0/glib/gdatetime.h /usr/include/glib-2.0/glib/gtimezone.h /usr/include/glib-2.0/glib/gbytes.h /usr/include/glib-2.0/glib/gcharset.h /usr/include/glib-2.0/glib/gchecksum.h /usr/include/glib-2.0/glib/gconvert.h /usr/include/glib-2.0/glib/gdataset.h /usr/include/glib-2.0/glib/gdate.h /usr/include/glib-2.0/glib/gdir.h /usr/include/glib-2.0/glib/genviron.h /usr/include/glib-2.0/glib/gfileutils.h /usr/include/glib-2.0/glib/ggettext.h /usr/include/glib-2.0/glib/ghash.h /usr/include/glib-2.0/glib/glist.h /usr/include/glib-2.0/glib/gmem.h /usr/include/glib-2.0/glib/gnode.h /usr/include/glib-2.0/glib/ghmac.h /usr/include/glib-2.0/glib/gchecksum.h /usr/include/glib-2.0/glib/ghook.h /usr/include/glib-2.0/glib/ghostutils.h /usr/include/glib-2.0/glib/giochannel.h /usr/include/glib-2.0/glib/gmain.h /usr/include/glib-2.0/glib/gpoll.h /usr/include/glib-2.0/glib/gslist.h /usr/include/glib-2.0/glib/gstring.h /usr/include/glib-2.0/glib/gunicode.h /usr/include/glib-2.0/glib/gkeyfile.h /usr/include/glib-2.0/glib/gmappedfile.h /usr/include/glib-2.0/glib/gmarkup.h /usr/include/glib-2.0/glib/gmessages.h /usr/include/glib-2.0/glib/gvariant.h /usr/include/glib-2.0/glib/gvarianttype.h /usr/include/glib-2.0/glib/goption.h /usr/include/glib-2.0/glib/gpattern.h /usr/include/glib-2.0/glib/gprimes.h /usr/include/glib-2.0/glib/gqsort.h /usr/include/glib-2.0/glib/gqueue.h /usr/include/glib-2.0/glib/grand.h /usr/include/glib-2.0/glib/grcbox.h /usr/include/glib-2.0/glib/grefcount.h /usr/include/glib-2.0/glib/grefstring.h /usr/include/glib-2.0/glib/gmem.h /usr/include/glib-2.0/glib/gmacros.h /usr/include/glib-2.0/glib/gregex.h /usr/include/glib-2.0/glib/gscanner.h /usr/include/glib-2.0/glib/gsequence.h /usr/include/glib-2.0/glib/gshell.h /usr/include/glib-2.0/glib/gslice.h /usr/include/glib-2.0/glib/gspawn.h /usr/include/glib-2.0/glib/gstrfuncs.h /usr/include/glib-2.0/glib/gstringchunk.h /usr/include/glib-2.0/glib/gstrvbuilder.h /usr/include/glib-2.0/glib/gtestutils.h /usr/include/glib-2.0/glib/gthreadpool.h /usr/include/glib-2.0/glib/gtimer.h /usr/include/glib-2.0/glib/gtrashstack.h /usr/include/glib-2.0/glib/gtree.h /usr/include/glib-2.0/glib/guri.h /usr/include/glib-2.0/glib/guuid.h /usr/include/glib-2.0/glib/gversion.h /usr/include/glib-2.0/glib/deprecated/gallocator.h /usr/include/glib-2.0/glib/deprecated/gcache.h /usr/include/glib-2.0/glib/deprecated/gcompletion.h /usr/include/glib-2.0/glib/deprecated/gmain.h /usr/include/glib-2.0/glib/deprecated/grel.h /usr/include/glib-2.0/glib/deprecated/gthread.h /usr/include/glib-2.0/glib/glib-autocleanups.h command.h strextra.h
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/glib-autocleanups.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:50.958239963
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/ghook.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:10.489028701
+ 
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gchecksum.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:49.250505464
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gvarianttype.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:58.053891539
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+parsing.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/ghash.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:27.251871008
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gqsort.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:25.487992609
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gprimes.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:42.890794454
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/ghostutils.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:34.679529818
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/genviron.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:58.333872064
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+builtin.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gversion.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:52.634124832
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gasyncqueue.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:55.618061113
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gutils.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:34.347382245
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gtestutils.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:01.189673536
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gunicode.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:10.912999352
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gmacros.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:37.335342168
+#  File has been updated.
+#  Successfully updated.
+
+parsing.o: parsing.c parsing.h command.h parser.h
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Successfully updated.
+
+builtin.o: builtin.c builtin.h command.h
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/guuid.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:00.377729955
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/deprecated/gallocator.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:52.442138021
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+objects-x86_64/lexer.o:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gmain.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:00.573716335
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/grcbox.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:28.843761299
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gtimezone.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:59.629781944
+#  File has been updated.
+#  Successfully updated.
+
+.PHONY: clean all
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gbitlock.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:26.923893615
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+command.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+test-command: command.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 32):
+	make -C tests test-command
+
+# Not a target:
+/usr/include/glib-2.0/glib/deprecated/gcompletion.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:50.418277062
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:59.045684513
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+strextra.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/gdatetime.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:33:14.076780479
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/garray.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:46.914668903
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/ghmac.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:45.850743434
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/usr/include/glib-2.0/glib/deprecated/grel.h:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-12 22:32:46.590691597
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+objects-x86_64/parser.o:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-08 16:10:00.357584145
+#  File has been updated.
+#  Successfully updated.
+
+# files hash-table stats:
+# Load=111/1024=11%, Rehash=0, Collisions=25/269=9%
+# VPATH Search Paths
+
+vpath parser.o objects-x86_64
+vpath lexer.o objects-x86_64
+
+# 2 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 123 / storage = 3539 B / avg = 28 B
+# current buf: size = 8162 B / used = 3539 B / count = 123 / avg = 28 B
+
+# strcache performance: lookups = 202 / hit rate = 39%
+# hash-table stats:
+# Load=123/8192=2%, Rehash=0, Collisions=1/202=0%
+# Finished Make data base on Thu Sep  8 16:10:38 2022
+
+ 

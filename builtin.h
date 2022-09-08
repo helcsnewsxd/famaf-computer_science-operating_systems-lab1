@@ -4,8 +4,7 @@
 #include <stdbool.h>
 
 #include "command.h"
-
-bool quit; // global variable to determine if the shell should close
+#include "internal_commands.h"
 
 bool builtin_is_internal(scommand cmd);
 /*

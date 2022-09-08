@@ -1,5 +1,4 @@
 #include "builtin.h"
-#include "internal_commands.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
