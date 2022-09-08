@@ -81,6 +81,6 @@ Sin embargo, para no tener errores de memory heap, luego de cada merge se propus
 
 Teniendo esto en cuenta, el problema se dividió en dos partes
 
-* Argumentos: En este caso, se utilizó un for loop para concatenar el contenido de *result* con cada argumento perteneciente a la GQueue respecto al orden de entrada. Eliminando, en cada instancia, la memoria que correspondía al puntero anterior de esta variable principal. Luego se agrega un espacio para mejorar la legibilidad.
+* Argumentos: En este caso, se utilizó un for loop para concatenar el contenido de *result* con cada argumento perteneciente a la GQueue respecto al orden de entrada. Eliminando, en cada instancia, la memoria que correspondía al puntero anterior de esta variable principal. Luego se agrega el operador **|** correspondiente (excepto en el caso del ultimo elemento de la GQueue)
 
 * Should_wait: Por último, en el caso que el proceso del pipeline se vaya a ejecutar en el background (no hace falta esperar la ejecución), simplemente agregamos en *result* el operador **&**.
