@@ -5,7 +5,7 @@
 #include <string.h>
 #include <unistd.h>
  
-struct cmd_type internal_cmd_list[count_internal_cmd] = {{"cd",cd_run},{"help",help_run},{"exit",exit_run}};
+struct cmd_type internal_cmd_list[count_internal_cmd] = {{"help",help_run},{"cd",cd_run},{"exit",exit_run}};
 
 bool are_str_equal(char *s1, char *s2){
     return strcmp(s1, s2) == 0;

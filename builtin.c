@@ -29,9 +29,11 @@ void builtin_run(scommand cmd) {
 
     char *command = scommand_front(cmd);
 
-    for(unsigned int i = 0; i < count_internal_cmd; i++){
-        if(are_str_equal(command,internal_cmd_list[i].name)){
-            (*internal_cmd_list[i].function)(cmd);
-        }
+    unsigned int i = 0u;
+    while(! are_str_equal(internal_cmd_list[i].name,command)){
+        ++i;
     }
+    
+    (*internal_cmd_list[i].function)(cmd);
+    
 }

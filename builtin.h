@@ -3,7 +3,6 @@
 
 #include <stdbool.h>
 
-#include "command.h"
 #include "internal_commands.h"
 
 bool builtin_is_internal(scommand cmd);

@@ -1,5 +1,4 @@
 #include "../../builtin.h"
-#include "../../command.h"
 #include <assert.h>
 #include <glib.h>
 #include <stdio.h>
@@ -51,6 +50,15 @@ void test_help(void){
     scommand_destroy(help_cmd);
 }
 
+void test_exit(void){
+    const char* trash="asjafsjfasjafskasfjkas&4";
+    scommand exit_cmd = scommand_new ();
+    scommand_push_back (exit_cmd, strdup ("exit"));
+    scommand_push_back (exit_cmd, strdup (trash));
+    builtin_run(exit_cmd);
+    scommand_destroy(exit_cmd);
+}
+
 void test_cd(void){
     const char* test_path="../../";
     scommand cd_cmd = scommand_new ();
@@ -86,6 +94,7 @@ int main(void) {
 
     test_help();
     test_cd();
+    test_exit();
 
     return 0;
 }
