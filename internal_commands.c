@@ -1,4 +1,5 @@
 #include "internal_commands.h"
+#include "strextra.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,33 +14,43 @@ bool are_str_equal(char *s1, char *s2){
 
 // FUNCTIONS TO RUN COMMANDS
 
+static int do_cd_syscall(char * input_path){
+    return chdir(input_path);
+}
+
 void cd_run(scommand cmd){
-    assert(are_str_equal(scommand_front(cmd),"cd"));  
+    assert(are_str_equal(scommand_front(cmd),"cd"));
+
     char * input_path = NULL;
     int cmd_length = scommand_length(cmd);
 
-    if(cmd_length>2){ 
+    if(cmd_length > 2){ 
         printf("mybash: cd: demasiados argumentos\n"); // The cd command only has 1 or 2 args
-    
-    } else {
-
+    } else if(cmd_length == 2) {
         scommand_pop_front(cmd); // Remove the "cmd" part of the cmd
-        input_path = scommand_front(cmd); // Access to the first arg of the cmd
-        int ret_chdir = 0;
-        if(cmd_length == 1){
-            input_path = getenv("HOME");
-        } else {
-            if(input_path[0] == '~'){
-                ret_chdir = chdir(getenv("HOME"));
-                memmove(input_path, input_path+1, strlen(input_path));
-            }
-            if(ret_chdir == 0){
-                ret_chdir = chdir(input_path);
-            }
+
+        input_path = strmerge("", scommand_front(cmd));
+
+        if(input_path[0] == '~'){
+            memmove(input_path, input_path+1, strlen(input_path));
+
+            char *auxiliar_to_remove = input_path;
+            input_path = strmerge(getenv("HOME"),input_path);
+            free(auxiliar_to_remove);
         }
-        if(ret_chdir != 0){ // if chdir has a error
+
+        if(do_cd_syscall(input_path) < 0){
             perror("mybash: cd: "); // Print the error message of chdir
         }
+    } else {
+        input_path = strmerge("",getenv("HOME"));
+        if(do_cd_syscall(input_path) < 0){
+            perror("mybash: cd: "); // Print the error message of chdir
+        }
+    }
+    if(input_path != NULL){
+        free(input_path);
+        input_path = NULL;
     }
 }
 

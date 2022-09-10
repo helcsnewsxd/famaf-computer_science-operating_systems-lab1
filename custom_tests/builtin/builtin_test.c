@@ -60,10 +60,10 @@ void test_exit(void){
 }
 
 void test_cd(void){
-    const char* test_path="../../";
+    const char* test_path="/home/helcsnewsxd/Documentos/Study/FaMAF/so22lab1g12/custom_tests/builtin";
     scommand cd_cmd = scommand_new ();
     scommand_push_back (cd_cmd, strdup ("cd"));
-    scommand_push_back (cd_cmd, strdup (test_path));
+    // scommand_push_back (cd_cmd, strdup (test_path));
     char * direccion = NULL;
     builtin_run(cd_cmd);
     direccion = getcwd(NULL,0);
@@ -80,21 +80,21 @@ int main(void) {
     // assert(test_internal(strdup("exit")) == true);
     // assert(test_internal(strdup("NoSoyUnComandoInterno")) == false);
 
-    // // Test alone when pipeline has only one element
+    // Test alone when pipeline has only one element
     // assert(test_alone_when_alone(strdup("cd")) == true);
     // assert(test_alone_when_alone(strdup("help")) == true);
     // assert(test_alone_when_alone(strdup("exit")) == true);
     // assert(test_alone_when_alone(strdup("NoSoyUnComandoInterno")) == false);
 
-    // // Test alone when pipeline has more than 1 element
+    // Test alone when pipeline has more than 1 element
     // assert(test_alone_when_not_alone(strdup("cd")) == false);
     // assert(test_alone_when_not_alone(strdup("help")) == false);
     // assert(test_alone_when_not_alone(strdup("exit")) == false);
     // assert(test_alone_when_not_alone(strdup("NoSoyUnComandoInterno")) == false);
 
-    test_help();
+    // test_help();
     test_cd();
-    test_exit();
+    // test_exit();
 
     return 0;
 }
