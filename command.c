@@ -134,6 +134,19 @@ char *scommand_get_redir_out(const scommand self) {
     return self->sc_file_output;
 }
 
+char **scommand_to_char_list(const scommand self){
+    assert(self != NULL);
+    
+    const unsigned int scmd_length = g_queue_get_length(self->sc_arguments);
+    char **argv = (char **)malloc(sizeof(char *) * scmd_length);
+    
+    for(unsigned int i = 0; i < scmd_length; i++){
+        argv[i] = g_queue_peek_nth(self->sc_arguments,i);
+    }
+
+    return argv;
+}
+
 // ----------- FUNCTION TO DEBUG --------------
 
 char *scommand_to_string(const scommand self) {
