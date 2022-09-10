@@ -15,8 +15,10 @@ static void show_prompt(void) {
 
 int main(int argc, char *argv[]) {
     pipeline pipe;
+    pipe = NULL;
+    pipe = pipe;
     Parser input;
-    bool quit = false;
+    quit = false; // initialize variable (in builtin.h)
 
     input = parser_new(stdin);
     while (!quit) {

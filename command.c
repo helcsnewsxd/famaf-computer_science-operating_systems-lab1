@@ -150,9 +150,11 @@ char *scommand_to_string(const scommand self) {
         // strmerge calls.
         for (unsigned int i = 0; i < sc_args_length; i++) {
             char *auxiliar_to_remove = sc_shell_representation;
-            sc_shell_representation = strmerge(sc_shell_representation, " ");
-            free(auxiliar_to_remove);
-
+            if(i != 0) {
+                sc_shell_representation = strmerge(sc_shell_representation, " ");
+                free(auxiliar_to_remove);
+            }
+            
             auxiliar_to_remove = sc_shell_representation;
             sc_shell_representation =
                 strmerge(sc_shell_representation, g_queue_peek_nth(self->sc_arguments, i));

@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#include "command.h"
+#include "internal_commands.h"
 
 bool builtin_is_internal(scommand cmd);
 /*
@@ -19,7 +19,7 @@ bool builtin_alone(pipeline p);
  * Indica si el pipeline tiene solo un elemento y si este se corresponde a un
  * comando interno.
  *
- * REQUIRES: p != NULL
+ *scommand cmd REQUIRES: p != NULL
  *
  * ENSURES:
  *
