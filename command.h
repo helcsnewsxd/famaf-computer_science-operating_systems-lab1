@@ -118,6 +118,13 @@ char * scommand_get_redir_out(const scommand self);
  * Requires: self!=NULL
  */
 
+char **scommand_to_char_list(const scommand self);
+/**
+ * Genera un array de strings (puntero a char) en base a los argumentos del comando simple
+ * 
+ * Requires: self != NULL
+ */
+
 char * scommand_to_string(const scommand self);
 /* Preety printer para hacer debugging/logging.
  * Genera una representación del comando simple en un string (aka "serializar")
