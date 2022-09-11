@@ -7,11 +7,7 @@
 #include "parser.h"
 #include "parsing.h"
 #include "builtin.h"
-
-static void show_prompt(void) {
-    printf ("mybash> ");
-    fflush (stdout);
-}
+#include "prompt.h"
 
 int main(int argc, char *argv[]) {
     pipeline pipe = NULL;
