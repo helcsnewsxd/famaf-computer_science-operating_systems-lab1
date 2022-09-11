@@ -22,10 +22,12 @@ static pipeline get_pipeline_from_string(char *input_str) {
     return pipe;
 }
 
-// static void test_simple_command(char *input) {
-//     pipeline pipe = get_pipeline_from_string(input);
-//     execute_pipeline(pipe);
-// }
+static void test_simple_command() {
+    char *input = "ls -l";
+    pipeline pipe = get_pipeline_from_string(input);
+    execute_pipeline(pipe);
+}
+
 static void test_helper(char *cmd) {
     pipeline pipe1 = get_pipeline_from_string(strdup(cmd));
     char *pipe_str = pipeline_to_string(pipe1);
@@ -35,7 +37,8 @@ static void test_helper(char *cmd) {
 int main(void) {
     // test if helper function works
     test_helper("ls -l");
+    test_simple_command();
 
-    printf("All tests passed!\n");
+    printf("\nAll tests passed!\n");
     return 0;
 }
