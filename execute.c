@@ -12,22 +12,35 @@
 #include "command.h"
 #include "execute.h"
 
-static void handle_redirection(scommand command) {
+static int spawn_subprocess(int in_fd, int out_fd, char **argv) {
+    pid_t pid = fork();
+
+    if (pid == 0) {
+        if (in_fd != STDIN_FILENO) {
+            dup2(in_fd, STDIN_FILENO);
+            close(in_fd);
+        }
+
+        if (out_fd != STDOUT_FILENO) {
+            dup2(out_fd, STDOUT_FILENO);
+            close(out_fd);
+        }
+
+        return execvp(argv[0], argv);
+    }
+
+    return pid;
+}
+
+static void execute_external_scommand(scommand command) {
+    char **argv = scommand_to_char_list(command); // return scommand as string array
     char *redir_in = scommand_get_redir_in(command);
     char *redir_out = scommand_get_redir_out(command);
-    int fd_in, fd_out;
 
-    if (redir_in != NULL) {
-        fd_in = open(redir_in, O_RDONLY);
-        dup2(fd_in, STDIN_FILENO);
-        close(fd_in);
-    }
+    int fd_in = open(redir_in, O_RDONLY);
+    int fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
 
-    if (redir_out != NULL) {
-        fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-        dup2(fd_out, STDOUT_FILENO);
-        close(fd_out);
-    }
+    spawn_subprocess(fd_in, fd_out, argv);
 }
 
 static void execute_single_command(pipeline p) {
@@ -38,20 +51,12 @@ static void execute_single_command(pipeline p) {
         builtin_run(command);
     }
 
-    int pid_fork = fork();
-    if (pid_fork < 0) {
-        perror("System error with fork: ");
-        exit(EXIT_FAILURE);
-    } else if (pid_fork == 0) {
-        char **argv = scommand_to_char_list(command); // return scommand as string array
-        char *cmd = argv[0];
-        handle_redirection(command);
-        execvp(cmd, argv); // cmd it's supposed to be present on argv
-        printf("Esto no tendria que aparecer\n");
-    } else if (should_wait) {
+    execute_external_scommand(command);
+    if (should_wait) {
         wait(NULL);
     }
 }
+
 static void execute_multiple_commands(pipeline p) {
     // TODO
     assert(p == p);
@@ -80,6 +85,8 @@ void execute_pipeline(pipeline apipe) {
 
     if (should_wait) {
         execute_pipeline_on_foreground(apipe);
+
+        // TODO wait for children
     } else {
         execute_pipeline_on_background(apipe);
     }
