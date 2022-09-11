@@ -12,6 +12,24 @@
 #include "command.h"
 #include "execute.h"
 
+static void handle_redirection(scommand command) {
+    char *redir_in = scommand_get_redir_in(command);
+    char *redir_out = scommand_get_redir_out(command);
+    int fd_in, fd_out;
+
+    if (redir_in != NULL) {
+        fd_in = open(redir_in, O_RDONLY);
+        dup2(fd_in, STDIN_FILENO);
+        close(fd_in);
+    }
+
+    if (redir_out != NULL) {
+        fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+        dup2(fd_out, STDOUT_FILENO);
+        close(fd_out);
+    }
+}
+
 static void execute_single_command(pipeline p) {
     bool should_wait = pipeline_get_wait(p);
     scommand command = pipeline_front(p);
@@ -19,6 +37,8 @@ static void execute_single_command(pipeline p) {
     if (builtin_alone(p)) {
         builtin_run(command);
     }
+
+    handle_redirection(command);
 
     int pid_fork = fork();
     if (pid_fork < 0) {
