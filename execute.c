@@ -38,8 +38,6 @@ static void execute_single_command(pipeline p) {
         builtin_run(command);
     }
 
-    handle_redirection(command);
-
     int pid_fork = fork();
     if (pid_fork < 0) {
         perror("System error with fork: ");
@@ -47,6 +45,7 @@ static void execute_single_command(pipeline p) {
     } else if (pid_fork == 0) {
         char **argv = scommand_to_char_list(command); // return scommand as string array
         char *cmd = argv[0];
+        handle_redirection(command);
         execvp(cmd, argv); // cmd it's supposed to be present on argv
         printf("Esto no tendria que aparecer\n");
     } else if (should_wait) {
