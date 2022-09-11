@@ -1,12 +1,12 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
+#include "builtin.h"
 #include "command.h"
 #include "execute.h"
 #include "parser.h"
 #include "parsing.h"
-#include "builtin.h"
 #include "prompt.h"
 
 int main(int argc, char *argv[]) {
@@ -18,8 +18,10 @@ int main(int argc, char *argv[]) {
         show_prompt();
         pipe = parse_pipeline(input);
 
-        execute_pipeline(pipe);
-        pipeline_destroy(pipe);
+        if (pipe != NULL) {
+            execute_pipeline(pipe);
+            pipe = pipeline_destroy(pipe);
+        }
 
         /* ¿Hay que salir luego de ejecutar? */
         quit = parser_at_eof(input);
@@ -28,4 +30,3 @@ int main(int argc, char *argv[]) {
     input = NULL;
     return EXIT_SUCCESS;
 }
-
