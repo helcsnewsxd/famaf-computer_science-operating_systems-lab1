@@ -1,72 +1,67 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
 #include <assert.h>
-#include <unistd.h>
-#include <sys/types.h> 
-#include <time.h>
-#include <sys/wait.h>
 #include <fcntl.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <time.h>
+#include <unistd.h>
 
-#include "execute.h"
 #include "builtin.h"
 #include "command.h"
+#include "execute.h"
 
+static void execute_single_command(pipeline p) {
+    bool should_wait = pipeline_get_wait(p);
+    scommand command = pipeline_front(p);
 
-
-void execute_pipeline(pipeline apipe){
-    // REQUIRES
-    assert(apipe != NULL);
-
-    scommand fst_command = pipeline_front(apipe);
-    
-    char *redir_in = scommand_get_redir_in(fst_command);
-    char *redir_out = scommand_get_redir_out(fst_command);
-
-    if(redir_in != NULL){
-        close(STDIN_FILENO);
+    if (builtin_alone(p)) {
+        builtin_run(command);
     }
 
-    if(redir_out != NULL){
-        close(STDOUT_FILENO);
-        
+    int pid_fork = fork();
+    if (pid_fork < 0) {
+        perror("System error with fork: ");
+        exit(EXIT_FAILURE);
+    } else if (pid_fork == 0) {
+        char **argv = scommand_to_char_list(command); // return scommand as string array
+        char *cmd = argv[0];
+        execvp(cmd, argv); // cmd it's supposed to be present on argv
+        printf("Esto no tendria que aparecer\n");
+    } else if (should_wait) {
+        wait(NULL);
     }
-    
+}
+static void execute_multiple_commands(pipeline p) {
+    // TODO
+    assert(p == p);
+}
 
-    if(builtin_alone(apipe)){
-        // run internal command
-        builtin_run(fst_command); 
-    } else {
-        // one external command
-        int pid_fork = fork();
-        if(pid_fork < 0){
-            perror("System error with fork: ");
-            exit(EXIT_FAILURE);
-        } else if (pid_fork == 0) {
-            char **argv = scommand_to_char_list(fst_command); // auxiliar function that saves args in argv (list of pointers)
-            execvp(argv[0], argv);
-            printf("Esto no tendria que aparecer\n");
-        } else {
-            wait(NULL);
-        }
+static void execute_pipeline_on_foreground(pipeline p) {
+    unsigned int cmd_quantity = pipeline_length(p);
+
+    if (cmd_quantity == 1u) {
+        execute_single_command(p);
+    } else if (cmd_quantity > 1u) {
+        execute_multiple_commands(p);
     }
 }
 
-// "ls"  					execvp() fork() wait()
-// 
-// "ls &"  				    execvp() fork()
-// 
-// "ls -l"  				execvp() fork() wait()
-// 
-// "ls -l > salida.txt" 	execvp() fork() wait() open() dup2()
-// 
-// "sort -l < entrada.txt"  execvp() fork() wait() open() dup2()
+static void execute_pipeline_on_background(pipeline p) {
+    // TODO
+    assert(p == p);
+}
 
-// char *redir_out = scommand_get_redir_out(fst_command);
+void execute_pipeline(pipeline apipe) {
+    // REQUIRES
+    assert(apipe != NULL);
 
-// if (redir_out != NULL) {
-//     int fd = open(redir_out, O_WRONLY|O_CREAT); // opens file in write mode, if the file doesn't exist, it's created.
-//     dup2(fd,1); // change where the output will be shown. In this case, it'll be shown in the file fd is storing. (i.e. stdout now points to redir_out (1 == stdout))
-//     builtin_run(fst_command);
-//     close(fd); // closes stdout.
-// }
+    bool should_wait = pipeline_get_wait(apipe);
+
+    if (should_wait) {
+        execute_pipeline_on_foreground(apipe);
+    } else {
+        execute_pipeline_on_background(apipe);
+    }
+}
