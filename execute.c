@@ -12,25 +12,36 @@
 #include "command.h"
 #include "execute.h"
 
+static void throw_error_msg_if(bool condition, char *message) {
+    if (condition) {
+        perror(message);
+        exit(EXIT_FAILURE);
+    }
+}
+
 static int spawn_subprocess(int in_fd, int out_fd, scommand cmd, bool should_wait) {
     char **argv = scommand_to_char_list(cmd);
+    int syscall_result;
     pid_t pid = fork();
+    throw_error_msg_if(pid == -1, "fork");
     if (pid == 0) {
         if (in_fd != STDIN_FILENO) {
-            dup2(in_fd, STDIN_FILENO);
+            syscall_result = dup2(in_fd, STDIN_FILENO);
+            throw_error_msg_if(syscall_result == -1, "dup2");
             close(in_fd);
         }
 
         if (out_fd != STDOUT_FILENO) {
-            dup2(out_fd, STDOUT_FILENO);
+            syscall_result = dup2(out_fd, STDOUT_FILENO);
+            throw_error_msg_if(syscall_result == -1, "dup2");
             close(out_fd);
         }
         execvp(argv[0], argv);
-
-        perror("execvp");
+        throw_error_msg_if(true, "execvp");
     }
     if (should_wait) {
-        wait(NULL);
+        syscall_result = wait(NULL);
+        throw_error_msg_if(syscall_result == -1, "wait");
     }
     free(argv);
     return pid;
@@ -41,7 +52,10 @@ static void execute_external_scommand(scommand command, bool should_wait) {
     char *redir_out = scommand_get_redir_out(command);
 
     int fd_in = open(redir_in, O_RDONLY);
+    throw_error_msg_if(fd_in == -1, "open");
+
     int fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+    throw_error_msg_if(fd_out == -1, "open");
 
     spawn_subprocess(fd_in, fd_out, command, should_wait);
 }
@@ -58,6 +72,7 @@ static void execute_single_command(pipeline p) {
 }
 
 static void execute_multiple_commands(pipeline p) {
+    int syscall_result;
     int in_fd, fd[2];
     int n = pipeline_length(p);
     bool should_wait = pipeline_get_wait(p);
@@ -66,11 +81,14 @@ static void execute_multiple_commands(pipeline p) {
     // The first process should get its input from stdin
     in_fd = STDIN_FILENO;
     for (int i = 0; i < n - 1; ++i) {
-        pipe(fd);
+        syscall_result = pipe(fd);
+        throw_error_msg_if(syscall_result == -1, "pipe");
+
         cmd = pipeline_front(p);
         // f [1] is the write end of the pipe, we carry `in` from the prev iteration.
         spawn_subprocess(in_fd, fd[1], cmd, should_wait);
-        close(fd[1]);
+        syscall_result = close(fd[1]);
+        throw_error_msg_if(syscall_result == -1, "close");
         // set input fd to read end of pipe
         in_fd = fd[0];
         pipeline_pop_front(p);
