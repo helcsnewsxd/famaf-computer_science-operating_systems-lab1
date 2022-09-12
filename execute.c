@@ -29,7 +29,7 @@ static int spawn_subprocess(int in_fd, int out_fd, scommand cmd, bool should_wai
 
         perror("execvp");
     }
-    if(should_wait){
+    if (should_wait) {
         wait(NULL);
     }
     free(argv);
@@ -69,15 +69,15 @@ static void execute_multiple_commands(pipeline p) {
         pipe(fd);
         cmd = pipeline_front(p);
         // f [1] is the write end of the pipe, we carry `in` from the prev iteration.
-        spawn_subprocess(in_fd, fd[1], cmd, false);
+        spawn_subprocess(in_fd, fd[1], cmd, should_wait);
         close(fd[1]);
         // set input fd to read end of pipe
         in_fd = fd[0];
         pipeline_pop_front(p);
     }
 
-    // read fron previous pipe and output to stdout
     cmd = pipeline_front(p);
+    // read fron previous pipe and output to stdout
     spawn_subprocess(in_fd, STDOUT_FILENO, cmd, should_wait);
     pipeline_pop_front(p);
 }
@@ -93,6 +93,4 @@ void execute_pipeline(pipeline apipe) {
     } else if (cmd_quantity > 1u) {
         execute_multiple_commands(apipe);
     }
-
-    pipeline_destroy(apipe);
 }
