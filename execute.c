@@ -8,6 +8,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "tests/syscall_mock.h"
+
 #include "builtin.h"
 #include "command.h"
 #include "execute.h"
@@ -51,7 +53,7 @@ static int get_input_fd(char *redir_in) {
     int fd_in = STDIN_FILENO;
 
     if (redir_in != NULL) {
-        fd_in = open(redir_in, O_RDONLY);
+        fd_in = open(redir_in, O_RDONLY, 0u);
         throw_error_msg_if(fd_in == -1, "OpenError");
     }
     return fd_in;
