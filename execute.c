@@ -23,25 +23,25 @@ static int spawn_subprocess(int in_fd, int out_fd, scommand cmd, bool should_wai
     char **argv = scommand_to_char_list(cmd);
     int syscall_result;
     pid_t pid = fork();
-    throw_error_msg_if(pid == -1, "fork");
+    throw_error_msg_if(pid == -1, "ForkError");
     if (pid == 0) {
         if (in_fd != STDIN_FILENO) {
             syscall_result = dup2(in_fd, STDIN_FILENO);
-            throw_error_msg_if(syscall_result == -1, "dup2");
+            throw_error_msg_if(syscall_result == -1, "Dup2Error");
             close(in_fd);
         }
 
         if (out_fd != STDOUT_FILENO) {
             syscall_result = dup2(out_fd, STDOUT_FILENO);
-            throw_error_msg_if(syscall_result == -1, "dup2");
+            throw_error_msg_if(syscall_result == -1, "Dup2Error");
             close(out_fd);
         }
         execvp(argv[0], argv);
-        throw_error_msg_if(true, "execvp");
+        throw_error_msg_if(true, "ExecutionError");
     }
     if (should_wait) {
-        syscall_result = waitpid(pid,NULL,0);
-        throw_error_msg_if(syscall_result == -1, "wait");
+        syscall_result = waitpid(pid, NULL, 0);
+        throw_error_msg_if(syscall_result == -1, "WaitError");
     }
     free(argv);
     return pid;
@@ -52,7 +52,7 @@ static int get_input_fd(char *redir_in) {
 
     if (redir_in != NULL) {
         fd_in = open(redir_in, O_RDONLY);
-        throw_error_msg_if(fd_in == -1, "open");
+        throw_error_msg_if(fd_in == -1, "OpenError");
     }
     return fd_in;
 }
@@ -61,7 +61,7 @@ static int get_output_fd(char *redir_out) {
     int fd_out = STDOUT_FILENO;
     if (redir_out != NULL) {
         fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-        throw_error_msg_if(fd_out == -1, "open");
+        throw_error_msg_if(fd_out == -1, "OpenError");
     }
     return fd_out;
 }
@@ -100,13 +100,13 @@ static void execute_multiple_commands(pipeline p) {
     // The first process should get its input normally
     for (int i = 0; i < n - 1; ++i) {
         syscall_result = pipe(fd);
-        throw_error_msg_if(syscall_result == -1, "pipe");
+        throw_error_msg_if(syscall_result == -1, "PipeError");
 
         cmd = (i == 0) ? cmd : pipeline_front(p);
         // f [1] is the write end of the pipe, we carry `in` from the prev iteration.
         spawn_subprocess(in_fd, fd[1], cmd, should_wait);
         syscall_result = close(fd[1]);
-        throw_error_msg_if(syscall_result == -1, "close");
+        throw_error_msg_if(syscall_result == -1, "CloseError");
         // set input fd to read end of pipe
         in_fd = fd[0];
         pipeline_pop_front(p);
