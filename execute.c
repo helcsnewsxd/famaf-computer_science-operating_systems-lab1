@@ -47,23 +47,32 @@ static int spawn_subprocess(int in_fd, int out_fd, scommand cmd, bool should_wai
     return pid;
 }
 
-static void execute_external_scommand(scommand command, bool should_wait) {
-    char *redir_in = scommand_get_redir_in(command);
-    char *redir_out = scommand_get_redir_out(command);
-
-    // set default file descriptors
+static int get_input_fd(char *redir_in) {
     int fd_in = STDIN_FILENO;
-    int fd_out = STDOUT_FILENO;
 
     if (redir_in != NULL) {
         fd_in = open(redir_in, O_RDONLY);
         throw_error_msg_if(fd_in == -1, "open");
     }
+    return fd_in;
+}
 
+static int get_output_fd(char *redir_out) {
+    int fd_out = STDOUT_FILENO;
     if (redir_out != NULL) {
         fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
         throw_error_msg_if(fd_out == -1, "open");
     }
+    return fd_out;
+}
+
+static void execute_external_scommand(scommand command, bool should_wait) {
+    char *redir_in = scommand_get_redir_in(command);
+    char *redir_out = scommand_get_redir_out(command);
+
+    // set default file descriptors
+    int fd_in = get_input_fd(redir_in);
+    int fd_out = get_output_fd(redir_out);
 
     spawn_subprocess(fd_in, fd_out, command, should_wait);
 }
