@@ -77,7 +77,7 @@ void scommand_set_redir_in(scommand self, char *filename) {
     assert(self != NULL);
 
     // If there is another old argument
-    if (self->sc_file_input != NULL) {
+    if(self->sc_file_input != NULL){
         free(self->sc_file_input);
     }
 
@@ -89,7 +89,7 @@ void scommand_set_redir_out(scommand self, char *filename) {
     assert(self != NULL);
 
     // If there is another old argument
-    if (self->sc_file_output != NULL) {
+    if(self->sc_file_output != NULL){
         free(self->sc_file_output);
     }
 
@@ -134,14 +134,14 @@ char *scommand_get_redir_out(const scommand self) {
     return self->sc_file_output;
 }
 
-char **scommand_to_char_list(const scommand self) {
+char **scommand_to_char_list(const scommand self){
     assert(self != NULL);
-
+    
     const unsigned int scmd_length = g_queue_get_length(self->sc_arguments);
-    char **argv = (char **)malloc(sizeof(char *) * (scmd_length + 1));
-
-    for (unsigned int i = 0; i < scmd_length; i++) {
-        argv[i] = g_queue_peek_nth(self->sc_arguments, i);
+    char **argv = (char **)malloc(sizeof(char *) * (scmd_length+1));
+    
+    for(unsigned int i = 0; i < scmd_length; i++){
+        argv[i] = g_queue_peek_nth(self->sc_arguments,i);
     }
     argv[scmd_length] = NULL; // Ends in null because later in execute.c we need this
     return argv;
@@ -163,11 +163,11 @@ char *scommand_to_string(const scommand self) {
         // strmerge calls.
         for (unsigned int i = 0; i < sc_args_length; i++) {
             char *auxiliar_to_remove = sc_shell_representation;
-            if (i != 0) {
+            if(i != 0) {
                 sc_shell_representation = strmerge(sc_shell_representation, " ");
                 free(auxiliar_to_remove);
             }
-
+            
             auxiliar_to_remove = sc_shell_representation;
             sc_shell_representation =
                 strmerge(sc_shell_representation, g_queue_peek_nth(self->sc_arguments, i));
