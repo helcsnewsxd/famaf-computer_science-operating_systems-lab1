@@ -55,16 +55,32 @@ static void test_helper(char *cmd) {
     free(pipe_str);
 }
 
+static void test_redir() {
+    char *input = "sort -r < input.txt > output1";
+    pipeline pipe = get_pipeline_from_string(input);
+    execute_pipeline(pipe);
+}
+
+static void test_pipeline_redir() {
+    char *input = "sort < input.txt | cat | sort -r > output2";
+    pipeline pipe = get_pipeline_from_string(input);
+    execute_pipeline(pipe);
+}
+
 int main(void) {
     // test if helper function works
-    //test_helper("ls -l");
-    //test_simple_command();
+    // test_helper("ls -l");
+    // test_simple_command();
     printf("\n");
-    //test_2_commands();
+    test_2_commands();
     printf("\n");
-    //test_3_commands();
+    test_3_commands();
     printf("\n");
     test_4_commands();
+    printf("\n");
+    test_redir();
+    printf("\n");
+    test_pipeline_redir();
 
     printf("\nAll tests passed!\n");
     return 0;

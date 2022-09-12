@@ -90,18 +90,19 @@ static void execute_single_command(pipeline p) {
 
 static void execute_multiple_commands(pipeline p) {
     int syscall_result;
-    int in_fd, fd[2];
+    int fd[2];
     int n = pipeline_length(p);
     bool should_wait = pipeline_get_wait(p);
-    scommand cmd = NULL;
+    scommand cmd = pipeline_front(p);
 
-    // The first process should get its input from stdin
-    in_fd = STDIN_FILENO;
+    char *redir_in = scommand_get_redir_in(cmd);
+    int in_fd = get_input_fd(redir_in);
+    // The first process should get its input normally
     for (int i = 0; i < n - 1; ++i) {
         syscall_result = pipe(fd);
         throw_error_msg_if(syscall_result == -1, "pipe");
 
-        cmd = pipeline_front(p);
+        cmd = (i == 0) ? cmd : pipeline_front(p);
         // f [1] is the write end of the pipe, we carry `in` from the prev iteration.
         spawn_subprocess(in_fd, fd[1], cmd, should_wait);
         syscall_result = close(fd[1]);
@@ -112,8 +113,13 @@ static void execute_multiple_commands(pipeline p) {
     }
 
     cmd = pipeline_front(p);
-    // read fron previous pipe and output to stdout
-    spawn_subprocess(in_fd, STDOUT_FILENO, cmd, should_wait);
+    char *redir_out = scommand_get_redir_out(cmd);
+
+    // The first process should give its output normally
+    int fd_out = get_output_fd(redir_out);
+
+    // read fron previous pipe and output normally
+    spawn_subprocess(in_fd, fd_out, cmd, should_wait);
     pipeline_pop_front(p);
 }
 
