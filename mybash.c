@@ -24,7 +24,10 @@ int main(int argc, char *argv[]) {
         }
 
         /* ¿Hay que salir luego de ejecutar? */
-        quit = parser_at_eof(input);
+        if(parser_at_eof(input)){
+            quit = true;
+            printf("\n");
+        }
     }
     parser_destroy(input);
     input = NULL;
