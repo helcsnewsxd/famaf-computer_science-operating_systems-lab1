@@ -51,11 +51,19 @@ static void execute_external_scommand(scommand command, bool should_wait) {
     char *redir_in = scommand_get_redir_in(command);
     char *redir_out = scommand_get_redir_out(command);
 
-    int fd_in = open(redir_in, O_RDONLY);
-    throw_error_msg_if(fd_in == -1, "open");
+    // set default file descriptors
+    int fd_in = STDIN_FILENO;
+    int fd_out = STDOUT_FILENO;
 
-    int fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-    throw_error_msg_if(fd_out == -1, "open");
+    if (redir_in != NULL) {
+        fd_in = open(redir_in, O_RDONLY);
+        throw_error_msg_if(fd_in == -1, "open");
+    }
+
+    if (redir_out != NULL) {
+        fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+        throw_error_msg_if(fd_out == -1, "open");
+    }
 
     spawn_subprocess(fd_in, fd_out, command, should_wait);
 }
