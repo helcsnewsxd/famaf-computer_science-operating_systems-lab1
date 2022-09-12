@@ -74,9 +74,9 @@ static void execute_single_command(pipeline p) {
 
     if (builtin_alone(p)) {
         builtin_run(command);
+    } else {
+        execute_external_scommand(command, should_wait);
     }
-
-    execute_external_scommand(command, should_wait);
 }
 
 static void execute_multiple_commands(pipeline p) {
