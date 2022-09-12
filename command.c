@@ -138,12 +138,12 @@ char **scommand_to_char_list(const scommand self){
     assert(self != NULL);
     
     const unsigned int scmd_length = g_queue_get_length(self->sc_arguments);
-    char **argv = (char **)malloc(sizeof(char *) * scmd_length);
+    char **argv = (char **)malloc(sizeof(char *) * (scmd_length+1));
     
     for(unsigned int i = 0; i < scmd_length; i++){
         argv[i] = g_queue_peek_nth(self->sc_arguments,i);
     }
-
+    argv[scmd_length] = NULL; // Ends in null because later in execute.c we need this
     return argv;
 }
 

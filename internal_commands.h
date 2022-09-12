@@ -26,6 +26,4 @@ void exit_run(scommand cmd);
 
 bool quit; // global variable to determine if the shell should close
 
-// A list of internal commands and pointers to corresponding functions
-
 #endif

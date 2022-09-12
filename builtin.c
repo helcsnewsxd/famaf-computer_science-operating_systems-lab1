@@ -9,7 +9,7 @@ bool builtin_is_internal(scommand cmd) {
 
     bool cmd_is_internal = false;
     for(unsigned int i = 0; i < count_internal_cmd; i++){
-        cmd_is_internal = cmd_is_internal || are_str_equal(command,internal_cmd_list[i].name);
+        cmd_is_internal |= are_str_equal(command,internal_cmd_list[i].name);
     }
 
     return cmd_is_internal;
