@@ -40,7 +40,7 @@ static int spawn_subprocess(int in_fd, int out_fd, scommand cmd, bool should_wai
         throw_error_msg_if(true, "execvp");
     }
     if (should_wait) {
-        syscall_result = wait(NULL);
+        syscall_result = waitpid(pid,NULL,0);
         throw_error_msg_if(syscall_result == -1, "wait");
     }
     free(argv);
