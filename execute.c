@@ -12,7 +12,8 @@
 #include "command.h"
 #include "execute.h"
 
-static int spawn_subprocess(int in_fd, int out_fd, char **argv) {
+static int spawn_subprocess(int in_fd, int out_fd, scommand cmd) {
+    char **argv = scommand_to_char_list(cmd);
     pid_t pid = fork();
 
     if (pid == 0) {
@@ -33,14 +34,13 @@ static int spawn_subprocess(int in_fd, int out_fd, char **argv) {
 }
 
 static void execute_external_scommand(scommand command) {
-    char **argv = scommand_to_char_list(command); // return scommand as string array
     char *redir_in = scommand_get_redir_in(command);
     char *redir_out = scommand_get_redir_out(command);
 
     int fd_in = open(redir_in, O_RDONLY);
     int fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
 
-    spawn_subprocess(fd_in, fd_out, argv);
+    spawn_subprocess(fd_in, fd_out, command);
 }
 
 static void execute_single_command(pipeline p) {
@@ -58,8 +58,34 @@ static void execute_single_command(pipeline p) {
 }
 
 static void execute_multiple_commands(pipeline p) {
-    // TODO
-    assert(p == p);
+    int i;
+    int in_fd, fd[2];
+    int n = 2; // pipeline_length(p);
+    scommand cmd;
+
+    // The first process should get its input from stdin
+    in_fd = STDIN_FILENO;
+
+    for (i = 0; i < n - 1; ++i) {
+        pipe(fd);
+        cmd = pipeline_front(p);
+
+        // f [1] is the write end of the pipe, we carry `in` from the prev iteration.
+        spawn_subprocess(in_fd, fd[1], cmd);
+        close(fd[1]);
+
+        // set input fd to read end of pipe
+        in_fd = fd[0];
+        pipeline_pop_front(p);
+        cmd = NULL;
+        wait(NULL);
+    }
+
+    // read fron previous pipe and output to stdout
+    cmd = pipeline_front(p);
+    spawn_subprocess(in_fd, STDOUT_FILENO, cmd);
+    pipeline_pop_front(p);
+    wait(NULL);
 }
 
 static void execute_pipeline_on_foreground(pipeline p) {
