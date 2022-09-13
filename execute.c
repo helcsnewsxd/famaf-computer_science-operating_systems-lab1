@@ -20,7 +20,7 @@ static void do_an_execute_single_command(pipeline apipe, int fd_read, int fd_wri
 
     if (builtin_alone(apipe)) {
         builtin_run(pipeline_front(apipe));
-        // printf("=== TERMINO el %s\n", scommand_front(cmd));
+        printf("=== TERMINO el %s\n", scommand_front(cmd));
         // Finish the command execute
     } else {
         int pid = fork();
@@ -28,37 +28,37 @@ static void do_an_execute_single_command(pipeline apipe, int fd_read, int fd_wri
 
         if (pid == 0) { // Child process
             // General execute of the inscruction in scommand
-            // printf("=== Estoy viendo la instruccion %s\n", scommand_to_string(cmd));
+            printf("=== Estoy viendo la instruccion %s\n", scommand_to_string(cmd));
 
             if (fd_read != -1) {
-                // printf("=== %s hace el cambio de INPUT a fd %d\n", scommand_front(cmd), fd_read);
+                printf("=== %s hace el cambio de INPUT a fd %d\n", scommand_front(cmd), fd_read);
                 // Change process' input to a file descriptor fd_read
                 change_file_descriptor_input_from_fd(fd_read);
             }
 
             if (fd_write != -1) {
-                // printf("=== %s hace el cambio de OUTPUT a fd %d\n", scommand_front(cmd),
-                // fd_write); Changes process' output to file descriptor fd_write
+                printf("=== %s hace el cambio de OUTPUT a fd %d\n", scommand_front(cmd), fd_write);
+                // Changes process' output to file descriptor fd_write
                 change_file_descriptor_output_from_fd(fd_write);
             }
 
             // Changes the file descriptors if there is a redir in/out to a file
-            // printf("=== Hago los cambios de fds en caso que redirija explicitamente a files\n");
+            printf("=== Hago los cambios de fds en caso que redirija explicitamente a files\n");
 
             change_file_descriptor_input(scommand_get_redir_in(cmd));
             change_file_descriptor_output(scommand_get_redir_out(cmd));
 
             // Execute of the command with the corresponding files in input/output
-            // printf("=== Me voy a ejecutar la instruccion %s\n", scommand_to_string(cmd));
+            printf("=== Me voy a ejecutar la instruccion %s\n", scommand_to_string(cmd));
 
             char **argv = scommand_to_char_list(cmd);
             execvp(argv[0], argv);
             SYS_ERROR(true, argv[0]);
         } else {
             // Waits for child to finish
-            // printf("=== MI HIJO ES %d\n", pid);
+            printf("=== MI HIJO ES %d\n", pid);
             waitpid(pid, NULL, 0u);
-            // printf("=== TERMINO el %s\n", scommand_front(cmd));
+            printf("=== TERMINO el %s\n", scommand_front(cmd));
             // End all the command execute
         }
     }
@@ -67,8 +67,7 @@ static void do_an_execute_single_command(pipeline apipe, int fd_read, int fd_wri
 static void do_an_execute_pipeline(pipeline apipe, int fd_read) {
     assert(apipe != NULL);
 
-    // printf("=== SOY %s con input de Pipe en %d\n", scommand_front(pipeline_front(apipe)),
-    // fd_read);
+    printf("=== SOY %s con input de Pipe en %d\n", scommand_front(pipeline_front(apipe)), fd_read);
 
     if (pipeline_length(apipe) == 1) { // BASE CASE
         do_an_execute_single_command(apipe, fd_read, -1);
@@ -80,22 +79,22 @@ static void do_an_execute_pipeline(pipeline apipe, int fd_read) {
         int syscall_result = pipe(fd_pipe); // Output of the current command
         SYS_ERROR(syscall_result == -1, "PipeError");
 
-        // printf("=== Creo la pipe %d de IN y %d de OUT\n", fd_pipe[0], fd_pipe[1]);
+        printf("=== Creo la pipe %d de IN y %d de OUT\n", fd_pipe[0], fd_pipe[1]);
 
         do_an_execute_single_command(apipe, fd_read, fd_pipe[1]);
-        // printf("=== Vuelvo\n");
+        printf("=== Vuelvo\n");
 
         // We close the pipe's write file descriptor
-        // printf("=== Cierro el fd's write de la pipe %d\n", fd_pipe[1]);
+        printf("=== Cierro el fd's write de la pipe %d\n", fd_pipe[1]);
         close(fd_pipe[1]);
 
         pipeline_pop_front(apipe);
 
         do_an_execute_pipeline(apipe, fd_pipe[0]); // fd_pipe[0] is the input of the next command
-        // printf("=== Volvere?\n");
+        printf("=== Volvere?\n");
 
         // We close the pipe's read file descriptor
-        // printf("=== Cierro el fd's read de la pipe %d\n", fd_pipe[0]);
+        printf("=== Cierro el fd's read de la pipe %d\n", fd_pipe[0]);
         close(fd_pipe[0]);
     }
 }
@@ -103,6 +102,8 @@ static void do_an_execute_pipeline(pipeline apipe, int fd_read) {
 void execute_pipeline(pipeline apipe) {
     // REQUIRES
     assert(apipe != NULL);
+
+    // printf("=== SOY la PIPELINE %s\n",pipeline_to_string(apipe));
 
     if (!pipeline_is_empty(apipe)) {
 

@@ -39,9 +39,15 @@ void change_file_descriptor_output(char *redir_out) {
 void change_file_descriptor_input_from_fd(int fd_act) {
     int syscall_result = dup2(fd_act, STDIN_FILENO);
     SYS_ERROR(syscall_result == -1, "Dup2Error");
+
+    syscall_result = close(fd_act);
+    SYS_ERROR(syscall_result == -1, "CloseError");
 }
 
 void change_file_descriptor_output_from_fd(int fd_act) {
     int syscall_result = dup2(fd_act, STDOUT_FILENO);
     SYS_ERROR(syscall_result == -1, "Dup2Error");
+
+    syscall_result = close(fd_act);
+    SYS_ERROR(syscall_result == -1, "CloseError");
 }
