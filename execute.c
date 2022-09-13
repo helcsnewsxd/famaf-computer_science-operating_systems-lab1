@@ -13,127 +13,103 @@
 #include "builtin.h"
 #include "command.h"
 #include "execute.h"
+#include "files_descriptors.h"
 
-static void throw_error_msg_if(bool condition, char *message) {
-    if (condition) {
-        perror(message);
-        exit(EXIT_FAILURE);
-    }
-}
+static void do_an_execute_single_command(pipeline apipe, int fd_read, int fd_write) {
+    scommand cmd = pipeline_front(apipe);
 
-static int spawn_subprocess(int in_fd, int out_fd, scommand cmd, bool should_wait) {
-    char **argv = scommand_to_char_list(cmd);
-    int syscall_result;
-    pid_t pid = fork();
-    throw_error_msg_if(pid == -1, "ForkError");
-    if (pid == 0) {
-        if (in_fd != STDIN_FILENO) {
-            syscall_result = dup2(in_fd, STDIN_FILENO);
-            throw_error_msg_if(syscall_result == -1, "Dup2Error");
-            close(in_fd);
-        }
-
-        if (out_fd != STDOUT_FILENO) {
-            syscall_result = dup2(out_fd, STDOUT_FILENO);
-            throw_error_msg_if(syscall_result == -1, "Dup2Error");
-            close(out_fd);
-        }
-        execvp(argv[0], argv);
-        throw_error_msg_if(true, "ExecutionError");
-    }
-    if (should_wait) {
-        syscall_result = waitpid(pid, NULL, 0);
-        throw_error_msg_if(syscall_result == -1, "WaitError");
-    }
-    free(argv);
-    return pid;
-}
-
-static int get_input_fd(char *redir_in) {
-    int fd_in = STDIN_FILENO;
-
-    if (redir_in != NULL) {
-        fd_in = open(redir_in, O_RDONLY, 0u);
-        throw_error_msg_if(fd_in == -1, "OpenError");
-    }
-    return fd_in;
-}
-
-static int get_output_fd(char *redir_out) {
-    int fd_out = STDOUT_FILENO;
-    if (redir_out != NULL) {
-        fd_out = open(redir_out, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-        throw_error_msg_if(fd_out == -1, "OpenError");
-    }
-    return fd_out;
-}
-
-static void execute_external_scommand(scommand command, bool should_wait) {
-    char *redir_in = scommand_get_redir_in(command);
-    char *redir_out = scommand_get_redir_out(command);
-
-    // set default file descriptors
-    int fd_in = get_input_fd(redir_in);
-    int fd_out = get_output_fd(redir_out);
-
-    spawn_subprocess(fd_in, fd_out, command, should_wait);
-}
-
-static void execute_single_command(pipeline p) {
-    bool should_wait = pipeline_get_wait(p);
-    scommand command = pipeline_front(p);
-
-    if (builtin_alone(p)) {
-        builtin_run(command);
+    if (builtin_alone(apipe)) {
+        builtin_run(pipeline_front(apipe));
+        // Finish the command execute
     } else {
-        execute_external_scommand(command, should_wait);
+        int pid = fork();
+        SYS_ERROR(pid == -1, "ForkError");
+
+        if (pid == 0) { // Child process
+            // General execute of the inscruction in scommand
+
+            if (fd_read != -1) {
+                // Change process' input to a file descriptor fd_read
+                change_file_descriptor_input_from_fd(fd_read);
+            }
+
+            if (fd_write != -1) {
+                // Changes process' output to file descriptor fd_write
+                change_file_descriptor_output_from_fd(fd_write);
+            }
+
+            // Changes the file descriptors if there is a redir in/out to a file
+
+            change_file_descriptor_input(scommand_get_redir_in(cmd));
+            change_file_descriptor_output(scommand_get_redir_out(cmd));
+
+            // Execute of the command with the corresponding files in input/output
+
+            char **argv = scommand_to_char_list(cmd);
+            execvp(argv[0], argv);
+            SYS_ERROR(true, argv[0]);
+        } else {
+            // Waits for child to finish
+            waitpid(pid, NULL, 0u);
+            // End all the command execute
+        }
     }
 }
 
-static void execute_multiple_commands(pipeline p) {
-    int syscall_result;
-    int fd[2];
-    int n = pipeline_length(p);
-    bool should_wait = pipeline_get_wait(p);
-    scommand cmd = pipeline_front(p);
+static void do_an_execute_pipeline(pipeline apipe, int fd_read) {
+    assert(apipe != NULL);
 
-    char *redir_in = scommand_get_redir_in(cmd);
-    int in_fd = get_input_fd(redir_in);
-    // The first process should get its input normally
-    for (int i = 0; i < n - 1; ++i) {
-        syscall_result = pipe(fd);
-        throw_error_msg_if(syscall_result == -1, "PipeError");
+    if (pipeline_length(apipe) == 1) { // BASE CASE
+        do_an_execute_single_command(apipe, fd_read, -1);
+        pipeline_pop_front(apipe);
 
-        cmd = (i == 0) ? cmd : pipeline_front(p);
-        // f [1] is the write end of the pipe, we carry `in` from the prev iteration.
-        spawn_subprocess(in_fd, fd[1], cmd, should_wait);
-        syscall_result = close(fd[1]);
-        throw_error_msg_if(syscall_result == -1, "CloseError");
-        // set input fd to read end of pipe
-        in_fd = fd[0];
-        pipeline_pop_front(p);
+    } else { // RECURSIVE CASE
+        // Create the in and out pipe buffers
+        int fd_pipe[2];
+        int syscall_result = pipe(fd_pipe); // Output of the current command
+        SYS_ERROR(syscall_result == -1, "PipeError");
+
+        do_an_execute_single_command(apipe, fd_read, fd_pipe[1]);
+
+        // We close the pipe's write file descriptor
+        close(fd_pipe[1]);
+
+        pipeline_pop_front(apipe);
+
+        do_an_execute_pipeline(apipe, fd_pipe[0]); // fd_pipe[0] is the input of the next command
+
+        // We close the pipe's read file descriptor
+        close(fd_pipe[0]);
     }
-
-    cmd = pipeline_front(p);
-    char *redir_out = scommand_get_redir_out(cmd);
-
-    // The first process should give its output normally
-    int fd_out = get_output_fd(redir_out);
-
-    // read fron previous pipe and output normally
-    spawn_subprocess(in_fd, fd_out, cmd, should_wait);
-    pipeline_pop_front(p);
 }
 
 void execute_pipeline(pipeline apipe) {
     // REQUIRES
     assert(apipe != NULL);
 
-    unsigned int cmd_quantity = pipeline_length(apipe);
+    int syscall_result;
 
-    if (cmd_quantity == 1u) {
-        execute_single_command(apipe);
-    } else if (cmd_quantity > 1u) {
-        execute_multiple_commands(apipe);
+    // ¡¡¡ All internal commands are ignored in a pipe !!!
+
+    if (pipeline_get_wait(apipe)) {
+        // Execution of pipeline in FOREGROUND mode
+        do_an_execute_pipeline(apipe, -1);
+    } else { // Background &
+        // Execution of pipeline in BACKGROUND mode
+        int pid = fork();
+        SYS_ERROR(pid == -1, "ForkError");
+
+        if (pid == 0) { // A child process
+            // We close all the writing syscalls and we redirect the input to STDIN.
+            int fd_act[2];
+            syscall_result = pipe(fd_act);
+            SYS_ERROR(syscall_result == -1, "PipeError");
+
+            close(fd_act[1]);
+            close(STDOUT_FILENO);
+            change_file_descriptor_input_from_fd(fd_act[0]);
+
+            do_an_execute_pipeline(apipe, -1);
+        }
     }
 }
