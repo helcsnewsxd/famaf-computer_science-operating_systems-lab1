@@ -11,6 +11,7 @@
 #include <unistd.h>
 
 #include "tests/syscall_mock.h"
+#include "colors.h"
 
 struct cmd_type internal_cmd_list[count_internal_cmd] = {
     {"help", help_run}, {"cd", cd_run}, {"exit", exit_run}};
@@ -65,7 +66,29 @@ void help_run(scommand cmd) {
 
     if (pid == 0) {
         change_file_descriptor_output(scommand_get_redir_out(cmd));
-        prompt_help(); // Function in prompt.h
+
+        printf("\n===================================================================\n");
+        printf(ANSI_COLOR_RED2 "\n(MyBash) -> A bash scripting project\n" ANSI_COLOR_RED2);
+        printf(ANSI_COLOR_RESET);
+        printf("Proyecto para la materia Sistemas Operativos 2022, FAMAF UNC\n\n");
+        printf(WHT "Integrantes:\n" WHT);
+        printf(ANSI_COLOR_RESET);
+        printf(" - Lautaro Bachmann\n - Juan Bratti\n - Gonzalo Canavesio\n - Emanuel Herrador\n");
+        printf(WHT "\nComandos Internos Implementados:\n" WHT);
+        printf(ANSI_COLOR_RESET);
+        printf(
+            " ‣ Comando 'cd':   Permite moverse entre directorios del sistema\n"
+            "                   Modo de uso: cd {ruta/_absoluta/_o/_relativa}\n"
+            " ‣ Comando 'exit': Finaliza la ejecucion de MyBash y los procesos asociados no "
+            "backgrounds\n"
+            "                   Modo de uso: exit\n"
+            " ‣ Comando 'help': Envia un mensaje por salida estandar indicando:\n"
+            "                       - Nombre de la shell\n"
+            "                       - Nombre de sus autores\n"
+            "                       - Lista de comandos internos implementados con breve descripcion\n"
+            "                   Modo de uso: help\n");
+        printf("\n===================================================================\n");
+
         exit(EXIT_SUCCESS);
     } else {
         waitpid(pid, NULL, 0u);
