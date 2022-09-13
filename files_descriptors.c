@@ -6,11 +6,12 @@
 #include <unistd.h>
 
 #include "files_descriptors.h"
+#include "tests/syscall_mock.h"
 
 void change_file_descriptor_input(char *redir_in) {
     if (redir_in != NULL) {
         // We've to change the reader's file descriptor
-        int fd_act = open(redir_in, O_RDONLY);
+        int fd_act = open(redir_in, O_RDONLY, 0u);
         SYS_ERROR(fd_act == -1, "OpenError");
 
         int syscall_result = dup2(fd_act, STDIN_FILENO);
