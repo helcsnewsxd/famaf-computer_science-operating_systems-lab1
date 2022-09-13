@@ -3,8 +3,8 @@
 
 #include "command.h"
 
-struct cmd_type{
-    char * name;
+struct cmd_type {
+    char *name;
     void (*function)(scommand);
 };
 /**
