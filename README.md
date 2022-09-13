@@ -13,6 +13,16 @@
 (INSERTAR DESCRIPCIÓN GENERAL DE LA MODULARIZACIÓN)
 (EXPLICAR TODO EL SISTEMA DE MODULOS)
 
+## Modulos implementados
+- mybash: módulo principal
+- command: módulo con las definiciones de los TADs para representar comandos
+- parsing: módulo de procesamiento de la entrada del usuario usando un parser
+- parser: módulo que implementa el TAD parser
+- execute: módulo ejecutor de comandos, administra las llamadas al sistema operativo
+- builtin: módulo que implementa interfaces para interactuar con comandos internos e identificarlos
+- internal\_commands: modulo que implementa los comandos internos usados en builtin
+- prompt: modulo que implementa una prompt con informacion relevante para el usuario
+
 ## command
 (INSERTAR DESCRIPCIÓN GENERAL DEL COMMAND)
 
