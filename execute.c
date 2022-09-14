@@ -14,7 +14,7 @@
 #include "command.h"
 #include "execute.h"
 #include "files_descriptors.h"
-#define DBG(message, ...) printf("%s(): " message, __func__, ##__VA_ARGS__);
+#define DBG(message, ...) // printf("%s(): " message, __func__, ##__VA_ARGS__);
 
 static void do_an_execute_single_command(pipeline apipe, int fd_read, int fd_write) {
     scommand cmd = pipeline_front(apipe);
@@ -35,6 +35,9 @@ static void do_an_execute_single_command(pipeline apipe, int fd_read, int fd_wri
                 DBG("=== %s hace el cambio de INPUT a fd %d\n", scommand_front(cmd), fd_read);
                 // Change process' input to a file descriptor fd_read
                 change_file_descriptor_input_from_fd(fd_read);
+            } else {
+                // if no valid read end has been passed close fork pipe read end
+                close(3);
             }
 
             if (fd_write != -1) {
@@ -43,6 +46,7 @@ static void do_an_execute_single_command(pipeline apipe, int fd_read, int fd_wri
                 change_file_descriptor_output_from_fd(fd_write);
             }
 
+            printf("=== fd_read:%d, fd_write:%d\n", fd_read, fd_write);
             // Changes the file descriptors if there is a redir in/out to a file
             DBG("=== Hago los cambios de fds en caso que redirija explicitamente a files\n");
 
