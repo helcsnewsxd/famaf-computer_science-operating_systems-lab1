@@ -35,7 +35,7 @@ static void do_an_execute_single_command(pipeline apipe, int fd_read, int fd_wri
                 DBG("=== %s hace el cambio de INPUT a fd %d\n", scommand_front(cmd), fd_read);
                 // Change process' input to a file descriptor fd_read
                 change_file_descriptor_input_from_fd(fd_read);
-            } else {
+            } else if (fd_write != -1) {
                 // if no valid read end has been passed close fork pipe read end
                 close(3);
             }
