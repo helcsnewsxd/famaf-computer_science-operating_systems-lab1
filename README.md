@@ -7,7 +7,12 @@
 - Gonzalo Canavesio (gonzalo.canavesio@mi.unc.edu.ar)
 - Emanuel Herrador (INSERTAR MAIL)
 
-# Compilación y ejecución 
+# Como correr el codigo
+## Instalación
+1. Clonar repositorio.
+2. Instalar librerias `glib` y `check`.
+
+## Compilación y ejecución 
 Para compilar el código, basta con ejecutar el comando `make`. 
 
 Para ejecutar el programa, basta con ejecutar `./mybash` luego de haber compilado el código.
