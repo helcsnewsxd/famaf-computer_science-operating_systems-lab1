@@ -5,6 +5,8 @@
 #ifndef EXECUTE_H
 #define EXECUTE_H
 
+#define EXIT_BACKGROUND 13
+
 #include "command.h"
 
 void execute_pipeline(pipeline apipe);

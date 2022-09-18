@@ -109,8 +109,11 @@ void execute_pipeline(pipeline apipe) {
 
             // In this block of waiting, we have problems with fore and background command collapse
             while (cnt_child_process > 0) {
-                wait(NULL);
-                cnt_child_process--;
+                int exit_signal = -1;
+                wait(&exit_signal);
+                if (exit_signal != EXIT_BACKGROUND) {
+                    cnt_child_process--;
+                }
             }
 
         } else { // Background &
@@ -141,9 +144,11 @@ void execute_pipeline(pipeline apipe) {
                 close(fd_act[0]);
                 close(fd_act[1]);
 
-                printf("\n === Process with PID %d finished === \n", getpid());
+                printf("=== Process with PID %d finished === \n", getpid());
 
-                exit(EXIT_SUCCESS);
+                exit(EXIT_BACKGROUND);
+            } else {
+                printf("=== Process with PID %d initialized === \n", pid);
             }
         }
     }

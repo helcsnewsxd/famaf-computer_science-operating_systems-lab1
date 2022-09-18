@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
     quit = false;
 
     while (!quit) {
+        waitpid(-1, NULL, WNOHANG); // Preventing fore and background command collapse
+
         show_prompt();
         pipe = parse_pipeline(input);
 
@@ -26,6 +28,9 @@ int main(int argc, char *argv[]) {
 
         quit = quit || parser_at_eof(input);
     }
+
+    printf("\n");
+
     parser_destroy(input);
     input = NULL;
     return EXIT_SUCCESS;
