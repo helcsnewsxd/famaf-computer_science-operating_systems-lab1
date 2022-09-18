@@ -79,7 +79,22 @@ diseño general y particular, diagrama de módulos, descripción general de los 
 
 
 # Herramientas de Programación
-herramientas de desarrollo, compilación, debugging y profiling utilizadas.
+## Desarrollo
+- Visual Studio Code
+- Live Share
+- ClangFormat
+
+### Comentarios
+- Para obtener un estilo consistente utilizamos ClangFormat con un formato basado en el estilo de codigo usado por LLVM.
+- Generamos una configuracion comun de vscode y la subimos al repositorio para que el editor de texto de todos los integrantes del grupo se comporte de una manera similar.
+
+
+## Compilacion
+- GNU Make
+
+## Debugging
+- GDB
+- Valgrind
 
 # Desarrollo del proyecto
 Para desarrollar el proyecto, los 4 integrantes del grupo la mayor parte del tiempo estuvimos divididos en 2 subgrupos, lo que nos permitió mayor flexibilidad para trabajar en dos módulos en simultaneo y además tener alguien con quien apoyarnos en caso de dudas o errores.
