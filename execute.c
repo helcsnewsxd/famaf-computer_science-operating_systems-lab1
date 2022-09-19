@@ -107,7 +107,8 @@ void execute_pipeline(pipeline apipe) {
 
             do_an_execute_pipeline(apipe, -1);
 
-            // In this block of waiting, we have problems with fore and background command collapse
+            // In this block of waiting, we have to prevent with fore and background command
+            // collapse
             while (cnt_child_process > 0) {
                 int exit_signal = -1;
                 wait(&exit_signal);
