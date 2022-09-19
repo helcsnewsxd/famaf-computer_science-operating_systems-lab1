@@ -157,7 +157,7 @@ Finalmente hago la llamada a la syscall execvp para ejecutar el comando.
 Las funciones de este módulo las usamos de forma auxiliar para realizar los correspondientes cambios en las puntas de lectura y escrituras de cada comando a ejecutar en la pipeline.
 
 ### change_file_descriptor_input(char *redir_in)
-Esta función, si *redir_in* != NULL, cambia qué toma el comando como input, para ello, el input del comando pasa a ser lo que apunte *redir_in*. Para lograr esto, la syscall *open* obtiene la punta de lectura correspondiente a *redir_in* en fd_act, y se utiliza *dup2* para que STDIN pase a apuntar a fd_act, y así el input en vez de tomarse por la entrada estándar, se toma por *redir_in*.
+Esta función, si *redir_in* != NULL, cambia qué toma el comando como input, para ello, el input del comando pasa a ser lo que apunte *redir_in*. Para lograr esto, la syscall *open* de la libreria **fcntl.h** obtiene la punta de lectura correspondiente a *redir_in* en fd_act, y se utiliza *dup2* de la libreria **unistd.h** para que STDIN pase a apuntar a fd_act, y así el input en vez de tomarse por la entrada estándar, se toma por *redir_in*.
 
 ```c
  if (redir_in != NULL) {

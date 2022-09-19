@@ -12,50 +12,54 @@
 
 - [Introducción al informe](#introducci-n-al-informe)
 - [Como correr el codigo](#como-correr-el-codigo)
-    * [Instalación](#instalaci-n)
-    * [Compilación y ejecución](#compilaci-n-y-ejecuci-n)
+  * [Instalación](#instalaci-n)
+  * [Compilación y ejecución](#compilaci-n-y-ejecuci-n)
 - [Introducción](#introducci-n)
-- [Modularización](#modularizaci-n)
-    * [mybash](#mybash)
-    * [command](#command)
-        + [TAD scommand](#tad-scommand)
-        + [TAD pipeline](#tad-pipeline)
-    * [parsing](#parsing)
-    * [parser](#parser)
-    * [execute](#execute)
-    * [files_descriptors](#files-descriptors)
-    * [builtin](#builtin)
-    * [internal_commands](#internal-commands)
-    * [prompt](#prompt)
-    * [strextra](#strextra)
+- [Implementación](#implementaci-n)
+  * [Modularización](#modularizaci-n)
+  * [mybash](#mybash)
+  * [command](#command)
+    + [TAD scommand](#tad-scommand)
+    + [TAD pipeline](#tad-pipeline)
+  * [parsing](#parsing)
+  * [parser](#parser)
+  * [execute](#execute)
+  * [files_descriptors](#files-descriptors)
+  * [builtin](#builtin)
+  * [internal_commands](#internal-commands)
+  * [prompt](#prompt)
+  * [strextra](#strextra)
 - [Herramientas de Programación](#herramientas-de-programaci-n)
-    * [Desarrollo](#desarrollo)
-        + [Comentarios](#comentarios)
-    * [Compilacion](#compilacion)
-    * [Debugging](#debugging)
+  * [Desarrollo](#desarrollo)
+    + [Comentarios](#comentarios)
+  * [Compilacion](#compilacion)
+  * [Debugging](#debugging)
 - [Desarrollo del proyecto](#desarrollo-del-proyecto)
-    * [Organizacion del trabajo](#organizacion-del-trabajo)
-    * [Nuestro workflow de desarrollo](#nuestro-workflow-de-desarrollo)
-        + [Branches](#branches)
-        + [Live share](#live-share)
-    * [Proceso de implementación](#proceso-de-implementaci-n)
-        + [Modulo Command](#modulo-command)
-        + [Modulos builtin y parsing](#modulos-builtin-y-parsing)
-        + [Modulo execute](#modulo-execute)
-        + [Mybash y prompt](#mybash-y-prompt)
-        + [Correcciones de estilo y formato](#correcciones-de-estilo-y-formato)
-        + [Informes detallados](#informes-detallados)
-        + [Informe final](#informe-final)
-    * [Pruebas utilizadas](#pruebas-utilizadas)
-    * [Problemas y soluciones durante el desarrollo](#problemas-y-soluciones-durante-el-desarrollo)
-        + [Tests que fallaban](#tests-que-fallaban)
-        + [Diferencias entre Mybash y Bash](#diferencias-entre-mybash-y-bash)
-        + [Soluciones](#soluciones)
+  * [Organizacion del trabajo](#organizacion-del-trabajo)
+  * [Comunicación](#comunicaci-n)
+  * [Nuestro workflow de desarrollo](#nuestro-workflow-de-desarrollo)
+    + [Branches](#branches)
+    + [Live share](#live-share)
+  * [Proceso de implementación](#proceso-de-implementaci-n)
+    + [Modulo Command](#modulo-command)
+    + [Modulos builtin y parsing](#modulos-builtin-y-parsing)
+    + [Modulo execute](#modulo-execute)
+    + [Mybash y prompt](#mybash-y-prompt)
+    + [Correcciones de estilo y formato](#correcciones-de-estilo-y-formato)
+    + [Informes detallados](#informes-detallados)
+    + [Informe final](#informe-final)
+  * [Pruebas utilizadas](#pruebas-utilizadas)
+  * [Problemas y soluciones durante el desarrollo](#problemas-y-soluciones-durante-el-desarrollo)
+    + [Tests que fallaban](#tests-que-fallaban)
+    + [Diferencias entre Mybash y Bash](#diferencias-entre-mybash-y-bash)
+    + [Desconocimiento y aprendizaje](#desconocimiento-y-aprendizaje)
+    + [Soluciones](#soluciones)
 - [Conclusiones](#conclusiones)
 - [Referencias y bibliografía](#referencias-y-bibliograf-a)
 
+
 # Introducción al informe
-Con respecto al estilo del informe, hemos decidido dar solo una breve explicación sobre la implementación de cada modulo del proyecto, la cual es ampliada en un archivo aparte por si el lector desea profundizar más en los detalles de algún modulo.
+Con respecto al estilo del informe, para evitar alargarlo innecesariamente hemos decidido dar solo una breve explicación sobre la implementación de cada modulo del proyecto, la cual es ampliada en un archivo aparte por si el lector desea profundizar más en los detalles de algún modulo.
 
 # Como correr el codigo
 ## Instalación
@@ -72,7 +76,11 @@ El proyecto trata sobre codificar un shell al estilo de bash (Bourne Again SHell
 
 El programa debe poder satisfacer la ejecución de comandos en modo foreground y background, la redirección de entrada y salida estándar y realizar pipe entre comandos.
 
-# Modularización
+# Implementación
+Al momento de entrega el proyecto cumple con todos las funcionalidades pedidas por la cátedra, más los 2 puntos estrella (extras) correspondientes a ejecutar multiples pipelines (más de 2 comandos en pipeline) y tener una prompt con más información que la que venia por defecto implementada en el kickstarter.
+
+
+## Modularización
 Los modulos implementados son los siguientes:
 
 - mybash: Módulo principal
@@ -86,11 +94,15 @@ Los modulos implementados son los siguientes:
 - prompt: Implementación de una prompt con informacion relevante para el usuario
 - strextra: Implementación de función auxiliar para el manejo de strings.
 
+La mayor parte de las modularizaciones fueron las dadas por la cátedra, pero agregamos otras como **internal\_commands**, **prompt** y **files_descriptors** con el objetivo de hacer más ordenado el código del programa y que cada modulo se centre en solo un objetivo en específico.
+
 ## mybash
 Código de ejecución de mybash implementado utilizando un *while* loop que hace un print de la prompt con los respectivos datos relevantes y la lectura constante de los inputs del usuario hasta el fin de lectura o cierre de terminal. 
 
 ## command
-Implementación del TAD scommand y TAD pipeline utilizados para la representación de los comandos y pipelines dentro de mybash.
+Implementación del TAD scommand y TAD pipeline utilizados para la representación de los comandos y pipelines dentro de mybash. 
+
+Para ambos TAD se utilizó la estructura GQueue de la librería externa **GLib**.
 
 ### TAD scommand
 
@@ -159,8 +171,11 @@ Se declara la función *strmerge*, utilizada para implementar las funciones *sco
 
 # Desarrollo del proyecto
 ## Organizacion del trabajo
-Los 4 integrantes del grupo al inicio estuvimos divididos en 2 subgrupos: Lauti y Gonza, Ema y Juan. 
+Los 4 integrantes del grupo al inicio estuvimos divididos en 2 subgrupos: Lauti y Gonza, Ema y Juan. Cada grupo se encargaba de implemenar un modulo diferente.
 Una vez implementados todos los modulos, los grupos se disolvieron y cada integrante ayudaba cuando podia en solucionar errores, mejorar el formato/comentarios del código y realizar el informe.
+
+## Comunicación
+La mayor parte del proyecto utilizamos Discord y Telegram para organizarnos, pero probamos varias herramienta, como jira y trello, hasta encontrar las que mejor se adaptaban al flujo del grupo.
 
 ## Nuestro workflow de desarrollo
 ### Branches
@@ -209,8 +224,11 @@ Algunos de los problemas en el desarrollo fueron algunos failed tests que nos co
 ### Diferencias entre Mybash y Bash
 También hubo algunos detalles relacionados a qué tanta diferencia debería haber entre mybash y la bash de linux, ya que había algunas implementaciones de linux que eran muy difíciles de llevar a cabo en mybash y, que según la cátedra, no hacía falta implementar.
 
+### Desconocimiento y aprendizaje
+En varios modulos no sabiamos como encarar su implementación o que funciones utilizar para lograr lo solicitado, por lo que se necesito hacer una investigación previa utilizando la [Referencias y bibliografía](#referencias-y-bibliograf-a)
+
 ### Soluciones
-Estos problemas los fuimos resolviendo siempre gracias al trabajo en conjunto. Realizamos varias reuniones entre todos para compartir posibles ideas y soluciones y retroalimentar lo aprendido. También, consultamos muchas dudas con la cátedra, que nos ayudó a esclarecer las cuestiones relacionadas a las diferencias entre mybash y la bash de linux, a entender mejor el comportamiento de los tests y a considerar distintos casos bordes relacionados a la implementación de la shell.
+Estos problemas los fuimos resolviendo siempre gracias al trabajo en conjunto. Realizamos varias reuniones entre todos para compartir posibles ideas y soluciones y retroalimentar lo aprendido. También, consultamos muchas dudas con la cátedra, que nos ayudó a esclarecer las cuestiones relacionadas a las diferencias entre mybash y la bash de linux, a entender mejor el comportamiento de los tests, saber donde buscar la información y a considerar distintos casos bordes relacionados a la implementación de la shell.
 
 # Conclusiones 
 Se logró implementar un shell básico, con la ejecución de comandos tanto en modo foreground y en modo background, con la redirección de entrada y salida estándar, y con la posibilidad de realizar multiples pipes (más de 2) entre comandos. 
