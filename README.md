@@ -155,12 +155,32 @@ Nos basamos fuertemente en el uso de branchs (ramas) dentro del repositorio en b
 También se usó mucho live share. Por esto mismo, en el grupo de Ema y Juan, la mayoría de los commits realizados por el subgrupo de Emanuel y Juan son por parte de Emanuel, porque se trabajaba de a dos pero se codeaba en la computadora de Emanuel.
 
 ## Proceso de implementación
-Comenzamos desarrollando el modulo command, donde Emanuel y Juan se encargaron del TAD scommand y Lauty y Gonza del TAD pipeline. Luego de tener los TADs correctamente desarrollados y funcionando, nos concentramos en implementar el modulo builtin para la ejecución de comandos internos (Gonza y Lauty) y el parsing para procesar el input del usuario (Emanuel y Juan). Finalmente Lauty y Gonza se pusieron con el execute, donde se encuentra la implementación para ejecutar los comandos ingresados por el usuario, tanto comandos multiples como simples y tanto en foreground como en background. Mientras se hacía eso, Juan y Ema se encargaron de implementar el modulo principal de mybash y la personalización para el prompt. Pero como con la implementación realizada aparecían un par de errores en el test del execute, refactorizamos el código del execute para ver si así podían solucionarse (algunos de los errores pudieron arreglarse, pero aún quedaban varios). Necesitamos estar un par de de días trabajando sobre los errores hasta que pudimos encontrarle la solución a todo.
+### Modulo Command
+Comenzamos desarrollando el modulo command, donde Emanuel y Juan se encargaron del TAD scommand y Lauty y Gonza del TAD pipeline.
 
+### Modulos builtin y parsing
+Luego de tener los TADs correctamente desarrollados y funcionando, nos concentramos en implementar el modulo builtin para la ejecución de comandos internos (Gonza y Lauty) y el parsing para procesar el input del usuario (Emanuel y Juan).
+
+### Modulo execute
+Finalmente Lauty y Gonza se pusieron con el execute, donde se encuentra la implementación para ejecutar los comandos ingresados por el usuario, tanto comandos multiples como simples y tanto en foreground como en background.
+
+Pero como con la implementación realizada no se podian utilizar comandos internos adentro de una pipe y se habia interpretado que no se deberia de poder hacer redirecciones en la parte del medio de una pipe, Juan y Ema decidieron refactorizar el código del execute para cambiar esto. 
+
+Una vez finalizada la refactorizacion estuvimos trabajando en conjunto un par de de días para lograr que todas las tests pasen hasta que eventualmente pudimos encontrarle la solución a todo.
+
+### Mybash y prompt
+Mientras Lauty y Gonza trabajaban en el modulo execute, Juan y Ema se encargaron de implementar el modulo principal de mybash y la personalización para el prompt.
+
+### Correcciones de estilo y formato
 Una vez todo el código fue desarrollado, compilado y satisfacía los tests dados por la cátedra y los propios hechos por nosotros, confirmando que todo funcionara correctamente, empezamos a realizar las correcciones de estilo y formato del código. 
+
 Las correcciones y ajustes que tuvimos que hacer fueron centralmente en nombre de variables o funciones y en el agregado de comentarios en el código para facilitar la lectura y el poder seguir la linea de implmentación del código.
 
-Durante todo el desarrollo del proyecto intentamos ir realizando reportes/informes periódicos de nuestras implementaciones, para al final poder realizar un informe lo más completo posible. El desarrollo del informe final comenzó de manera paralela a la corrección de errores del execute y estuvimos hasta el último día mejorandolo y agregandole información.
+### Informes detallados
+Durante todo el desarrollo del proyecto intentamos ir realizando reportes/informes periódicos de nuestras implementaciones, para al final poder realizar un informe lo más completo posible. 
+
+### Informe final
+El desarrollo del informe final comenzó de manera paralela a la corrección de errores del execute y estuvimos hasta el último día mejorandolo y agregandole información.
 
 ## Pruebas utilizadas
 Se realizaron pruebas unitarias caseras para cada módulo, además de las pruebas provistas por la catedra para las cuales necesitamos utilizar la librería Check para C. Para aquellos módulos donde se realizo una prueba casera, se creó un archivo de prueba, con la extensión .c, en la carpeta de **custom_tests**.
