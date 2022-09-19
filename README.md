@@ -40,7 +40,7 @@
 - [Referencias y bibliografía](#referencias-y-bibliograf-a)
 
 # Introducción al informe
-Para evitar generar un informe con el largo de 25 hojas, con nuestro grupo decidimos dar solo una breve explicación sobre la implementación de cada modulo del proyecto, la cual es ampliada en un archivo aparte por si usted, el lector, quiere profundizar más en algún modulo.
+Con respecto al estilo del informe, hemos decidido dar solo una breve explicación sobre la implementación de cada modulo del proyecto, la cual es ampliada en un archivo aparte por si el lector desea profundizar más en los detalles de algún modulo.
 
 # Como correr el codigo
 ## Instalación
