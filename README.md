@@ -188,7 +188,14 @@ Se realizaron pruebas unitarias caseras para cada módulo, además de las prueba
 Primero nos asegurábamos de que el código diera los resultados esperados según los tests, y luego revisábamos que no existieran memory leaks en el código, utilizando **valgrind** como principal herramienta para encontrar y verificar estos errores de memoria.
 
 ## Problemas y soluciones durante el desarrollo
-Algunos de los problemas en el desarrollo fueron algunos failed tests que nos costó poder pasar, principalmente en el módulo del execute. Había algunos tests que no entendíamos muy bien qué hacían y qué era lo que fallaba porque en la implementación prácticamente todo funcionaba. También hubo algunos detalles relacionados a qué tanta diferencia debería haber entre mybash y la bash de linux, ya que había algunas implementaciones de linux que eran muy difíciles de llevar a cabo en mybash y, que según la cátedra, no hacía falta implementar. Estos problemas los fuimos resolviendo siempre gracias al trabajo en conjunto. Realizamos varias reuniones entre todos para compartir posibles ideas y soluciones y retroalimentar lo aprendido. También, consultamos muchas dudas con la cátedra, que nos ayudó a esclarecer las cuestiones relacionadas a las diferencias entre mybash y la bash de linux, a entender mejor el comportamiento de los tests y a considerar distintos casos bordes relacionados a la implementación de la terminal.
+### Tests que fallaban
+Algunos de los problemas en el desarrollo fueron algunos failed tests que nos costó poder pasar, principalmente en el módulo del execute. Había algunos tests que no entendíamos muy bien qué hacían y qué era lo que fallaba porque en la implementación prácticamente todo funcionaba.
+
+### Diferencias entre Mybash y Bash
+También hubo algunos detalles relacionados a qué tanta diferencia debería haber entre mybash y la bash de linux, ya que había algunas implementaciones de linux que eran muy difíciles de llevar a cabo en mybash y, que según la cátedra, no hacía falta implementar.
+
+### Soluciones
+Estos problemas los fuimos resolviendo siempre gracias al trabajo en conjunto. Realizamos varias reuniones entre todos para compartir posibles ideas y soluciones y retroalimentar lo aprendido. También, consultamos muchas dudas con la cátedra, que nos ayudó a esclarecer las cuestiones relacionadas a las diferencias entre mybash y la bash de linux, a entender mejor el comportamiento de los tests y a considerar distintos casos bordes relacionados a la implementación de la shell.
 
 # Conclusiones 
 
