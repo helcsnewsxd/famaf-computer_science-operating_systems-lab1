@@ -2,10 +2,10 @@
 
 *Integrantes del grupo:* 
 
-- Lautaro Bachmann (INSERTAR MAIL)
-- Juan Bratti (INSERTAR MAIL)
+- Lautaro Bachmann (lautaro.bachmann@mi.unc.edu.ar)
+- Juan Bratti (juanbratti@mi.unc.edu.ar)
 - Gonzalo Canavesio (gonzalo.canavesio@mi.unc.edu.ar)
-- Emanuel Herrador (INSERTAR MAIL)
+- Emanuel Herrador (emanuel.nicolas.herrador@unc.edu.ar)
 
 
 **INDICE**
@@ -58,7 +58,7 @@ El proyecto trata sobre codificar un shell al estilo de bash (Bourne Again SHell
 El programa debe poder satisfacer la ejecución de comandos en modo foreground y background, la redirección de entrada y salida estándar y realizar pipe entre comandos.
 
 # Modularización
-En la implementación de mybash se procesa una lista de órdenes del usuario, cada una de las cuales sse representa mediante una instancia del TAD pipeline. El programa mybash recibe la entrada de la shell desde la standard input y debe llamar al modulo parsing para que este le de formato y genere una instancia de pipeline. 
+En la implementación de mybash se procesa una lista de órdenes del usuario, cada una de las cuales se representa mediante una instancia del TAD pipeline. El programa mybash recibe la entrada de la shell desde la standard input y debe llamar al modulo parsing para que este le de formato y genere una instancia de pipeline. 
 A continuación debe llamar al modulo execute que se encarga de llamar a **fork** y **execvp** para ejecutar los comandos simples. En caso de ser un comando interno, utiliza la función **builtin_run** y en caso de ser un pipeline con varios comandos, se utiliza la función **do_an_execute_pipeline** para gestionar la ejecución de los diferentes comandos y sus entradas y salidas.
 
 Los modulos implementados son los siguientes:
@@ -68,48 +68,126 @@ Los modulos implementados son los siguientes:
 - parsing: Procesamiento de la entrada del usuario usando el parser
 - parser: Implementación del TAD parser 
 - execute: Ejecución de comandos y administración de las llamadas al sistema operativo
+- files_descriptors: Implementación de funciones para el manejo de redirecciones para las salidas/entradas de los comandos.
 - builtin: Implementación de interfaces para interactuar con comandos internos e identificarlos
 - internal\_commands: Implementación de los comandos internos
 - prompt: Implementación de una prompt con informacion relevante para el usuario
 - strextra: Implementación de función auxiliar para el manejo de strings.
 
+## mybash
+Código de ejecución de mybash implementado utilizando un *while* loop que hace un print de la prompt con los respectivos datos relevantes y la lectura constante de los inputs del usuario hasta el fin de lectura o cierre de terminal. 
+
+Implementación de mybash.c
+```c
+int main(int argc, char *argv[]) {
+    pipeline pipe = NULL; // INICIALIZA PIPELINE
+    Parser input = parser_new(stdin); // PARSEA STDIN
+    quit = false; // INICIALIZA QUIT
+
+    while (!quit) {
+        // WAITPIT UTILIZADO PARA LOGRAR QUE LOS MODOS FOREGROUND Y BACKGROUND NO COLAPSEN, ESTO EVITA QUE QUE WAIT/WAITPID SE BLOQUEE. SI HAY PROCESOS HIJOS QUE NO HAN TERMINADO, SE EJECUTA UN EXIT AUTOMÁTICAMENTE.
+        while (waitpid(-1, NULL, WNOHANG) > 0) {
+        };
+
+        show_prompt(); // SE MUESTRA LA PROMPT
+        pipe = parse_pipeline(input); // SE CONSTRUYE PIPELINE CON LOS COMANDOS INGRESADOS POR STDIN
+
+        // EJECUTO COMANDOS HASTA QUE LA PIPELINE SEA VACÍA
+        if (pipe != NULL) {
+            execute_pipeline(pipe);
+            pipe = pipeline_destroy(pipe);
+        }
+
+        // QUIT SE VUELVE TRUE CUANDO SE LLEGA AL FINAL DE INPUT, CERRANDO EL CICLO.
+        quit = quit || parser_at_eof(input);
+    }
+
+    printf("\n");
+
+    // SE DESTRUYE LA MEMORIA UTILIZADA
+    parser_destroy(input);
+    input = NULL;
+    return EXIT_SUCCESS;
+}
+```
+
 ## command
-(INSERTAR DESCRIPCIÓN GENERAL DEL COMMAND)
+Implementación del TAD scommand y TAD pipeline utilizados para la representación de los comandos y pipelines dentro de mybash.
 
 ### TAD scommand
-(INSERTAR DESCRIPCIÓN GENERAL DEL SCOMMAND)
 
-(INSERTAR EXPLICACIÓN IMPLEMENTACIÓN DEL SCOMMAND)
+Tipo abstracto utilizado para representar los comandos ingresados por consola junto con sus respectivos argumentos y redireccionamientos en el caso de haber sido utilizados.
+
+Para más detalle leer [implementación scommand](/scommand).
 
 ### TAD pipeline
-(INSERTAR DESCRIPCIÓN GENERAL DEL PIPELINE)
+Tipo abstracto utilizado para la implementación del uso de comandos múltiples a través del uso de pipes |.
 
-(INSERTAR EXPLICACIÓN IMPLEMENTACIÓN DEL PIPELINE)
+Para más detalle leer [implementación pipeline](/pipeline).
 
 ## parsing
-módulo de procesamiento de la entrada del usuario usando un parser
+Módulo de procesamiento de la entrada del usuario usando el tipo Parser.
 
-
+Para más detalle leer [implementación parsing](/parsing).
 
 ## parser 
-módulo que implementa el TAD parser
+Módulo implementado por la cátedra.
 
 ## execute
-módulo ejecutor de comandos, administra las llamadas al sistema operativo
+Módulo ejecutor de comandos, administra las llamadas al sistema operativo. 
+
+Para más detalle leer [implementación execute](/execute).
+
+## files_descriptors
+Módulo que se encarga del comportamiento de la entrada y salida de cada comando en una pipeline a través de los respectivos redireccionamientos. Este módulo es usado en execute.
+
+Para más detalle leer [implementación execute](/execute).
 
 ## builtin
-módulo que administra los comandos internos del intérprete de comandos.
+Módulo que administra los comandos internos del intérprete de comandos.
+
+Para más detalle leer [implementación builtin](/builtin).
 
 ## internal_commands
-módulo que implementa los comandos internos del intérprete de comandos.
+Módulo que implementa los comandos internos del intérprete de comandos.
+
+Para más detalle leer [implementación builtin](/builtin).
+
+## prompt
+Módulo que se encarga de mostrar por la terminal la respectiva prompt de mybash con información relevante a través de la función show_prompt.
+
+Su implementación es la siguiente:
+```c
+void show_prompt(void) {
+    // USA LA FUNCIÓN GETENV PARA OBTENER EL USERNAME.
+    char *username = getenv("USER");
+
+    // SE GUARDA EN BUFFER EL PATH AL DIRECTORIO ACTUAL
+    char *buffer = getcwd(NULL, 0);
+    // SE GUARDA EL HOME PATH EN HOME_PATH
+    char *home_path = getenv("HOME");
+
+    // NO MOSTRAMOS EL HOME_PATH EN LA TERMINAL PARA QUE EL PROMPT NO SEA TAN LARGO.
+    if (strncmp(buffer, home_path, strlen(home_path)) == 0) {
+        memmove(buffer, buffer + strlen(home_path), strlen(buffer));
+        char *auxiliar_to_remove = buffer;
+        buffer = strmerge("~", buffer);
+        free(auxiliar_to_remove);
+    }
+
+    // MOSTRAMOS POR PANTALLA DEMÁS INFORMACIÓN RELEVANTE
+    printf(ANSI_COLOR_RED "(MyBash) " ANSI_COLOR_RED);
+    printf(ANSI_COLOR_BLUE "[%s]" ANSI_COLOR_BLUE, buffer);
+    printf(ANSI_COLOR_GREEN " @%s → " ANSI_COLOR_GREEN, username);
+    printf(ANSI_COLOR_RESET);
+
+    fflush(stdout);
+}
+```
+En colors.h definimos los códigos para los colores ANSI_COLOR_RED, ANSI_COLOR_BLUE, ANSI_COLOR_GREEN y el color para el reset ANSI_COLOR_RESET.
 
 ## strextra
 Se declara la función *strmerge*, utilizada para implementar las funciones *scommand_to_string* y *pipeline_to_string* del modulo command.
-
-## prompt
-
-## mybash
-diseño general y particular, diagrama de módulos, descripción general de los módulos, TADs internos a los módulos y los que comunican itermódulo, funciones públicas y privadas, algoritmos destacables.
 
 
 # Herramientas de Programación
