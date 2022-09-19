@@ -17,7 +17,9 @@ int main(int argc, char *argv[]) {
 
     while (!quit) {
         // WNOHANG is a option to return immediately if no child has exited
-        waitpid(-1, NULL, WNOHANG); // Preventing fore and background command collapse
+        while (waitpid(-1, NULL, WNOHANG) > 0) {
+        };
+        // Preventing fore and background command collapse
 
         show_prompt();
         pipe = parse_pipeline(input);
