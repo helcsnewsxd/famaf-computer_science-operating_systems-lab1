@@ -175,7 +175,7 @@ void show_prompt(void) {
         free(auxiliar_to_remove);
     }
 
-    // MOSTRAMOS POR PANTALLA DEMÁS INFORMACIÓN RELEVANTE
+    // MOSTRAMOS POR PANTALLA USERNAME, PATH Y NOMBRE DEL BASH.
     printf(ANSI_COLOR_RED "(MyBash) " ANSI_COLOR_RED);
     printf(ANSI_COLOR_BLUE "[%s]" ANSI_COLOR_BLUE, buffer);
     printf(ANSI_COLOR_GREEN " @%s → " ANSI_COLOR_GREEN, username);
