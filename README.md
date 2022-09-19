@@ -12,48 +12,48 @@
 
 - [Introducción al informe](#introducci-n-al-informe)
 - [Como correr el codigo](#como-correr-el-codigo)
-  * [Instalación](#instalaci-n)
-  * [Compilación y ejecución](#compilaci-n-y-ejecuci-n)
+    * [Instalación](#instalaci-n)
+    * [Compilación y ejecución](#compilaci-n-y-ejecuci-n)
 - [Introducción](#introducci-n)
 - [Implementación](#implementaci-n)
-  * [Modularización](#modularizaci-n)
-  * [mybash](#mybash)
-  * [command](#command)
-    + [TAD scommand](#tad-scommand)
-    + [TAD pipeline](#tad-pipeline)
-  * [parsing](#parsing)
-  * [parser](#parser)
-  * [execute](#execute)
-  * [files_descriptors](#files-descriptors)
-  * [builtin](#builtin)
-  * [internal_commands](#internal-commands)
-  * [prompt](#prompt)
-  * [strextra](#strextra)
+    * [Modularización](#modularizaci-n)
+    * [mybash](#mybash)
+    * [command](#command)
+        + [TAD scommand](#tad-scommand)
+        + [TAD pipeline](#tad-pipeline)
+    * [parsing](#parsing)
+    * [parser](#parser)
+    * [execute](#execute)
+    * [files_descriptors](#files-descriptors)
+    * [builtin](#builtin)
+    * [internal_commands](#internal-commands)
+    * [prompt](#prompt)
+    * [strextra](#strextra)
 - [Herramientas de Programación](#herramientas-de-programaci-n)
-  * [Desarrollo](#desarrollo)
-    + [Comentarios](#comentarios)
-  * [Compilacion](#compilacion)
-  * [Debugging](#debugging)
+    * [Desarrollo](#desarrollo)
+        + [Comentarios](#comentarios)
+    * [Compilacion](#compilacion)
+    * [Debugging](#debugging)
 - [Desarrollo del proyecto](#desarrollo-del-proyecto)
-  * [Organizacion del trabajo](#organizacion-del-trabajo)
-  * [Comunicación](#comunicaci-n)
-  * [Nuestro workflow de desarrollo](#nuestro-workflow-de-desarrollo)
-    + [Branches](#branches)
-    + [Live share](#live-share)
-  * [Proceso de implementación](#proceso-de-implementaci-n)
-    + [Modulo Command](#modulo-command)
-    + [Modulos builtin y parsing](#modulos-builtin-y-parsing)
-    + [Modulo execute](#modulo-execute)
-    + [Mybash y prompt](#mybash-y-prompt)
-    + [Correcciones de estilo y formato](#correcciones-de-estilo-y-formato)
-    + [Informes detallados](#informes-detallados)
-    + [Informe final](#informe-final)
-  * [Pruebas utilizadas](#pruebas-utilizadas)
-  * [Problemas y soluciones durante el desarrollo](#problemas-y-soluciones-durante-el-desarrollo)
-    + [Tests que fallaban](#tests-que-fallaban)
-    + [Diferencias entre Mybash y Bash](#diferencias-entre-mybash-y-bash)
-    + [Desconocimiento y aprendizaje](#desconocimiento-y-aprendizaje)
-    + [Soluciones](#soluciones)
+    * [Organizacion del trabajo](#organizacion-del-trabajo)
+    * [Comunicación](#comunicaci-n)
+    * [Nuestro workflow de desarrollo](#nuestro-workflow-de-desarrollo)
+        + [Branches](#branches)
+        + [Live share](#live-share)
+    * [Proceso de implementación](#proceso-de-implementaci-n)
+        + [Modulo Command](#modulo-command)
+        + [Modulos builtin y parsing](#modulos-builtin-y-parsing)
+        + [Modulo execute](#modulo-execute)
+        + [Mybash y prompt](#mybash-y-prompt)
+        + [Correcciones de estilo y formato](#correcciones-de-estilo-y-formato)
+        + [Informes detallados](#informes-detallados)
+        + [Informe final](#informe-final)
+    * [Pruebas utilizadas](#pruebas-utilizadas)
+    * [Problemas y soluciones durante el desarrollo](#problemas-y-soluciones-durante-el-desarrollo)
+        + [Tests que fallaban](#tests-que-fallaban)
+        + [Diferencias entre Mybash y Bash](#diferencias-entre-mybash-y-bash)
+        + [Desconocimiento y aprendizaje](#desconocimiento-y-aprendizaje)
+        + [Soluciones](#soluciones)
 - [Conclusiones](#conclusiones)
 - [Referencias y bibliografía](#referencias-y-bibliograf-a)
 
@@ -76,8 +76,14 @@ El proyecto trata sobre codificar un shell al estilo de bash (Bourne Again SHell
 
 El programa debe poder satisfacer la ejecución de comandos en modo foreground y background, la redirección de entrada y salida estándar y realizar pipe entre comandos.
 
-# Implementación
-Al momento de entrega el proyecto cumple con todos las funcionalidades pedidas por la cátedra, más los 2 puntos estrella (extras) correspondientes a ejecutar multiples pipelines (más de 2 comandos en pipeline) y tener una prompt con más información que la que venia por defecto implementada en el kickstarter.
+# Caracteristicas implementadas
+## Funcionalidad basica
+Al momento de entrega el proyecto cumple con todos las funcionalidades basicas pedidas por la cátedra.
+
+## Puntos estrella
+- Generalizar el comando pipeline “|” a una cantidad arbitraria de comandos simples
+- Imprimir un prompt con información relevante.
+    - En concreto, la prompt imprime el nombre de la shell, el camino relativo y el nombre de usuario.
 
 
 ## Modularización
