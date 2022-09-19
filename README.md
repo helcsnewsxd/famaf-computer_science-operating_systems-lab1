@@ -16,26 +16,41 @@
     * [Compilación y ejecución](#compilaci-n-y-ejecuci-n)
 - [Introducción](#introducci-n)
 - [Modularización](#modularizaci-n)
+    * [mybash](#mybash)
     * [command](#command)
         + [TAD scommand](#tad-scommand)
         + [TAD pipeline](#tad-pipeline)
     * [parsing](#parsing)
     * [parser](#parser)
     * [execute](#execute)
+    * [files_descriptors](#files-descriptors)
     * [builtin](#builtin)
     * [internal_commands](#internal-commands)
-    * [strextra](#strextra)
     * [prompt](#prompt)
-    * [mybash](#mybash)
+    * [strextra](#strextra)
 - [Herramientas de Programación](#herramientas-de-programaci-n)
     * [Desarrollo](#desarrollo)
         + [Comentarios](#comentarios)
     * [Compilacion](#compilacion)
     * [Debugging](#debugging)
 - [Desarrollo del proyecto](#desarrollo-del-proyecto)
+    * [Organizacion del trabajo](#organizacion-del-trabajo)
+    * [Nuestro workflow de desarrollo](#nuestro-workflow-de-desarrollo)
+        + [Branches](#branches)
+        + [Live share](#live-share)
     * [Proceso de implementación](#proceso-de-implementaci-n)
+        + [Modulo Command](#modulo-command)
+        + [Modulos builtin y parsing](#modulos-builtin-y-parsing)
+        + [Modulo execute](#modulo-execute)
+        + [Mybash y prompt](#mybash-y-prompt)
+        + [Correcciones de estilo y formato](#correcciones-de-estilo-y-formato)
+        + [Informes detallados](#informes-detallados)
+        + [Informe final](#informe-final)
     * [Pruebas utilizadas](#pruebas-utilizadas)
     * [Problemas y soluciones durante el desarrollo](#problemas-y-soluciones-durante-el-desarrollo)
+        + [Tests que fallaban](#tests-que-fallaban)
+        + [Diferencias entre Mybash y Bash](#diferencias-entre-mybash-y-bash)
+        + [Soluciones](#soluciones)
 - [Conclusiones](#conclusiones)
 - [Referencias y bibliografía](#referencias-y-bibliograf-a)
 
@@ -198,7 +213,6 @@ También hubo algunos detalles relacionados a qué tanta diferencia debería hab
 Estos problemas los fuimos resolviendo siempre gracias al trabajo en conjunto. Realizamos varias reuniones entre todos para compartir posibles ideas y soluciones y retroalimentar lo aprendido. También, consultamos muchas dudas con la cátedra, que nos ayudó a esclarecer las cuestiones relacionadas a las diferencias entre mybash y la bash de linux, a entender mejor el comportamiento de los tests y a considerar distintos casos bordes relacionados a la implementación de la shell.
 
 # Conclusiones 
-
 Se logró implementar un shell básico, con la ejecución de comandos tanto en modo foreground y en modo background, con la redirección de entrada y salida estándar, y con la posibilidad de realizar multiples pipes (más de 2) entre comandos. 
 
 En este proyecto aprendimos a como trabajar en equipo y organizar las tareas para generar una división equitativa. Esto nos sirvió para mejorar la coordinación dentro del grupo y para comprender como funciona un shell y ayudarnos en las dudas que tenia cada uno. 
