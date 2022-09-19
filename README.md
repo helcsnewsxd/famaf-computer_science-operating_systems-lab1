@@ -143,7 +143,8 @@ Se declara la función *strmerge*, utilizada para implementar las funciones *sco
 - Valgrind, conjunto de herramientas para la depuración de problemas de memoria y rendimiento de programas.
 
 # Desarrollo del proyecto
-Los 4 integrantes del grupo al inicio estuvimos divididos en 2 subgrupos: Lauti y Gonza, Ema y Juan. Esto nos permitió mayor flexibilidad para trabajar en dos módulos en simultaneo y además tener alguien con quien apoyarnos en caso de dudas o errores. Una vez implementados todos los modulos, los grupos se disolvieron y cada integrante ayudaba cuando podia en solucionar errores, mejorar el formato/comentarios del código y realizar el informe.
+Los 4 integrantes del grupo al inicio estuvimos divididos en 2 subgrupos: Lauti y Gonza, Ema y Juan. 
+Una vez implementados todos los modulos, los grupos se disolvieron y cada integrante ayudaba cuando podia en solucionar errores, mejorar el formato/comentarios del código y realizar el informe.
 
 Nos basamos fuertemente en el uso de branchs (ramas) dentro del repositorio en bitbucket, para no tener conflictos del código a modificar o corregir. Una vez el modulo correspondiente a la rama estaba desarrollado, pasaba los tests y no presentaba errores de memoria, lo fusionábamos con la rama principal y creábamos una nueva rama para el próximo modulo a desarrollar.
 
