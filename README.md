@@ -58,9 +58,6 @@ El proyecto trata sobre codificar un shell al estilo de bash (Bourne Again SHell
 El programa debe poder satisfacer la ejecución de comandos en modo foreground y background, la redirección de entrada y salida estándar y realizar pipe entre comandos.
 
 # Modularización
-En la implementación de mybash se procesa una lista de órdenes del usuario, cada una de las cuales se representa mediante una instancia del TAD pipeline. El programa mybash recibe la entrada de la shell desde la standard input y debe llamar al modulo parsing para que este le de formato y genere una instancia de pipeline. 
-A continuación debe llamar al modulo execute que se encarga de llamar a **fork** y **execvp** para ejecutar los comandos simples. En caso de ser un comando interno, utiliza la función **builtin_run** y en caso de ser un pipeline con varios comandos, se utiliza la función **do_an_execute_pipeline** para gestionar la ejecución de los diferentes comandos y sus entradas y salidas.
-
 Los modulos implementados son los siguientes:
 
 - mybash: Módulo principal
