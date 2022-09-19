@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     quit = false;
 
     while (!quit) {
-        // WNOHANG is a option to return immediately if no child has exited
+        // WNOHANG is an option to return immediately if no child has exited
         while (waitpid(-1, NULL, WNOHANG) > 0) {
         };
         // Preventing fore and background command collapse
