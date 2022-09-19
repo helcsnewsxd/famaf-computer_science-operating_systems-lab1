@@ -74,40 +74,6 @@ Los modulos implementados son los siguientes:
 ## mybash
 Código de ejecución de mybash implementado utilizando un *while* loop que hace un print de la prompt con los respectivos datos relevantes y la lectura constante de los inputs del usuario hasta el fin de lectura o cierre de terminal. 
 
-Implementación de mybash.c
-```c
-int main(int argc, char *argv[]) {
-    pipeline pipe = NULL; // INICIALIZA PIPELINE
-    Parser input = parser_new(stdin); // PARSEA STDIN
-    quit = false; // INICIALIZA QUIT
-
-    while (!quit) {
-        // WAITPIT UTILIZADO PARA LOGRAR QUE LOS MODOS FOREGROUND Y BACKGROUND NO COLAPSEN, ESTO EVITA QUE QUE WAIT/WAITPID SE BLOQUEE. SI HAY PROCESOS HIJOS QUE NO HAN TERMINADO, SE EJECUTA UN EXIT AUTOMÁTICAMENTE.
-        while (waitpid(-1, NULL, WNOHANG) > 0) {
-        };
-
-        show_prompt(); // SE MUESTRA LA PROMPT
-        pipe = parse_pipeline(input); // SE CONSTRUYE PIPELINE CON LOS COMANDOS INGRESADOS POR STDIN
-
-        // EJECUTO COMANDOS HASTA QUE LA PIPELINE SEA VACÍA
-        if (pipe != NULL) {
-            execute_pipeline(pipe);
-            pipe = pipeline_destroy(pipe);
-        }
-
-        // QUIT SE VUELVE TRUE CUANDO SE LLEGA AL FINAL DE INPUT, CERRANDO EL CICLO.
-        quit = quit || parser_at_eof(input);
-    }
-
-    printf("\n");
-
-    // SE DESTRUYE LA MEMORIA UTILIZADA
-    parser_destroy(input);
-    input = NULL;
-    return EXIT_SUCCESS;
-}
-```
-
 ## command
 Implementación del TAD scommand y TAD pipeline utilizados para la representación de los comandos y pipelines dentro de mybash.
 
@@ -153,34 +119,6 @@ Para más detalle leer [implementación builtin](/builtin).
 ## prompt
 Módulo que se encarga de mostrar por la terminal la respectiva prompt de mybash con información relevante a través de la función show_prompt.
 
-Su implementación es la siguiente:
-```c
-void show_prompt(void) {
-    // USA LA FUNCIÓN GETENV PARA OBTENER EL USERNAME.
-    char *username = getenv("USER");
-
-    // SE GUARDA EN BUFFER EL PATH AL DIRECTORIO ACTUAL
-    char *buffer = getcwd(NULL, 0);
-    // SE GUARDA EL HOME PATH EN HOME_PATH
-    char *home_path = getenv("HOME");
-
-    // NO MOSTRAMOS EL HOME_PATH EN LA TERMINAL PARA QUE EL PROMPT NO SEA TAN LARGO.
-    if (strncmp(buffer, home_path, strlen(home_path)) == 0) {
-        memmove(buffer, buffer + strlen(home_path), strlen(buffer));
-        char *auxiliar_to_remove = buffer;
-        buffer = strmerge("~", buffer);
-        free(auxiliar_to_remove);
-    }
-
-    // MOSTRAMOS POR PANTALLA USERNAME, PATH Y NOMBRE DEL BASH.
-    printf(ANSI_COLOR_RED "(MyBash) " ANSI_COLOR_RED);
-    printf(ANSI_COLOR_BLUE "[%s]" ANSI_COLOR_BLUE, buffer);
-    printf(ANSI_COLOR_GREEN " @%s → " ANSI_COLOR_GREEN, username);
-    printf(ANSI_COLOR_RESET);
-
-    fflush(stdout);
-}
-```
 En colors.h definimos los códigos para los colores ANSI_COLOR_RED, ANSI_COLOR_BLUE, ANSI_COLOR_GREEN y el color para el reset ANSI_COLOR_RESET.
 
 ## strextra
@@ -210,6 +148,7 @@ Los 4 integrantes del grupo al inicio estuvimos divididos en 2 subgrupos: Lauti 
 Nos basamos fuertemente en el uso de branchs (ramas) dentro del repositorio en bitbucket, para no tener conflictos del código a modificar o corregir. Una vez el modulo correspondiente a la rama estaba desarrollado, pasaba los tests y no presentaba errores de memoria, lo fusionábamos con la rama principal y creábamos una nueva rama para el próximo modulo a desarrollar.
 
 También se usó mucho live share, donde se codeo en la computadora de uno, pero todos participaban. Por esto mismo, en el grupo de Ema y Juan, la mayoría de los commits realizados son por parte de Emanuel, porque se trabajaba de a dos pero se codeaba en la computadora de Emanuel.
+
 ## Proceso de implementación
 Comenzamos desarrollando el modulo command, donde Emanuel y Juan se encargaron del TAD scommand y Lauty y Gonza del TAD pipeline. Luego de tener los TADs correctamente desarrollados y funcionando, nos concentramos en implementar el modulo builtin para la ejecución de comandos internos (Gonza y Lauty) y el parsing para procesar el input del usuario (Emanuel y Juan). Finalmente Lauty y Gonza se pusieron con el execute, donde se encuentra la implementación para ejecutar los comandos ingresados por el usuario, tanto comandos multiples como simples y tanto en foreground como en background. Mientras se hacía eso, Juan y Ema se encargaron de implementar el modulo principal de mybash y la personalización para el prompt. Pero como con la implementación realizada aparecían un par de errores en el test del execute, refactorizamos el código del execute para ver si así podían solucionarse (algunos de los errores pudieron arreglarse, pero aún quedaban varios). Necesitamos estar un par de de días trabajando sobre los errores hasta que pudimos encontrarle la solución a todo.
 
