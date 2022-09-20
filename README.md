@@ -9,16 +9,26 @@
 
 
 ## **Índice**
-
- - [Introducción](#introducción)
- - [¿Cómo correr el código?](#¿cómo-correr-el-código)
- - [Detalles de implementación](#detalles-de-implementación)
-    - [Características implementadas](#características-implementadas)
-    - [Modularización](#modularización)
- - [Herramientas de Programación](#herramientas-de-programación)
- - [Desarrollo del proyecto](#desarrollo-del-proyecto)
- - [Conclusión](#conclusión)
- - [Webgrafía](#webgrafía)
+* [Introducción](#markdown-header-introduccion)
+* [¿Cómo correr el código?](#markdown-header-como-correr-el-codigo)
+    * [Preparación](#markdown-header-preparacion)
+    * [Compilación y ejecución](#markdown-header-compilacion-y-ejecucion)
+* [Detalles de implementación](#markdown-header-detalles-de-implementacion)
+    * [Características implementadas](#markdown-header-caracteristicas-implementadas)
+    * [Modularización](#markdown-header-modularizacion)
+* [Herramientas de Programación](#markdown-header-herramientas-de-programacion)
+    * [Material teórico de estudio y preparación](#markdown-header-material-teorico-de-estudio-y-preparacion)
+    * [Desarrollo](#markdown-header-desarrollo)
+    * [Compilacion](#markdown-header-compilacion)
+    * [Debugging](#markdown-header-debugging)
+* [Desarrollo del proyecto](#markdown-header-desarrollo-del-proyecto)
+    * [Comunicación](#markdown-header-comunicacion)
+    * [Organización del trabajo](#markdown-header-organizacion-del-trabajo)
+    * [Workflow de desarrollo](#markdown-header-workflow-de-desarrollo)
+    * [Pruebas utilizadas](#markdown-header-pruebas-utilizadas)
+    * [Problemas y soluciones durante el desarrollo](#markdown-header-problemas-y-soluciones-durante-el-desarrollo)
+* [Conclusión](#markdown-header-conclusion-)
+* [Webgrafía](#markdown-header-webgrafia)
 
 ## **Introducción**
 Todo experto o amateur en el *mundo de Linux* tiene un conocimiento, aunque sea mínimo, sobre lo que es una terminal y cuáles son sus principales potenciales. Sin embargo, muy pocas veces nos hemos parado a pensar:
