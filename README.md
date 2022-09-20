@@ -15,32 +15,53 @@
     * [Instalación](#instalaci-n)
     * [Compilación y ejecución](#compilaci-n-y-ejecuci-n)
 - [Introducción](#introducci-n)
-- [Modularización](#modularizaci-n)
+- [Implementacion](#implementacion)
+    * [Caracteristicas implementadas](#caracteristicas-implementadas)
+        + [Funcionalidad basica](#funcionalidad-basica)
+        + [Puntos estrella](#puntos-estrella)
+    * [Modularización](#modularizaci-n)
+    * [mybash](#mybash)
     * [command](#command)
         + [TAD scommand](#tad-scommand)
         + [TAD pipeline](#tad-pipeline)
     * [parsing](#parsing)
     * [parser](#parser)
     * [execute](#execute)
+    * [files_descriptors](#files-descriptors)
     * [builtin](#builtin)
     * [internal_commands](#internal-commands)
-    * [strextra](#strextra)
     * [prompt](#prompt)
-    * [mybash](#mybash)
+    * [strextra](#strextra)
 - [Herramientas de Programación](#herramientas-de-programaci-n)
     * [Desarrollo](#desarrollo)
         + [Comentarios](#comentarios)
     * [Compilacion](#compilacion)
     * [Debugging](#debugging)
 - [Desarrollo del proyecto](#desarrollo-del-proyecto)
+    * [Organizacion del trabajo](#organizacion-del-trabajo)
+    * [Comunicación](#comunicaci-n)
+    * [Nuestro workflow de desarrollo](#nuestro-workflow-de-desarrollo)
+        + [Branches](#branches)
+        + [Live share](#live-share)
     * [Proceso de implementación](#proceso-de-implementaci-n)
+        + [Modulo Command](#modulo-command)
+        + [Modulos builtin y parsing](#modulos-builtin-y-parsing)
+        + [Modulo execute](#modulo-execute)
+        + [Mybash y prompt](#mybash-y-prompt)
+        + [Correcciones de estilo y formato](#correcciones-de-estilo-y-formato)
+        + [Informes detallados](#informes-detallados)
+        + [Informe final](#informe-final)
     * [Pruebas utilizadas](#pruebas-utilizadas)
     * [Problemas y soluciones durante el desarrollo](#problemas-y-soluciones-durante-el-desarrollo)
+        + [Tests que fallaban](#tests-que-fallaban)
+        + [Diferencias entre Mybash y Bash](#diferencias-entre-mybash-y-bash)
+        + [Desconocimiento y aprendizaje](#desconocimiento-y-aprendizaje)
+        + [Soluciones](#soluciones)
 - [Conclusiones](#conclusiones)
 - [Referencias y bibliografía](#referencias-y-bibliograf-a)
 
 # Introducción al informe
-Para evitar generar un informe con el largo de 25 hojas, con nuestro grupo decidimos dar solo una breve explicación sobre la implementación de cada modulo del proyecto, la cual es ampliada en un archivo aparte por si usted, el lector, quiere profundizar más en algún modulo.
+Con respecto al estilo del informe, para evitar alargarlo innecesariamente hemos decidido dar solo una breve explicación sobre la implementación de cada modulo del proyecto, la cual es ampliada en un archivo aparte por si el lector desea profundizar más en los detalles de algún modulo.
 
 # Como correr el codigo
 ## Instalación
@@ -57,10 +78,18 @@ El proyecto trata sobre codificar un shell al estilo de bash (Bourne Again SHell
 
 El programa debe poder satisfacer la ejecución de comandos en modo foreground y background, la redirección de entrada y salida estándar y realizar pipe entre comandos.
 
-# Modularización
-En la implementación de mybash se procesa una lista de órdenes del usuario, cada una de las cuales se representa mediante una instancia del TAD pipeline. El programa mybash recibe la entrada de la shell desde la standard input y debe llamar al modulo parsing para que este le de formato y genere una instancia de pipeline. 
-A continuación debe llamar al modulo execute que se encarga de llamar a **fork** y **execvp** para ejecutar los comandos simples. En caso de ser un comando interno, utiliza la función **builtin_run** y en caso de ser un pipeline con varios comandos, se utiliza la función **do_an_execute_pipeline** para gestionar la ejecución de los diferentes comandos y sus entradas y salidas.
+# Implementacion
+## Caracteristicas implementadas
+### Funcionalidad basica
+Al momento de entrega el proyecto cumple con todos las funcionalidades basicas pedidas por la cátedra.
 
+### Puntos estrella
+- Generalizar el comando pipeline “|” a una cantidad arbitraria de comandos simples
+- Imprimir un prompt con información relevante.
+    - En concreto, la prompt imprime el nombre de la shell, el camino relativo y el nombre de usuario.
+
+
+## Modularización
 Los modulos implementados son los siguientes:
 
 - mybash: Módulo principal
@@ -74,45 +103,19 @@ Los modulos implementados son los siguientes:
 - prompt: Implementación de una prompt con informacion relevante para el usuario
 - strextra: Implementación de función auxiliar para el manejo de strings.
 
+Y la estructura de modulos se relaciona siguiendo el siguiente gráfico:
+
+![diagrama de modulos](https://docs.google.com/drawings/d/e/2PACX-1vRHp-9hzIoFRShrxN-YHieV_GRyaoD86901jnYfCOg-2j05br2PHRQ_qR2JEl_N3SbRAXz0IJh87ZMN/pub?w=960&h=720)
+
+La mayor parte de las modularizaciones fueron las dadas por la cátedra, pero agregamos otras como **internal\_commands**, **prompt** y **files_descriptors** con el objetivo de hacer más ordenado el código del programa y que cada modulo se centre en solo un objetivo en específico.
+
 ## mybash
 Código de ejecución de mybash implementado utilizando un *while* loop que hace un print de la prompt con los respectivos datos relevantes y la lectura constante de los inputs del usuario hasta el fin de lectura o cierre de terminal. 
 
-Implementación de mybash.c
-```c
-int main(int argc, char *argv[]) {
-    pipeline pipe = NULL; // INICIALIZA PIPELINE
-    Parser input = parser_new(stdin); // PARSEA STDIN
-    quit = false; // INICIALIZA QUIT
-
-    while (!quit) {
-        // WAITPIT UTILIZADO PARA LOGRAR QUE LOS MODOS FOREGROUND Y BACKGROUND NO COLAPSEN, ESTO EVITA QUE QUE WAIT/WAITPID SE BLOQUEE. SI HAY PROCESOS HIJOS QUE NO HAN TERMINADO, SE EJECUTA UN EXIT AUTOMÁTICAMENTE.
-        while (waitpid(-1, NULL, WNOHANG) > 0) {
-        };
-
-        show_prompt(); // SE MUESTRA LA PROMPT
-        pipe = parse_pipeline(input); // SE CONSTRUYE PIPELINE CON LOS COMANDOS INGRESADOS POR STDIN
-
-        // EJECUTO COMANDOS HASTA QUE LA PIPELINE SEA VACÍA
-        if (pipe != NULL) {
-            execute_pipeline(pipe);
-            pipe = pipeline_destroy(pipe);
-        }
-
-        // QUIT SE VUELVE TRUE CUANDO SE LLEGA AL FINAL DE INPUT, CERRANDO EL CICLO.
-        quit = quit || parser_at_eof(input);
-    }
-
-    printf("\n");
-
-    // SE DESTRUYE LA MEMORIA UTILIZADA
-    parser_destroy(input);
-    input = NULL;
-    return EXIT_SUCCESS;
-}
-```
-
 ## command
-Implementación del TAD scommand y TAD pipeline utilizados para la representación de los comandos y pipelines dentro de mybash.
+Implementación del TAD scommand y TAD pipeline utilizados para la representación de los comandos y pipelines dentro de mybash. 
+
+Para ambos TAD se utilizó la estructura GQueue de la librería externa **GLib**.
 
 ### TAD scommand
 
@@ -156,34 +159,6 @@ Para más detalle leer [implementación builtin](/builtin).
 ## prompt
 Módulo que se encarga de mostrar por la terminal la respectiva prompt de mybash con información relevante a través de la función show_prompt.
 
-Su implementación es la siguiente:
-```c
-void show_prompt(void) {
-    // USA LA FUNCIÓN GETENV PARA OBTENER EL USERNAME.
-    char *username = getenv("USER");
-
-    // SE GUARDA EN BUFFER EL PATH AL DIRECTORIO ACTUAL
-    char *buffer = getcwd(NULL, 0);
-    // SE GUARDA EL HOME PATH EN HOME_PATH
-    char *home_path = getenv("HOME");
-
-    // NO MOSTRAMOS EL HOME_PATH EN LA TERMINAL PARA QUE EL PROMPT NO SEA TAN LARGO.
-    if (strncmp(buffer, home_path, strlen(home_path)) == 0) {
-        memmove(buffer, buffer + strlen(home_path), strlen(buffer));
-        char *auxiliar_to_remove = buffer;
-        buffer = strmerge("~", buffer);
-        free(auxiliar_to_remove);
-    }
-
-    // MOSTRAMOS POR PANTALLA USERNAME, PATH Y NOMBRE DEL BASH.
-    printf(ANSI_COLOR_RED "(MyBash) " ANSI_COLOR_RED);
-    printf(ANSI_COLOR_BLUE "[%s]" ANSI_COLOR_BLUE, buffer);
-    printf(ANSI_COLOR_GREEN " @%s → " ANSI_COLOR_GREEN, username);
-    printf(ANSI_COLOR_RESET);
-
-    fflush(stdout);
-}
-```
 En colors.h definimos los códigos para los colores ANSI_COLOR_RED, ANSI_COLOR_BLUE, ANSI_COLOR_GREEN y el color para el reset ANSI_COLOR_RESET.
 
 ## strextra
@@ -208,19 +183,47 @@ Se declara la función *strmerge*, utilizada para implementar las funciones *sco
 - Valgrind, conjunto de herramientas para la depuración de problemas de memoria y rendimiento de programas.
 
 # Desarrollo del proyecto
-Los 4 integrantes del grupo al inicio estuvimos divididos en 2 subgrupos: Lauti y Gonza, Ema y Juan. Esto nos permitió mayor flexibilidad para trabajar en dos módulos en simultaneo y además tener alguien con quien apoyarnos en caso de dudas o errores. Una vez implementados todos los modulos, los grupos se disolvieron y cada integrante ayudaba cuando podia en solucionar errores, mejorar el formato/comentarios del código y realizar el informe.
+## Organizacion del trabajo
+Los 4 integrantes del grupo al inicio estuvimos divididos en 2 subgrupos: Lauti y Gonza, Ema y Juan. Cada grupo se encargaba de implemenar un modulo diferente.
+Una vez implementados todos los modulos, los grupos se disolvieron y cada integrante ayudaba cuando podia en solucionar errores, mejorar el formato/comentarios del código y realizar el informe.
 
-Nos basamos fuertemente en el uso de branchs (ramas) dentro del repositorio en bitbucket, para no tener conflictos del código a modificar o corregir. Una vez el modulo correspondiente a la rama estaba desarrollado, pasaba los tests y no presentaba errores de memoria, lo fusionábamos con la rama principal y creábamos una nueva rama para el próximo modulo a desarrollar.
+## Comunicación
+La mayor parte del proyecto utilizamos Discord y Telegram para organizarnos, pero probamos varias herramienta, como jira y trello, hasta encontrar las que mejor se adaptaban al flujo del grupo.
 
-Semanalmente los integrantes del grupo se reunían con los profesores para mostrar todo el proceso hecho hasta el momento, compartir los avances y solucionar dudas e inquietudes.
+## Nuestro workflow de desarrollo
+### Branches
+Nos basamos fuertemente en el uso de branchs (ramas) dentro del repositorio en bitbucket. Una vez el modulo correspondiente a la rama estaba desarrollado, pasaba los tests y no presentaba errores de memoria, lo fusionábamos con la rama principal y creábamos una nueva rama para el próximo modulo a desarrollar.
 
-También se usó mucho live share, donde se codeo en la computadora de uno, pero todos participaban. Por esto mismo, en el grupo de Ema y Juan, la mayoría de los commits realizados son por parte de Emanuel, porque se trabajaba de a dos pero se codeaba en la computadora de Emanuel.
+### Live share
+También se usó mucho live share. Por esto mismo, en el grupo de Ema y Juan, la mayoría de los commits realizados por el subgrupo de Emanuel y Juan son por parte de Emanuel, porque se trabajaba de a dos pero se codeaba en la computadora de Emanuel.
+
 ## Proceso de implementación
-Comenzamos desarrollando el modulo command, donde Emanuel y Juan se encargaron del TAD scommand y Lauty y Gonza del TAD pipeline. Luego de tener los TADs correctamente desarrollados y funcionando, nos concentramos en implementar el modulo builtin para la ejecución de comandos internos (Gonza y Lauty) y el parsing para procesar el input del usuario (Emanuel y Juan). Finalmente Lauty y Gonza se pusieron con el execute, donde se encuentra la implementación para ejecutar los comandos ingresados por el usuario, tanto comandos multiples como simples y tanto en foreground como en background. Mientras se hacía eso, Juan y Ema se encargaron de implementar el modulo principal de mybash y la personalización para el prompt. Pero como con la implementación realizada aparecían un par de errores en el test del execute, refactorizamos el código del execute para ver si así podían solucionarse (algunos de los errores pudieron arreglarse, pero aún quedaban varios). Necesitamos estar un par de de días trabajando sobre los errores hasta que pudimos encontrarle la solución a todo.
+### Modulo Command
+Comenzamos desarrollando el modulo command, donde Emanuel y Juan se encargaron del TAD scommand y Lauty y Gonza del TAD pipeline.
 
-Una vez todo el código fue desarrollado, compilado y satisfacía los tests dados por la cátedra y los propios hechos por nosotros, confirmando que todo funcionara correctamente, empezamos a realizar las correcciones de estilo y formato del código, para tener uniformidad y cumplir con las pautas de la catedra. Esto fue bastante sencillo ya que Lautaro realizó al comienzo del proyecto un archivo de formateado que le daba un formato uniforme a nuestro código, las correcciones y ajustes que tuvimos que hacer fueron centralmente en nombre de variables o funciones y en el agregado de comentarios en el código para facilitar la lectura y el poder seguir la linea de implmentación del código.
+### Modulos builtin y parsing
+Luego de tener los TADs correctamente desarrollados y funcionando, nos concentramos en implementar el modulo builtin para la ejecución de comandos internos (Gonza y Lauty) y el parsing para procesar el input del usuario (Emanuel y Juan).
 
-Durante todo el desarrollo del proyecto intentamos ir realizando reportes/informes periódicos de nuestras implementaciones, para al final poder realizar un informe lo más completo posible. El desarrollo del informe final comenzó de manera paralela a la corrección de errores del execute y estuvimos hasta el último día mejorandolo y agregandole información.
+### Modulo execute
+Finalmente Lauty y Gonza se pusieron con el execute, donde se encuentra la implementación para ejecutar los comandos ingresados por el usuario, tanto comandos multiples como simples y tanto en foreground como en background.
+
+Pero como con la implementación realizada no se podian utilizar comandos internos adentro de una pipe y se habia interpretado que no se deberia de poder hacer redirecciones en la parte del medio de una pipe, Juan y Ema decidieron refactorizar el código del execute para cambiar esto. 
+
+Una vez finalizada la refactorizacion estuvimos trabajando en conjunto un par de de días para lograr que todas las tests pasen hasta que eventualmente pudimos encontrarle la solución a todo.
+
+### Mybash y prompt
+Mientras Lauty y Gonza trabajaban en el modulo execute, Juan y Ema se encargaron de implementar el modulo principal de mybash y la personalización para el prompt.
+
+### Correcciones de estilo y formato
+Una vez todo el código fue desarrollado, compilado y satisfacía los tests dados por la cátedra y los propios hechos por nosotros, confirmando que todo funcionara correctamente, empezamos a realizar las correcciones de estilo y formato del código. 
+
+Las correcciones y ajustes que tuvimos que hacer fueron centralmente en nombre de variables o funciones y en el agregado de comentarios en el código para facilitar la lectura y el poder seguir la linea de implmentación del código.
+
+### Informes detallados
+Durante todo el desarrollo del proyecto intentamos ir realizando reportes/informes periódicos de nuestras implementaciones, para al final poder realizar un informe lo más completo posible. 
+
+### Informe final
+El desarrollo del informe final comenzó de manera paralela a la corrección de errores del execute y estuvimos hasta el último día mejorandolo y agregandole información.
 
 ## Pruebas utilizadas
 Se realizaron pruebas unitarias caseras para cada módulo, además de las pruebas provistas por la catedra para las cuales necesitamos utilizar la librería Check para C. Para aquellos módulos donde se realizo una prueba casera, se creó un archivo de prueba, con la extensión .c, en la carpeta de **custom_tests**.
@@ -228,10 +231,19 @@ Se realizaron pruebas unitarias caseras para cada módulo, además de las prueba
 Primero nos asegurábamos de que el código diera los resultados esperados según los tests, y luego revisábamos que no existieran memory leaks en el código, utilizando **valgrind** como principal herramienta para encontrar y verificar estos errores de memoria.
 
 ## Problemas y soluciones durante el desarrollo
-Algunos de los problemas en el desarrollo fueron algunos failed tests que nos costó poder pasar, principalmente en el módulo del execute. Había algunos tests que no entendíamos muy bien qué hacían y qué era lo que fallaba porque en la implementación prácticamente todo funcionaba. También hubo algunos detalles relacionados a qué tanta diferencia debería haber entre mybash y la bash de linux, ya que había algunas implementaciones de linux que eran muy difíciles de llevar a cabo en mybash y, que según la cátedra, no hacía falta implementar. Estos problemas los fuimos resolviendo siempre gracias al trabajo en conjunto. Realizamos varias reuniones entre todos para compartir posibles ideas y soluciones y retroalimentar lo aprendido. También, consultamos muchas dudas con la cátedra, que nos ayudó a esclarecer las cuestiones relacionadas a las diferencias entre mybash y la bash de linux, a entender mejor el comportamiento de los tests y a considerar distintos casos bordes relacionados a la implementación de la terminal.
+### Tests que fallaban
+Algunos de los problemas en el desarrollo fueron algunos failed tests que nos costó poder pasar, principalmente en el módulo del execute. Había algunos tests que no entendíamos muy bien qué hacían y qué era lo que fallaba porque en la implementación prácticamente todo funcionaba.
+
+### Diferencias entre Mybash y Bash
+También hubo algunos detalles relacionados a qué tanta diferencia debería haber entre mybash y la bash de linux, ya que había algunas implementaciones de linux que eran muy difíciles de llevar a cabo en mybash y, que según la cátedra, no hacía falta implementar.
+
+### Desconocimiento y aprendizaje
+En varios modulos no sabiamos como encarar su implementación o que funciones utilizar para lograr lo solicitado, por lo que se necesito hacer una investigación previa utilizando la [Referencias y bibliografía](#referencias-y-bibliograf-a)
+
+### Soluciones
+Estos problemas los fuimos resolviendo siempre gracias al trabajo en conjunto. Realizamos varias reuniones entre todos para compartir posibles ideas y soluciones y retroalimentar lo aprendido. También, consultamos muchas dudas con la cátedra, que nos ayudó a esclarecer las cuestiones relacionadas a las diferencias entre mybash y la bash de linux, a entender mejor el comportamiento de los tests, saber donde buscar la información y a considerar distintos casos bordes relacionados a la implementación de la shell.
 
 # Conclusiones 
-
 Se logró implementar un shell básico, con la ejecución de comandos tanto en modo foreground y en modo background, con la redirección de entrada y salida estándar, y con la posibilidad de realizar multiples pipes (más de 2) entre comandos. 
 
 En este proyecto aprendimos a como trabajar en equipo y organizar las tareas para generar una división equitativa. Esto nos sirvió para mejorar la coordinación dentro del grupo y para comprender como funciona un shell y ayudarnos en las dudas que tenia cada uno. 
