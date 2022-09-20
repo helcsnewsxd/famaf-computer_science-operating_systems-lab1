@@ -32,7 +32,7 @@ static scommand parse_scommand(Parser p) {
     }
 
     // See if there are some errors
-    if (scommand_is_empty(new_scmd)) {
+    if (scommand_is_empty(new_scmd) || arg_type == ARG_INPUT || arg_type == ARG_OUTPUT) {
         new_scmd = scommand_destroy(new_scmd);
         new_scmd = NULL;
     }
@@ -86,6 +86,7 @@ pipeline parse_pipeline(Parser p) {
     if (error) {
         result = pipeline_destroy(result);
         result = NULL;
+        printf("Command sintaxis Error\n");
     }
 
     // Return the pipeline or NULL (in case of a syntax error)
