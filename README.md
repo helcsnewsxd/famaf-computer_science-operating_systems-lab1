@@ -103,6 +103,10 @@ Los modulos implementados son los siguientes:
 - prompt: Implementación de una prompt con informacion relevante para el usuario
 - strextra: Implementación de función auxiliar para el manejo de strings.
 
+Y la estructura de modulos se relaciona siguiendo el siguiente gráfico:
+
+![diagrama de modulos](https://docs.google.com/drawings/d/e/2PACX-1vRHp-9hzIoFRShrxN-YHieV_GRyaoD86901jnYfCOg-2j05br2PHRQ_qR2JEl_N3SbRAXz0IJh87ZMN/pub?w=960&h=720)
+
 La mayor parte de las modularizaciones fueron las dadas por la cátedra, pero agregamos otras como **internal\_commands**, **prompt** y **files_descriptors** con el objetivo de hacer más ordenado el código del programa y que cada modulo se centre en solo un objetivo en específico.
 
 ## mybash
