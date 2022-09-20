@@ -1,6 +1,8 @@
+[Ir al informe](../README.md)
+
 # **SCOMMAND**
 
-## Estructura del TAD Scommand (vista externa)
+## **Estructura del TAD Scommand (vista externa)**
 
 Scommand es una estructura que permite representar comandos simples de la forma
 ```     
@@ -10,18 +12,18 @@ pudiendo actualizarlos a medida que sea necesario.
 
 Por ello mismo, en la librería command.h se proveen las siguientes funciones públicas:
 
-### Constructores
+### **Constructores**
 
 1. **scommand_new**    
 2. **scommand_push_back**
 3. **scommand_set_redir_in**
 4. **scommand_set_redir_out**
 
-### Destructores
+### **Destructores**
 
 1. **scommand_destroy**
 
-### Operaciones
+### **Operaciones**
 
 * Actualización del Scommand
     1. **scommand_pop_front**
@@ -31,12 +33,13 @@ Por ello mismo, en la librería command.h se proveen las siguientes funciones p�
     3. **scommand_get_redir_out**
     4. **scommand_is_empty**
     5. **scommand_length**
+    6. **scommand_to_char_list**
 * Debugging
     1. **scommand_to_string**
 
-## Implementación del TAD Scommand
+## **Implementación del TAD Scommand**
 
-### Estructura de Datos
+### **Estructura de Datos**
 
 A partir de una lectura comprensiva del **command.h**, para la implementación de los comandos simples, decidimos partir desde la librería **GLib** para estructurar cada argumento en una serie de campos, aprovechando así GQueue para representar la lista de argumentos, y punteros a char para representar cada redirección (in & out).
 
@@ -51,17 +54,17 @@ La estructura elegida fue la siguiente:
         
 ```
 
-### Implementaciones interesantes
+### **Implementaciones interesantes**
 
-#### scommand_to_string
+#### **scommand_to_string**
 
 Esta función, que provee la estructura de datos, requiere como argumento un comando simple (*tipo scommand*), y devuelve un string (```char *```) que refiere a su representación en consola (bash).
 
-##### Librerías requeridas
+##### **Librerías requeridas**
 
 Para poder mergear strings, usamos la librería **strextra.h**.
 
-##### Idea de la implementación
+##### **Idea de la implementación**
 
 Primero, para la implementación de la función, nos manejamos con una variable principal *sc_shell_representation* (de tipo ```char *```), en la cual se iban a realizar los merge de la forma:
 ```c

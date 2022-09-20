@@ -1,6 +1,6 @@
-***Laboratorio número 1 de Sistemas Operativos 2022 - Grupo 12 | Famaf UNC*** 
+# **Laboratorio número 1 de Sistemas Operativos 2022 - Grupo 12 | FaMAF UNC**
 
-*Integrantes del grupo:* 
+## **Integrantes del grupo:**
 
 - Lautaro Bachmann (lautaro.bachmann@mi.unc.edu.ar)
 - Juan Bratti (juanbratti@mi.unc.edu.ar)
@@ -8,251 +8,189 @@
 - Emanuel Herrador (emanuel.nicolas.herrador@unc.edu.ar)
 
 
-**INDICE**
+## **Índice**
 
-- [Introducción al informe](#introducci-n-al-informe)
-- [Como correr el codigo](#como-correr-el-codigo)
-    * [Instalación](#instalaci-n)
-    * [Compilación y ejecución](#compilaci-n-y-ejecuci-n)
-- [Introducción](#introducci-n)
-- [Implementacion](#implementacion)
-    * [Caracteristicas implementadas](#caracteristicas-implementadas)
-        + [Funcionalidad basica](#funcionalidad-basica)
-        + [Puntos estrella](#puntos-estrella)
-    * [Modularización](#modularizaci-n)
-    * [mybash](#mybash)
-    * [command](#command)
-        + [TAD scommand](#tad-scommand)
-        + [TAD pipeline](#tad-pipeline)
-    * [parsing](#parsing)
-    * [parser](#parser)
-    * [execute](#execute)
-    * [files_descriptors](#files-descriptors)
-    * [builtin](#builtin)
-    * [internal_commands](#internal-commands)
-    * [prompt](#prompt)
-    * [strextra](#strextra)
-- [Herramientas de Programación](#herramientas-de-programaci-n)
-    * [Desarrollo](#desarrollo)
-        + [Comentarios](#comentarios)
-    * [Compilacion](#compilacion)
-    * [Debugging](#debugging)
-- [Desarrollo del proyecto](#desarrollo-del-proyecto)
-    * [Organizacion del trabajo](#organizacion-del-trabajo)
-    * [Comunicación](#comunicaci-n)
-    * [Nuestro workflow de desarrollo](#nuestro-workflow-de-desarrollo)
-        + [Branches](#branches)
-        + [Live share](#live-share)
-    * [Proceso de implementación](#proceso-de-implementaci-n)
-        + [Modulo Command](#modulo-command)
-        + [Modulos builtin y parsing](#modulos-builtin-y-parsing)
-        + [Modulo execute](#modulo-execute)
-        + [Mybash y prompt](#mybash-y-prompt)
-        + [Correcciones de estilo y formato](#correcciones-de-estilo-y-formato)
-        + [Informes detallados](#informes-detallados)
-        + [Informe final](#informe-final)
-    * [Pruebas utilizadas](#pruebas-utilizadas)
-    * [Problemas y soluciones durante el desarrollo](#problemas-y-soluciones-durante-el-desarrollo)
-        + [Tests que fallaban](#tests-que-fallaban)
-        + [Diferencias entre Mybash y Bash](#diferencias-entre-mybash-y-bash)
-        + [Desconocimiento y aprendizaje](#desconocimiento-y-aprendizaje)
-        + [Soluciones](#soluciones)
-- [Conclusiones](#conclusiones)
-- [Referencias y bibliografía](#referencias-y-bibliograf-a)
+ - [Introducción](#introducción)
+ - [¿Cómo correr el código?](#¿cómo-correr-el-código)
+ - [Detalles de implementación](#detalles-de-implementación)
+    - [Características implementadas](#características-implementadas)
+    - [Modularización](#modularización)
+ - [Herramientas de Programación](#herramientas-de-programación)
+ - [Desarrollo del proyecto](#desarrollo-del-proyecto)
+ - [Conclusión](#conclusión)
+ - [Webgrafía](#webgrafía)
 
-# Introducción al informe
-Con respecto al estilo del informe, para evitar alargarlo innecesariamente hemos decidido dar solo una breve explicación sobre la implementación de cada modulo del proyecto, la cual es ampliada en un archivo aparte por si el lector desea profundizar más en los detalles de algún modulo.
+## **Introducción**
+Todo experto o amateur en el *mundo de Linux* tiene un conocimiento, aunque sea mínimo, sobre lo que es una terminal y cuáles son sus principales potenciales. Sin embargo, muy pocas veces nos hemos parado a pensar:
+```
+¿Por qué anda esto?
+¿Cómo hacen para reconocer mi comando y permitir ejecutar varios al mismo tiempo?
+¿Cómo se encargan de "linkear" todos los programas?
+```
+Por ello mismo es que en el presente informe, gracias al laboratorio ofrecido por la cátedra de *Sistemas Operativos 2022* y su posterior realización en el repositorio por parte del **Grupo 12**, se plantearán las respuestas claves a estas preguntas, se mostrará el procedimiento, las ideas, los problemas a enfrentar y el abanico de posibilidades que se produce en el desarollo de una *Shell* en un sistema tipo UNIX (más específicamente, **Linux**).
 
-# Como correr el codigo
-## Instalación
+## **¿Cómo correr el código?**
+### **Preparación**
 1. Clonar repositorio.
 2. Instalar librerias `glib` y `check`.
 
-## Compilación y ejecución 
-Para compilar el código, basta con ejecutar el comando `make`. 
+### **Compilación y ejecución**
+Por motivos de comodidad y desarrollo, gracias al Makefile desarrollado por la cátedra, para compilar el código debemos ejecutar el comando
+```sh
+make
+```
+en el directorio principal (*so22lab1g12*), mientras que para ejecutarlo (luego de la compilación)
+```sh
+./mybash
+```
+Finalmente, para eliminar todos los archivos ejecutables (excepto lexer.o y parser.o), debe tenerse en cuenta el comando
+```
+make clean
+```
 
-Para ejecutar el programa, basta con ejecutar `./mybash` luego de haber compilado el código.
+## **Detalles de implementación**
+### **Características implementadas**
+#### **Funcionalidad basica**
+Al momento de entrega, el proyecto cumple con todos las funcionalidades basicas pedidas por la cátedra, tales como:
 
-# Introducción
-El proyecto trata sobre codificar un shell al estilo de bash (Bourne Again SHell) al que llamaremos mybash. 
+ - Pasar el 100% del *unit-testing* (make test) dado para todo el proyecto
+ - Manejar pipelines de, al menos, dos comandos
+ - Manejar de manera adecuada la terminación de procesos lanzados en segundo plano sin dejar procesos zombies
 
-El programa debe poder satisfacer la ejecución de comandos en modo foreground y background, la redirección de entrada y salida estándar y realizar pipe entre comandos.
+#### **Puntos estrella**
+Respecto a los puntos y funcionalidades extras de nuestro proyecto, se encuentran:
 
-# Implementacion
-## Caracteristicas implementadas
-### Funcionalidad basica
-Al momento de entrega el proyecto cumple con todos las funcionalidades basicas pedidas por la cátedra.
-
-### Puntos estrella
-- Generalizar el comando pipeline “|” a una cantidad arbitraria de comandos simples
-- Imprimir un prompt con información relevante.
-    - En concreto, la prompt imprime el nombre de la shell, el camino relativo y el nombre de usuario.
+ - Generalizar el comando pipeline “|” a una cantidad arbitraria de comandos simples
+ - Imprimir un prompt con información relevante (nombre de la shell, camino relativo y nombre de usuario).
 
 
-## Modularización
-Los modulos implementados son los siguientes:
+### **Modularización**
+La división del proyecto en módulos que se consideró por decisión del grupo fue la siguiente:
 
-- mybash: Módulo principal
-- command: Implementación de los TADs para representar los comandos
-- parsing: Procesamiento de la entrada del usuario usando el parser
-- parser: Implementación del TAD parser 
-- execute: Ejecución de comandos y administración de las llamadas al sistema operativo
-- files_descriptors: Implementación de funciones para el manejo de redirecciones para las salidas/entradas de los comandos.
-- builtin: Implementación de interfaces para interactuar con comandos internos e identificarlos
-- internal\_commands: Implementación de los comandos internos
-- prompt: Implementación de una prompt con informacion relevante para el usuario
-- strextra: Implementación de función auxiliar para el manejo de strings.
+- MyBash: Módulo principal de la Shell
+- Prompt: Implementación de una prompt con información relevante para el usuario
+- Parsing: Procesamiento de la entrada del usuario utilizando el parser
+- Parser: Implementación del TAD parser (dada por la cátedra)
+- Execute: Ejecución de comandos y administración de las llamadas al sistema operativo (syscalls)
+- Builtin: Implementación de interfaces para identificación e interacción con comandos internos
+- Internal Commands: Implementación de los comandos internos
+- Files Descriptors: Implementación de funciones para el manejo de redirecciones para las salidas/entradas de los comandos
+- Command: Implementación de los TADs para representar los comandos simples y compuestos
+- Strextra: Implementación de función auxiliar para el manejo de strings.
 
-Y la estructura de modulos se relaciona siguiendo el siguiente gráfico:
+y cuya estructura se visualiza gracias al siguiente gráfico:
 
 ![diagrama de modulos](https://docs.google.com/drawings/d/e/2PACX-1vRHp-9hzIoFRShrxN-YHieV_GRyaoD86901jnYfCOg-2j05br2PHRQ_qR2JEl_N3SbRAXz0IJh87ZMN/pub?w=960&h=720)
 
-La mayor parte de las modularizaciones fueron las dadas por la cátedra, pero agregamos otras como **internal\_commands**, **prompt** y **files_descriptors** con el objetivo de hacer más ordenado el código del programa y que cada modulo se centre en solo un objetivo en específico.
+El objetivo de haber desarrollado esta división y agregado más módulos apartes de los ofrecidos por la cátedra, fue hacer mucho más ordenado el código del programa de forma tal que cada parte se centre sólo en un objetivo en específico y, de ese modo, permitir una mayor *legibilidad* y *entendimiento* del proyecto tanto para los desarrolladores de este como para sus lectores.
 
-## mybash
-Código de ejecución de mybash implementado utilizando un *while* loop que hace un print de la prompt con los respectivos datos relevantes y la lectura constante de los inputs del usuario hasta el fin de lectura o cierre de terminal. 
+#### **Explicación detallada de los módulos**
 
-## command
-Implementación del TAD scommand y TAD pipeline utilizados para la representación de los comandos y pipelines dentro de mybash. 
+Bajo la idea de proponer un informe general, legible y llamativo del proyecto, la explicación detallada de los módulos más importantes va a encontrarse dentro de los archivos con formato Markdown linkeados a continuación:
 
-Para ambos TAD se utilizó la estructura GQueue de la librería externa **GLib**.
+ - **Command**
+    - [**TAD Scommand**](/detailed_explanations/scommand.md)
+    - [**TAD Pipeline**](/detailed_explanations/pipeline.md)
+ - [**Parsing**](/detailed_explanations/parsing.md)
+ - [**Execute**](/detailed_explanations/execute.md) (junto con **Files Descriptors**)
+ - [**Builtin**](/detailed_explanations/builtin.md) (junto con **Internal Commands**)
 
-### TAD scommand
+## **Herramientas de Programación**
+Las principales herramientas utilizadas por el grupo en la implementación, división y codificación de las secciones del programa MyBash fueron las siguientes:
 
-Tipo abstracto utilizado para representar los comandos ingresados por consola junto con sus respectivos argumentos y redireccionamientos en el caso de haber sido utilizados.
+### **Material teórico de estudio y preparación**
 
-Para más detalle leer [implementación scommand](/scommand).
+ - [**Operating Systems: Three Easy Pieces**: Process virtualization](https://pages.cs.wisc.edu/~remzi/OSTEP/), principalmente el capítulo número 5 (*Process API*) junto con su sección de *Homework Simulation* y *Homework Code*
+ - [**Introducción a Unit Testing**](https://docs.google.com/document/d/111q867IwnaS6IlFdFEXvJqCIgZR2zaKt9Nq6e-Civd4/edit)
+ - [**GLib Docs**](https://docs.gtk.org/glib/index.html)
+### **Desarrollo**
 
-### TAD pipeline
-Tipo abstracto utilizado para la implementación del uso de comandos múltiples a través del uso de pipes |.
+- [Visual Studio Code](https://code.visualstudio.com/), editor de código
+- [Live Share](https://code.visualstudio.com/learn/collaboration/live-share), extensión para el desarrollo colaborativo en tiempo real
+- [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html), formateador de código
+    - Para obtener un estilo consistente se utilizó con un formato basado en el estilo de código usado por [LLVM](https://llvm.org/).
+    - Se generó una configuración común de VSCode y se subió al repositorio para que el editor de texto de todos los integrantes del grupo se comporte de forma similar.
+### **Compilacion**
 
-Para más detalle leer [implementación pipeline](/pipeline).
+- [GNU Make](https://www.gnu.org/software/make/)
 
-## parsing
-Módulo de procesamiento de la entrada del usuario usando el tipo Parser.
+### **Debugging**
 
-Para más detalle leer [implementación parsing](/parsing).
+- [GDB](https://sourceware.org/gdb/), depurador estándar para el compilador GNU.
+- [Valgrind](https://valgrind.org/), conjunto de herramientas para la depuración de problemas de memoria y rendimiento de programas.
 
-## parser 
-Módulo implementado por la cátedra.
+## **Desarrollo del proyecto**
 
-## execute
-Módulo ejecutor de comandos, administra las llamadas al sistema operativo. 
+### **Comunicación**
+Luego de pasar por varias herramientas de comunicación y organización, tales como [Jira](https://www.atlassian.com/software/jira) y [Trello](https://trello.com/), se decidió por parte del grupo coordinar mediante la utilización de plataformas como [Discord](https://discord.com/) y [Telegram](https://telegram.org/) dada la afinidad y comodidad que nos presenta respecto a las tareas que debemos realizar.
 
-Para más detalle leer [implementación execute](/execute).
+### **Organización del trabajo**
+Inicialmente, y por gran parte del desarrollo de MyBash, se realizó una división en dos subgrupos conformados del siguiente modo:
 
-## files_descriptors
-Módulo que se encarga del comportamiento de la entrada y salida de cada comando en una pipeline a través de los respectivos redireccionamientos. Este módulo es usado en execute.
+ - Grupo 1: Lautaro Bachmann y Gonzalo Canavesio
+ - Grupo 2: Juan Bratti y Emanuel Nicolás Herrador
 
-Para más detalle leer [implementación execute](/execute).
+para facilitar el correcto y ordenado desarrollo de la implementación de los módulos evitando todo tipo de colisión de tareas. Esta idea se mantuvo durante la implementación de los módulos básicos hasta la *segunda versión del Execute*, desde la cual cada integrante ayudaba en proponer ideas, solucionar errores, mejorar el formato o comentarios del código, y realizar el informe.
 
-## builtin
-Módulo que administra los comandos internos del intérprete de comandos.
+#### **Live share**
+A motivo de aclaración por los commits presentados en el proyecto, el Grupo 2 se basó en el uso de la herramienta Live Share por motivos de comodidad y para poder compilar y correr MyBash en la computadora (dado que en Windows se complicaba). Por ello mismo, los commits tienen aclarado, en su descripción o en los comentarios, quiénes fueron los coautores de los cambios realizados e implementados.
 
-Para más detalle leer [implementación builtin](/builtin).
+### **Workflow de desarrollo**
+#### **Branches**
+Bajo los mismos objetivos anteriormente mencionados, para lograr una mayor organización del código durante la implementación y desarrollo de MyBash, nuestro Workflow de trabajo se basó fuertemente en el uso de Branchs (ramas) dentro del repositorio en Bitbucket.
 
-## internal_commands
-Módulo que implementa los comandos internos del intérprete de comandos.
+Para cada módulo, primero se creaba una nueva branch para desarrollarlo y cuando ya estaba totalmente implementado, pasaba los tests y no presentaba errores de memoria, era fusionado con la rama principal.
 
-Para más detalle leer [implementación builtin](/builtin).
+### **Pruebas utilizadas**
+Se realizaron pruebas unitarias *caseras* para cada módulo, además de los tests provistos por la cátedra para los cuales necesitamos utilizar la librería [Check](https://libcheck.github.io/check/doc/doxygen/html/check_8h.html) para C. Respecto a aquellos módulos donde se realizó una prueba casera, se creó un archivo de prueba, con la extensión .c, en la carpeta de **Custom Tests**.
 
-## prompt
-Módulo que se encarga de mostrar por la terminal la respectiva prompt de mybash con información relevante a través de la función show_prompt.
+De este modo, podía probarse y asegurarse de que el código diera los resultados esperados según todo tipo de test, además de la revisión de memory leaks y heaps mediante la utilización de **Valgrind**.
 
-En colors.h definimos los códigos para los colores ANSI_COLOR_RED, ANSI_COLOR_BLUE, ANSI_COLOR_GREEN y el color para el reset ANSI_COLOR_RESET.
+### **Problemas y soluciones durante el desarrollo**
+#### **Tests que fallaban**
+El principal test con el que encontramos complicaciones a la hora del desarrollo del módulo de execute fue el encargado de controlar el correcto funcionamiento de las Syscalls en el proceso hijo luego de realizar una llamada a **fork()**.
 
-## strextra
-Se declara la función *strmerge*, utilizada para implementar las funciones *scommand_to_string* y *pipeline_to_string* del modulo command.
+```
+test_execute.c:306:F:Functionality:test_pipe2_child1:0: Assertion 'mock_check_fd(3, KIND_CLOSED, NULL)' failed
+```
 
+Para solucionarlo, dado el planteamiento recursivo de la ejecución de los comandos, una vez generado el buffer de in/out mediante **pipe()** había que notar dos cuestiones principales:
 
-# Herramientas de Programación
-## Desarrollo
-- Visual Studio Code, editor de código
-- Live Share, extensión para el desarrollo colaborativo en tiempo real
-- ClangFormat, formateador de código
+ - El input del comando actual va a ser el read buffer de la pipe anterior, o STDIN en caso de ser el primero (salvo declaración explícita de redirección a files)
+ - El read buffer creado en la pipe actual no va a ser usado, sino solo su contraparte write.
 
-### Comentarios
-- Para obtener un estilo consistente utilizamos ClangFormat con un formato basado en el estilo de codigo usado por LLVM.
-- Generamos una configuracion comun de vscode y la subimos al repositorio para que el editor de texto de todos los integrantes del grupo se comporte de una manera similar.
+Como consecuencia, al no ser utilizado el read buffer actual, debía cerrarse en el proceso hijo antes de hacer la llamada a **execvp()** (en caso de no ser interno).
 
-## Compilacion
-- GNU Make
+#### **Colisión de comandos Fore y Background**
+El principal problema que se presentó en el desarrollo del proyecto pero se logró superar con éxito, fue el de la colisión en la ejecución de comandos Fore y Background en MyBash dado que, en una primera implementación, se bugueaba el prompt y el wait loop de comandos Foreground era "invadido" por procesos en segundo plano que finalizaban justo en ese momento. Un ejemplo es el siguiente:
+```
+xeyes &
+ls -l | wc -l (y justo cuando está realizando la acción, cerrar xeyes)
+```
+La forma en la que logró superarse este caso fue mediante la utilización de un define para retornos de comandos en segundo plano
+```c
+#define EXIT_BACKGROUND 13
+```
+de modo que cada vez que se terminara de ejecutar un proceso en segundo plano, se retornara con exit el estado dado por EXIT_BACKGROUND.
 
-## Debugging
-- GDB, depurador estándar para el compilador GNU.
-- Valgrind, conjunto de herramientas para la depuración de problemas de memoria y rendimiento de programas.
+Luego, esto permitió que al llamar a wait se pueda identificar mediante el argumento de *exit_signal* si efectivamente pertenecía a un comando en segundo plano o al actual en modo foreground para evaluar si era contabilizado o no. Además, para evitar los bugueos de la prompt, en el módulo MyBash se utilizó un waitpid loop para terminar efectivamente todos los procesos que, antes de dar el prompt, enviaron una señal de exit:
+```c
+while (waitpid(-1, NULL, WNOHANG) > 0) {
+};
+```
+*Aclaración*: Aquí se utiliza la opción WNOHANG para que waitpid retorne de forma inmediata si ningún hijo realizó un exit.
 
-# Desarrollo del proyecto
-## Organizacion del trabajo
-Los 4 integrantes del grupo al inicio estuvimos divididos en 2 subgrupos: Lauti y Gonza, Ema y Juan. Cada grupo se encargaba de implemenar un modulo diferente.
-Una vez implementados todos los modulos, los grupos se disolvieron y cada integrante ayudaba cuando podia en solucionar errores, mejorar el formato/comentarios del código y realizar el informe.
+## **Conclusión** 
+Gracias al proceso de desarrollo e implementación de MyBash, un Shell tipo UNIX con funcionalidades básicas, ofrecido por la cátedra, es que podemos entender mucho más a fondo la complejidad que presenta realizar un programa tan importante como este dentro del contexto de los sistemas operativos. Es gracias a este proyecto que se le ha podido dar una revalorización de lo que nos ha parecido "común" o "usual" dentro del ámbito de Linux ya que, finalmente, sabemos cómo es que funciona, cómo se realizan las redirecciones a files, cuáles son las principales ideas y problemas, y cómo estas se combinan con la ejecución de procesos con Context Switch.
 
-## Comunicación
-La mayor parte del proyecto utilizamos Discord y Telegram para organizarnos, pero probamos varias herramienta, como jira y trello, hasta encontrar las que mejor se adaptaban al flujo del grupo.
+Además, producto de su elaboración en el marco de un grupo de cuatro integrantes, se ha dado una primera aproximación sobre cómo trabajar en equipo y organizar las tareas para generar una división equitativa dentro del ámbito de la *Programación* y *Desarrollo de Software*.
 
-## Nuestro workflow de desarrollo
-### Branches
-Nos basamos fuertemente en el uso de branchs (ramas) dentro del repositorio en bitbucket. Una vez el modulo correspondiente a la rama estaba desarrollado, pasaba los tests y no presentaba errores de memoria, lo fusionábamos con la rama principal y creábamos una nueva rama para el próximo modulo a desarrollar.
+Finalmente, y no menos importante, recalcamos la gran utilidad de este proyecto para poder entender, junto con los *Homeworks* del libro [OSTEP](https://pages.cs.wisc.edu/~remzi/OSTEP/), cómo funcionan y se distribuyen los procesos dentro de un sistema operativo, y cuáles son las principales funciones que tienen las API de procesos tales como **fork()**, **execvp()**, **wait()**, **waitpid** y **pipe()**.
 
-### Live share
-También se usó mucho live share. Por esto mismo, en el grupo de Ema y Juan, la mayoría de los commits realizados por el subgrupo de Emanuel y Juan son por parte de Emanuel, porque se trabajaba de a dos pero se codeaba en la computadora de Emanuel.
+## **Webgrafía**
 
-## Proceso de implementación
-### Modulo Command
-Comenzamos desarrollando el modulo command, donde Emanuel y Juan se encargaron del TAD scommand y Lauty y Gonza del TAD pipeline.
-
-### Modulos builtin y parsing
-Luego de tener los TADs correctamente desarrollados y funcionando, nos concentramos en implementar el modulo builtin para la ejecución de comandos internos (Gonza y Lauty) y el parsing para procesar el input del usuario (Emanuel y Juan).
-
-### Modulo execute
-Finalmente Lauty y Gonza se pusieron con el execute, donde se encuentra la implementación para ejecutar los comandos ingresados por el usuario, tanto comandos multiples como simples y tanto en foreground como en background.
-
-Pero como con la implementación realizada no se podian utilizar comandos internos adentro de una pipe y se habia interpretado que no se deberia de poder hacer redirecciones en la parte del medio de una pipe, Juan y Ema decidieron refactorizar el código del execute para cambiar esto. 
-
-Una vez finalizada la refactorizacion estuvimos trabajando en conjunto un par de de días para lograr que todas las tests pasen hasta que eventualmente pudimos encontrarle la solución a todo.
-
-### Mybash y prompt
-Mientras Lauty y Gonza trabajaban en el modulo execute, Juan y Ema se encargaron de implementar el modulo principal de mybash y la personalización para el prompt.
-
-### Correcciones de estilo y formato
-Una vez todo el código fue desarrollado, compilado y satisfacía los tests dados por la cátedra y los propios hechos por nosotros, confirmando que todo funcionara correctamente, empezamos a realizar las correcciones de estilo y formato del código. 
-
-Las correcciones y ajustes que tuvimos que hacer fueron centralmente en nombre de variables o funciones y en el agregado de comentarios en el código para facilitar la lectura y el poder seguir la linea de implmentación del código.
-
-### Informes detallados
-Durante todo el desarrollo del proyecto intentamos ir realizando reportes/informes periódicos de nuestras implementaciones, para al final poder realizar un informe lo más completo posible. 
-
-### Informe final
-El desarrollo del informe final comenzó de manera paralela a la corrección de errores del execute y estuvimos hasta el último día mejorandolo y agregandole información.
-
-## Pruebas utilizadas
-Se realizaron pruebas unitarias caseras para cada módulo, además de las pruebas provistas por la catedra para las cuales necesitamos utilizar la librería Check para C. Para aquellos módulos donde se realizo una prueba casera, se creó un archivo de prueba, con la extensión .c, en la carpeta de **custom_tests**.
-
-Primero nos asegurábamos de que el código diera los resultados esperados según los tests, y luego revisábamos que no existieran memory leaks en el código, utilizando **valgrind** como principal herramienta para encontrar y verificar estos errores de memoria.
-
-## Problemas y soluciones durante el desarrollo
-### Tests que fallaban
-Algunos de los problemas en el desarrollo fueron algunos failed tests que nos costó poder pasar, principalmente en el módulo del execute. Había algunos tests que no entendíamos muy bien qué hacían y qué era lo que fallaba porque en la implementación prácticamente todo funcionaba.
-
-### Diferencias entre Mybash y Bash
-También hubo algunos detalles relacionados a qué tanta diferencia debería haber entre mybash y la bash de linux, ya que había algunas implementaciones de linux que eran muy difíciles de llevar a cabo en mybash y, que según la cátedra, no hacía falta implementar.
-
-### Desconocimiento y aprendizaje
-En varios modulos no sabiamos como encarar su implementación o que funciones utilizar para lograr lo solicitado, por lo que se necesito hacer una investigación previa utilizando la [Referencias y bibliografía](#referencias-y-bibliograf-a)
-
-### Soluciones
-Estos problemas los fuimos resolviendo siempre gracias al trabajo en conjunto. Realizamos varias reuniones entre todos para compartir posibles ideas y soluciones y retroalimentar lo aprendido. También, consultamos muchas dudas con la cátedra, que nos ayudó a esclarecer las cuestiones relacionadas a las diferencias entre mybash y la bash de linux, a entender mejor el comportamiento de los tests, saber donde buscar la información y a considerar distintos casos bordes relacionados a la implementación de la shell.
-
-# Conclusiones 
-Se logró implementar un shell básico, con la ejecución de comandos tanto en modo foreground y en modo background, con la redirección de entrada y salida estándar, y con la posibilidad de realizar multiples pipes (más de 2) entre comandos. 
-
-En este proyecto aprendimos a como trabajar en equipo y organizar las tareas para generar una división equitativa. Esto nos sirvió para mejorar la coordinación dentro del grupo y para comprender como funciona un shell y ayudarnos en las dudas que tenia cada uno. 
-
-También pudimos implementar bastantes conceptos vistos en el teórico, como la utilización de **fork** y **execvp**, la redirección de entrada y salida estándar, y la utilización de señales. 
-
-En este proyecto también pudimos aprender y mejorar nuestro uso de git. 
-
-# Referencias y bibliografía
-
-- https://man7.org/linux/man-pages/ 
-- https://pages.cs.wisc.edu/~remzi/OSTEP/
+ - Arpaci-Dusseau, R. & Arpaci-Dusseau, A. (2018, agosto). Operating Systems: Three Easy Pieces. Recuperado 20 de septiembre de 2022, de https://pages.cs.wisc.edu/%7Eremzi/OSTEP/
+ - Check: check.h File Reference. (s. f.). Recuperado 20 de septiembre de 2022, de https://libcheck.github.io/check/doc/doxygen/html/check_8h.html
+ - GLib-2.0. (s. f.). Recuperado 20 de septiembre de 2022, de https://docs.gtk.org/glib/index.html
+ - Linux man pages online. (s. f.). Recuperado 20 de septiembre de 2022, de https://man7.org/linux/man-pages/
+ - Rocchietti, M., Teruel, M., Hobborg, L. & Almeida, G. (s. f.). Introducción a Unit Testing. Recuperado 20 de septiembre de 2022, de https://docs.google.com/document/d/111q867IwnaS6IlFdFEXvJqCIgZR2zaKt9Nq6e-Civd4/edit

@@ -1,6 +1,8 @@
+[Ir al informe](../README.md)
+
 # **PIPELINE**
 
-## Estructura del TAD Pipeline (vista externa)
+## **Estructura del TAD Pipeline (vista externa)**
 
 Pipeline es una estructura que permite representar una secuencia de comandos simples de la forma
 ```     
@@ -11,20 +13,20 @@ pudiendo actualizarlos a medida que sea necesario.
 
 Por ello mismo, en la librería command.h se proveen las siguientes funciones públicas:
 
-### Constructores
+### **Constructores**
 
 1. **pipeline_new**    
 2. **pipeline_push_back**
+3. **pipeline_set_wait**
 
-### Destructores
+### **Destructores**
 
 1. **pipeline_destroy**
 
-### Operaciones
+### **Operaciones**
 
 * Actualización del Pipeline
     1. **pipeline_pop_front**
-    2. **pipeline_set_wait**
 * Información del Pipeline
     1. **pipeline_front**
     2. **pipeline_is_empty**
@@ -33,9 +35,9 @@ Por ello mismo, en la librería command.h se proveen las siguientes funciones p�
 * Debugging
     1. **pipeline_to_string**
 
-## Implementación del TAD Pipeline
+## **Implementación del TAD Pipeline**
 
-### Estructura de Datos
+### **Estructura de Datos**
 
 A partir de una lectura comprensiva del **command.h**, para la implementación del pipeline, decidimos partir desde la librería **GLib** para estructurar la tuberia de comandos, aprovechando así GQueue para representar la lista de comandos simples, y un booleano que indica si hay que esperar o continuar.
 
@@ -49,20 +51,20 @@ La estructura elegida fue la siguiente:
         
 ```
 
-### Implementaciones interesantes
+### **Implementaciones interesantes**
 
 Casi todas las implementaciones realizadas son intuitivas y faciles de entender. 
 A continuación se dan más detalles sobre las implementaciones más complejas
 
-#### pipeline_to_string
+#### **pipeline_to_string**
 
 Esta función, que provee la estructura de datos, requiere como argumento un pipeline (*tipo pipeline*), y devuelve un string (```char *```) que refiere a su representación en consola (bash).
 
-##### Librerías requeridas
+##### **Librerías requeridas**
 
 Para poder unir strings, usamos la librería **strextra.h**.
 
-##### Idea de la implementación
+##### **Idea de la implementación**
 
 Primero, para la implementación de la función, nos manejamos con una variable principal *result* (de tipo ```char *```), en la cual se iban a realizar las fusiones de la forma:
 ```c

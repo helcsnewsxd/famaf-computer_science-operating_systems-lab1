@@ -1,6 +1,8 @@
+[Ir al informe](../README.md)
+
 # **PARSING**
 
-## Explicación general
+## **Explicación general**
 
 En la implementación del parsing utilizamos las funciones declaradas en el parser.h para poder detectar los argumentos de cada entrada y además categorizarlas según su funcionalidad: comando, redirección de salida/entrada, argumentos, etc.
 
