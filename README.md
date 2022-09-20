@@ -12,8 +12,8 @@
 
  - [Introducción](#introducción)
  - [¿Cómo correr el código?](#¿cómo-correr-el-código)
- - [Detalles de implementación](#detalles-de-implementacion)
-    - [Características implementadas](#caracteristicas-implementadas)
+ - [Detalles de implementación](#detalles-de-implementación)
+    - [Características implementadas](#características-implementadas)
     - [Modularización](#modularización)
  - [Herramientas de Programación](#herramientas-de-programación)
  - [Desarrollo del proyecto](#desarrollo-del-proyecto)
@@ -48,18 +48,20 @@ Finalmente, para eliminar todos los archivos ejecutables (excepto lexer.o y pars
 make clean
 ```
 
-## **Detalles de implementacion**
-### **Caracteristicas implementadas**
+## **Detalles de implementación**
+### **Características implementadas**
 #### **Funcionalidad basica**
 Al momento de entrega, el proyecto cumple con todos las funcionalidades basicas pedidas por la cátedra, tales como:
- * Pasar el 100% del *unit-testing* (make test) dado para todo el proyecto
- * Manejar pipelines de, al menos, dos comandos
- * Manejar de manera adecuada la terminación de procesos lanzados en segundo plano sin dejar procesos zombies
+
+ - Pasar el 100% del *unit-testing* (make test) dado para todo el proyecto
+ - Manejar pipelines de, al menos, dos comandos
+ - Manejar de manera adecuada la terminación de procesos lanzados en segundo plano sin dejar procesos zombies
 
 #### **Puntos estrella**
 Respecto a los puntos y funcionalidades extras de nuestro proyecto, se encuentran:
- * Generalizar el comando pipeline “|” a una cantidad arbitraria de comandos simples
- * Imprimir un prompt con información relevante (nombre de la shell, camino relativo y nombre de usuario).
+
+ - Generalizar el comando pipeline “|” a una cantidad arbitraria de comandos simples
+ - Imprimir un prompt con información relevante (nombre de la shell, camino relativo y nombre de usuario).
 
 
 ### **Modularización**
@@ -85,30 +87,35 @@ El objetivo de haber desarrollado esta división y agregado más módulos aparte
 #### **Explicación detallada de los módulos**
 
 Bajo la idea de proponer un informe general, legible y llamativo del proyecto, la explicación detallada de los módulos más importantes va a encontrarse dentro de los archivos con formato Markdown linkeados a continuación:
- * **Command**
-    * [**TAD Scommand**](/detailed_explanations/scommand.md)
-    * [**TAD Pipeline**](/detailed_explanations/pipeline.md)
- * [**Parsing**](/detailed_explanations/parsing.md)
- * [**Execute**](/detailed_explanations/execute.md) (junto con **Files Descriptors**)
- * [**Builtin**](/detailed_explanations/builtin.md) (junto con **Internal Commands**)
+
+ - **Command**
+    - [**TAD Scommand**](/detailed_explanations/scommand.md)
+    - [**TAD Pipeline**](/detailed_explanations/pipeline.md)
+ - [**Parsing**](/detailed_explanations/parsing.md)
+ - [**Execute**](/detailed_explanations/execute.md) (junto con **Files Descriptors**)
+ - [**Builtin**](/detailed_explanations/builtin.md) (junto con **Internal Commands**)
 
 ## **Herramientas de Programación**
 Las principales herramientas utilizadas por el grupo en la implementación, división y codificación de las secciones del programa MyBash fueron las siguientes:
 
 ### **Material teórico de estudio y preparación**
+
  - [**Operating Systems: Three Easy Pieces**: Process virtualization](https://pages.cs.wisc.edu/~remzi/OSTEP/), principalmente el capítulo número 5 (*Process API*) junto con su sección de *Homework Simulation* y *Homework Code*
  - [**Introducción a Unit Testing**](https://docs.google.com/document/d/111q867IwnaS6IlFdFEXvJqCIgZR2zaKt9Nq6e-Civd4/edit)
  - [**GLib Docs**](https://docs.gtk.org/glib/index.html)
 ### **Desarrollo**
+
 - [Visual Studio Code](https://code.visualstudio.com/), editor de código
 - [Live Share](https://code.visualstudio.com/learn/collaboration/live-share), extensión para el desarrollo colaborativo en tiempo real
 - [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html), formateador de código
     - Para obtener un estilo consistente se utilizó con un formato basado en el estilo de código usado por [LLVM](https://llvm.org/).
     - Se generó una configuración común de VSCode y se subió al repositorio para que el editor de texto de todos los integrantes del grupo se comporte de forma similar.
 ### **Compilacion**
+
 - [GNU Make](https://www.gnu.org/software/make/)
 
 ### **Debugging**
+
 - [GDB](https://sourceware.org/gdb/), depurador estándar para el compilador GNU.
 - [Valgrind](https://valgrind.org/), conjunto de herramientas para la depuración de problemas de memoria y rendimiento de programas.
 
@@ -119,6 +126,7 @@ Luego de pasar por varias herramientas de comunicación y organización, tales c
 
 ### **Organización del trabajo**
 Inicialmente, y por gran parte del desarrollo de MyBash, se realizó una división en dos subgrupos conformados del siguiente modo:
+
  - Grupo 1: Lautaro Bachmann y Gonzalo Canavesio
  - Grupo 2: Juan Bratti y Emanuel Nicolás Herrador
 
@@ -147,6 +155,7 @@ test_execute.c:306:F:Functionality:test_pipe2_child1:0: Assertion 'mock_check_fd
 ```
 
 Para solucionarlo, dado el planteamiento recursivo de la ejecución de los comandos, una vez generado el buffer de in/out mediante **pipe()** había que notar dos cuestiones principales:
+
  - El input del comando actual va a ser el read buffer de la pipe anterior, o STDIN en caso de ser el primero (salvo declaración explícita de redirección a files)
  - El read buffer creado en la pipe actual no va a ser usado, sino solo su contraparte write.
 
