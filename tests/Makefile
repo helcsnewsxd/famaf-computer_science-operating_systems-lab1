@@ -11,17 +11,13 @@ COMMON_OBJECTS=../command.o ../strextra.o
 PARSER_OBJECTS=../parser.o ../lexer.o ../parsing.o
 
 # Al modulo ejecutor lo recompilamos en este directorio usando mocks
-MOCK_OBJECTS=builtin.o internal_commands.o files_descriptors.o prompt.o execute.o syscall_mock.o
+MOCK_OBJECTS=builtin.o internal_commands.o execute.o syscall_mock.o
 vpath execute.c ..
 vpath builtin.c ..
 vpath internal_commands.c ..
-vpath files_descriptors.c ..
-vpath prompt.c ..
 execute.o: CPPFLAGS += -DREPLACE_SYSCALLS=1
 builtin.o: CPPFLAGS += -DREPLACE_SYSCALLS=1
 internal_commands.o: CPPFLAGS += -DREPLACE_SYSCALLS=1
-files_descriptors.o: CPPFLAGS += -DREPLACE_SYSCALLS=1
-prompt.o: CPPFLAGS += -DREPLACE_SYSCALLS=1
 
 # - Cada test suite linkea lo minimo posible
 # - Los runners usan la implementacion de referencia
