@@ -15,7 +15,10 @@
     * [Instalación](#instalaci-n)
     * [Compilación y ejecución](#compilaci-n-y-ejecuci-n)
 - [Introducción](#introducci-n)
-- [Implementación](#implementaci-n)
+- [Implementacion](#implementacion)
+    * [Caracteristicas implementadas](#caracteristicas-implementadas)
+        + [Funcionalidad basica](#funcionalidad-basica)
+        + [Puntos estrella](#puntos-estrella)
     * [Modularización](#modularizaci-n)
     * [mybash](#mybash)
     * [command](#command)
@@ -57,7 +60,6 @@
 - [Conclusiones](#conclusiones)
 - [Referencias y bibliografía](#referencias-y-bibliograf-a)
 
-
 # Introducción al informe
 Con respecto al estilo del informe, para evitar alargarlo innecesariamente hemos decidido dar solo una breve explicación sobre la implementación de cada modulo del proyecto, la cual es ampliada en un archivo aparte por si el lector desea profundizar más en los detalles de algún modulo.
 
@@ -76,11 +78,12 @@ El proyecto trata sobre codificar un shell al estilo de bash (Bourne Again SHell
 
 El programa debe poder satisfacer la ejecución de comandos en modo foreground y background, la redirección de entrada y salida estándar y realizar pipe entre comandos.
 
-# Caracteristicas implementadas
-## Funcionalidad basica
+# Implementacion
+## Caracteristicas implementadas
+### Funcionalidad basica
 Al momento de entrega el proyecto cumple con todos las funcionalidades basicas pedidas por la cátedra.
 
-## Puntos estrella
+### Puntos estrella
 - Generalizar el comando pipeline “|” a una cantidad arbitraria de comandos simples
 - Imprimir un prompt con información relevante.
     - En concreto, la prompt imprime el nombre de la shell, el camino relativo y el nombre de usuario.
