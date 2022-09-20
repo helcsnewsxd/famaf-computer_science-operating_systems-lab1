@@ -3,10 +3,9 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-#include "builtin.h"
+#include "internal_commands.h"
 #include "command.h"
 #include "execute.h"
-#include "parser.h"
 #include "parsing.h"
 #include "prompt.h"
 
