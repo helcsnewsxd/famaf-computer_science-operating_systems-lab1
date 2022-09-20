@@ -9,29 +9,19 @@
 
 
 ## **Índice**
-* [Introducción](#markdown-header-introduccion)
-* [¿Cómo correr el código?](#markdown-header-como-correr-el-codigo)
-    * [Preparación](#markdown-header-preparacion)
-    * [Compilación y ejecución](#markdown-header-compilacion-y-ejecucion)
-* [Detalles de implementación](#markdown-header-detalles-de-implementacion)
-    * [Características implementadas](#markdown-header-caracteristicas-implementadas)
-    * [Modularización](#markdown-header-modularizacion)
-* [Herramientas de Programación](#markdown-header-herramientas-de-programacion)
-    * [Material teórico de estudio y preparación](#markdown-header-material-teorico-de-estudio-y-preparacion)
-    * [Desarrollo](#markdown-header-desarrollo)
-    * [Compilacion](#markdown-header-compilacion)
-    * [Debugging](#markdown-header-debugging)
-* [Desarrollo del proyecto](#markdown-header-desarrollo-del-proyecto)
-    * [Comunicación](#markdown-header-comunicacion)
-    * [Organización del trabajo](#markdown-header-organizacion-del-trabajo)
-    * [Workflow de desarrollo](#markdown-header-workflow-de-desarrollo)
-    * [Pruebas utilizadas](#markdown-header-pruebas-utilizadas)
-    * [Problemas y soluciones durante el desarrollo](#markdown-header-problemas-y-soluciones-durante-el-desarrollo)
-* [Conclusión](#markdown-header-conclusion-)
-* [Webgrafía](#markdown-header-webgrafia)
+
+ - [Introducción](#markdown-header-introduccion)
+ - [¿Cómo correr el código?](#markdown-header-como-correr-el-codigo)
+ - [Detalles de implementación](#markdown-header-detalles-de-implementacion)
+    - [Características implementadas](#markdown-header-caracteristicas-implementadas)
+    - [Modularización](#markdown-header-modularizacion)
+ - [Herramientas de Programación](#markdown-header-herramientas-de-programacion)
+ - [Desarrollo del proyecto](#markdown-header-desarrollo-del-proyecto)
+ - [Conclusión](#markdown-header-conclusion-)
+ - [Webgrafía](#markdown-header-webgrafia)
 
 ## **Introducción**
-Todo experto o amateur en el *mundo de Linux* tiene un conocimiento, aunque sea mínimo, sobre lo que es una terminal y cuáles son sus principales potenciales. Sin embargo, muy pocas veces nos hemos parado a pensar:
+Todo experto o amateur en el *mundo de Linux* tiene un conocimiento, aunque sea mínimo, sobre las utilidades de una terminal, qué es una shell y cuáles son sus principales potenciales. Sin embargo, muy pocas veces nos hemos parado a pensar:
 ```
 ¿Por qué anda esto?
 ¿Cómo hacen para reconocer mi comando y permitir ejecutar varios al mismo tiempo?
@@ -140,10 +130,10 @@ Inicialmente, y por gran parte del desarrollo de MyBash, se realizó una divisi�
  - Grupo 1: Lautaro Bachmann y Gonzalo Canavesio
  - Grupo 2: Juan Bratti y Emanuel Nicolás Herrador
 
-para facilitar el correcto y ordenado desarrollo de la implementación de los módulos evitando todo tipo de colisión de tareas. Esta idea se mantuvo durante la implementación de los módulos básicos hasta la *segunda versión del Execute*, desde la cual cada integrante ayudaba en proponer ideas, solucionar errores, mejorar el formato o comentarios del código, y realizar el informe.
+para facilitar el correcto y ordenado desarrollo de la implementación de los módulos evitando todo tipo de colisión de tareas. Esta idea se mantuvo durante la implementación de los módulos básicos hasta el final del desarrollo del *Execute* en su versión recursiva, desde lo cual cada integrante ayudaba en proponer ideas, solucionar errores, mejorar el formato o comentarios del código, y realizar el informe.
 
 #### **Live share**
-A motivo de aclaración por los commits presentados en el proyecto, el Grupo 2 se basó en el uso de la herramienta Live Share por motivos de comodidad y para poder compilar y correr MyBash en la computadora (dado que en Windows se complicaba). Por ello mismo, los commits tienen aclarado, en su descripción o en los comentarios, quiénes fueron los coautores de los cambios realizados e implementados.
+A motivo de aclaración por los commits presentados en el proyecto, el Grupo 2 se basó en el uso de la herramienta Live Share por comodidad y eficiencia a la hora de trabajar. Por ello mismo, los commits tienen aclarado, en su descripción o en los comentarios, quiénes fueron los coautores de los cambios realizados e implementados.
 
 ### **Workflow de desarrollo**
 #### **Branches**
