@@ -86,7 +86,7 @@ pipeline parse_pipeline(Parser p) {
     if (error) {
         result = pipeline_destroy(result);
         result = NULL;
-        printf("Command sintaxis Error\n");
+        printf("Command syntax Error\n");
     }
 
     // Return the pipeline or NULL (in case of a syntax error)
